@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+  <title id="title">Academic figure layout placeholder</title>
+  <desc id="desc">A restrained diagram showing states, a process model, and outputs without presenting measured data.</desc>
+  <rect width="960" height="480" fill="#191A21"/>
+  <g fill="none" stroke="#6272A4" stroke-width="2">
+    <rect x="90" y="175" width="180" height="120" rx="4"/>
+    <rect x="390" y="145" width="180" height="180" rx="4"/>
+    <rect x="690" y="175" width="180" height="120" rx="4"/>
+    <path d="M270 235h105m195 0h105"/>
+  </g>
+  <g fill="#F8F8F2" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" text-anchor="middle">
+    <text x="180" y="226" font-size="26">State vector</text>
+    <text x="180" y="260" fill="#9AA6C7" font-size="17">x(t)</text>
+    <text x="480" y="226" font-size="26">Process model</text>
+    <text x="480" y="260" fill="#BD93F9" font-size="17">f(x, u, θ)</text>
+    <text x="780" y="226" font-size="26">Observations</text>
+    <text x="780" y="260" fill="#9AA6C7" font-size="17">y(t)</text>
+  </g>
+  <g fill="#8BE9FD">
+    <path d="M369 235l-12-7v14z"/>
+    <path d="M669 235l-12-7v14z"/>
+  </g>
+</svg>

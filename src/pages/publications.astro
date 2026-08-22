@@ -1,0 +1,27 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+---
+
+<Layout
+  title={`Publications | ${config.site.title}`}
+  description="Verified publication records associated with cigit-zgy."
+>
+  <Header />
+  <Main
+    pageTitle="Publications"
+    pageDesc="A verified publication list will be added when source metadata is available."
+  >
+    <section class="border-border mt-10 border-y py-7">
+      <p class="text-muted-foreground">
+        No publication metadata has been provided. This page intentionally does
+        not contain placeholder papers.
+      </p>
+      <!-- TODO: Add verified entries grouped by year: title, authors, venue, and links. -->
+    </section>
+  </Main>
+  <Footer />
+</Layout>

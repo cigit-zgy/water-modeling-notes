@@ -1,0 +1,113 @@
+---
+pubDatetime: 2026-08-22T00:00:00.000+08:00
+modDatetime: 2026-08-22T12:00:00.000+08:00
+title: Academic article format demonstration
+featured: false
+draft: true
+topic: Research Notes
+tags:
+  - Python
+  - Hybrid ODE
+description: An internal draft used only to verify academic typography and responsive content patterns.
+---
+
+import AcademicCallout from '@/components/AcademicCallout.astro';
+import ResponsiveTable from '@/components/ResponsiveTable.astro';
+
+This internal article is a layout demonstration. Its title supplies the page-level `h1`; the sections below verify the `h2`–`h3` hierarchy without asserting a research result. Inline notation such as $\mathbf{x}(t)$, $\theta$, and $\mathbf{u}(t)$ should remain aligned with the surrounding text.
+
+An English paragraph checks Georgia at long-form reading sizes. It includes *italic scientific language*, **bold emphasis**, Greek symbols such as $\alpha$, $\beta$, and $\mu$, the deliberately long term `physics-informed-differential-equation-regularization`, and combinations such as ASM1, ADM1, ODE, and NH₄⁺. These tokens are typography fixtures only; they do not report a model result.[^fonts]
+
+这是一段用于屏幕排版检查的中文正文。它验证霞鹜文楷屏幕阅读版在“引号”、顿号、逗号，句号。以及括号（中英文 mixed text）中的标点、行高和换行表现；其中 ASM1、ADM1、ODE 与 NH₄⁺ 仅作为字符组合，不表示任何实验结论。
+
+Mixed Chinese and English should remain visually calm: 机理模型 mechanistic model、科学机器学习 scientific machine learning，以及状态变量 $x_i(t)$ 需要在同一基线上自然衔接。**中文粗体**与 *English italic* 也只用于检查字体回退和合成字重。
+
+## Mathematical notation
+
+### State-space form
+
+A generic dynamic-system notation can be written as
+
+$$
+\frac{d\mathbf{x}}{dt}=\mathbf{S}\,\mathbf{r}\!\left(\mathbf{x},\mathbf{u},\boldsymbol{\theta}\right),
+\qquad
+\mathbf{y}=\mathbf{h}\!\left(\mathbf{x}\right).
+$$
+
+The symbols are intentionally generic: the equation checks spacing, subscripts, bold vectors, parameters, and display overflow without claiming that it represents a particular treatment process.
+
+<AcademicCallout kind="definition">
+  A **state variable** is a quantity included in the model state vector. This sentence demonstrates the visual treatment of a concise definition, not a domain-specific definition set.
+</AcademicCallout>
+
+<AcademicCallout kind="note">
+  Inline equations should remain legible at mobile widths, while long display equations may scroll horizontally when they cannot wrap safely.
+</AcademicCallout>
+
+## Computational example
+
+The following code is deliberately small and deterministic. It demonstrates Python syntax highlighting and a filename label.
+
+```python file=state_model.py
+from collections.abc import Callable
+
+import numpy as np
+
+
+def evaluate_rhs(
+    state: np.ndarray,
+    rates: Callable[[np.ndarray], np.ndarray],
+    stoichiometry: np.ndarray,
+) -> np.ndarray:
+    """Return a generic right-hand side for layout verification."""
+    # 中文注释用于验证系统 CJK 等宽回退
+    return stoichiometry @ rates(state)
+
+
+state = np.array([1.0, 0.5, 0.2])
+very_long_identifier_for_horizontal_overflow_verification = evaluate_rhs(state, lambda values: values**2, np.eye(3))
+```
+
+<AcademicCallout kind="method">
+  Examples in published notes should state assumptions, units, inputs, and validation checks when those details affect interpretation.
+</AcademicCallout>
+
+### Compact table
+
+<ResponsiveTable variant="minimal">
+
+| Element | Purpose | Responsive behaviour |
+| :-- | :-- | :-- |
+| Equation | Mathematical notation | Horizontal overflow only when necessary |
+| Code | Reproducible computation | Preserved indentation and horizontal scroll |
+| Figure | Visual evidence | Fluid width with a bounded maximum |
+| Table | Structured comparison | Minimal rules and horizontal scroll |
+
+</ResponsiveTable>
+
+## Figures and captions
+
+<figure>
+  <img src="/figures/academic-layout-placeholder.svg" alt="Placeholder process diagram connecting a state vector, process model, and observations" />
+  <figcaption><strong>Figure 1.</strong> Layout-only process diagram. It contains no measured values or inferred result.</figcaption>
+</figure>
+
+> A blockquote should remain visually subordinate to the article argument while still being distinct from ordinary prose.
+
+<AcademicCallout kind="caution">
+  Do not interpret visual placeholders, example equations, or demonstration values as scientific evidence.
+</AcademicCallout>
+
+## Long-form reading test
+
+This paragraph is intentionally long enough to exercise the target reading measure, line height, and paragraph rhythm across several viewports. A technical note often has to carry definitions, assumptions, notation, caveats, and interpretation in the same narrative sequence, so the layout must remain calm even when the prose is dense. The design therefore relies on a stable text column, restrained contrast, generous vertical spacing, and clear heading transitions rather than decorative cards or oversized interface elements. This text makes no claim about a model, dataset, experiment, or treatment plant; it exists only to test reading comfort and wrapping behaviour on desktop, tablet, and mobile screens.[^layout]
+
+## References
+
+1. [Astro Markdown configuration](https://docs.astro.build/en/guides/markdown-content/)
+2. [KaTeX supported functions](https://katex.org/docs/supported.html)
+3. [LXGW WenKai Screen repository](https://github.com/lxgw/LxgwWenKai-Screen)
+4. [Maple Mono repository](https://github.com/subframe7536/maple-font)
+
+[^layout]: Footnote used to verify the generated footnote section, backlink, focus state, and small-text contrast.
+[^fonts]: Font source and license attribution is recorded in the repository's `THIRD_PARTY_NOTICES.md`; this reference exists only to exercise citation and footnote rendering.

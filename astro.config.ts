@@ -1,9 +1,4 @@
-import {
-  defineConfig,
-  envField,
-  fontProviders,
-  svgoOptimizer,
-} from "astro/config";
+import { defineConfig, envField, svgoOptimizer } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -11,6 +6,8 @@ import { unified } from "@astrojs/markdown-remark";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import rehypeCallouts from "rehype-callouts";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import {
   transformerNotationDiff,
   transformerNotationHighlight,
@@ -18,6 +15,20 @@ import {
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import config from "./astro-paper.config";
+import { draculaAtNightShiki } from "./src/config/draculaAtNightShiki";
+
+const katexWoff2Only = () => ({
+  name: "katex-woff2-only",
+  enforce: "pre" as const,
+  transform(code: string, id: string) {
+    if (!id.includes("/katex/dist/katex.min.css")) return;
+
+    return code.replace(
+      /,\s*url\([^)]*\.woff\)\s*format\(["']woff["']\),\s*url\([^)]*\.ttf\)\s*format\(["']truetype["']\)/g,
+      ""
+    );
+  },
+});
 
 export default defineConfig({
   site: config.site.url,
@@ -38,13 +49,14 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [
+        remarkMath,
         remarkToc,
         [remarkCollapse, { test: "Table of contents" }],
       ],
-      rehypePlugins: [rehypeCallouts],
+      rehypePlugins: [rehypeKatex, rehypeCallouts],
     }),
     shikiConfig: {
-      themes: { light: "min-light", dark: "night-owl" },
+      themes: { light: "github-light-default", dark: draculaAtNightShiki },
       defaultColor: false,
       wrap: false,
       transformers: [
@@ -56,19 +68,8 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [katexWoff2Only(), tailwindcss()],
   },
-  fonts: [
-    {
-      name: "Google Sans Code",
-      cssVariable: "--font-google-sans-code",
-      provider: fontProviders.google(),
-      fallbacks: ["monospace"],
-      weights: [300, 400, 500, 600, 700],
-      styles: ["normal", "italic"],
-      formats: ["woff", "ttf"],
-    },
-  ],
   env: {
     schema: {
       PUBLIC_GOOGLE_SITE_VERIFICATION: envField.string({

@@ -1,0 +1,25 @@
+---
+type Kind = "note" | "definition" | "method" | "caution";
+
+type Props = {
+  kind?: Kind;
+  label?: string;
+};
+
+const { kind = "note", label } = Astro.props;
+const labels: Record<Kind, string> = {
+  note: "Note",
+  definition: "Definition",
+  method: "Method",
+  caution: "Caution",
+};
+---
+
+<aside
+  class="academic-callout"
+  data-kind={kind}
+  aria-label={label ?? labels[kind]}
+>
+  <p class="academic-callout__label">{label ?? labels[kind]}</p>
+  <div class="academic-callout__body"><slot /></div>
+</aside>

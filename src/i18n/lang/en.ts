@@ -4,6 +4,9 @@ export default {
   nav: {
     home: "Home",
     posts: "Posts",
+    writing: "Writing",
+    research: "Research",
+    publications: "Publications",
     tags: "Tags",
     about: "About",
     archives: "Archives",
@@ -29,9 +32,9 @@ export default {
   },
   home: {
     socialLinks: "Social Links",
-    featured: "Featured",
-    recentPosts: "Recent Posts",
-    allPosts: "All Posts",
+    featured: "Featured Writing",
+    recentPosts: "Recent Writing",
+    allPosts: "All Writing",
   },
   footer: {
     copyright: "Copyright",
@@ -44,8 +47,9 @@ export default {
     tagsTitle: "Tags",
     tagsDesc: "All the tags used in posts.",
 
-    postsTitle: "Posts",
-    postsDesc: "All the articles I've posted.",
+    postsTitle: "Writing",
+    postsDesc:
+      "Long-form notes on modelling, scientific machine learning, and computation.",
 
     archivesTitle: "Archives",
     archivesDesc: "All the articles I've archived.",

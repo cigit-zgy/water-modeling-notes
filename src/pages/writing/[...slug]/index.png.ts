@@ -1,11 +1,32 @@
 import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import satori from "satori";
 import sharp from "sharp";
+import { getPostSlug } from "@/utils/getPostPaths";
 import config from "@/config";
 
-export const GET: APIRoute = async () => {
+export async function getStaticPaths() {
+  if (!config.features.dynamicOgImage) {
+    return [];
+  }
+
+  const posts = await getCollection("posts").then(p =>
+    p.filter(({ data }) => !data.draft && !data.ogImage)
+  );
+
+  return posts.map(post => ({
+    params: { slug: getPostSlug(post.id, post.filePath) },
+    props: post,
+  }));
+}
+
+export const GET: APIRoute = async ({ props }) => {
+  if (!config.features.dynamicOgImage) {
+    return new Response(null, { status: 404, statusText: "Not found" });
+  }
+
   const require = createRequire(import.meta.url);
   const regularFontPath =
     require.resolve("@fontsource/maple-mono/files/maple-mono-latin-400-normal.woff");
@@ -77,34 +98,15 @@ export const GET: APIRoute = async () => {
                   },
                   children: [
                     {
-                      type: "div",
+                      type: "p",
                       props: {
                         style: {
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          height: "90%",
-                          maxHeight: "90%",
+                          fontSize: 72,
+                          fontWeight: "bold",
+                          maxHeight: "84%",
                           overflow: "hidden",
-                          textAlign: "center",
                         },
-                        children: [
-                          {
-                            type: "p",
-                            props: {
-                              style: { fontSize: 72, fontWeight: "bold" },
-                              children: config.site.title,
-                            },
-                          },
-                          {
-                            type: "p",
-                            props: {
-                              style: { fontSize: 28, color: "#D7D4C8" },
-                              children: config.site.description,
-                            },
-                          },
-                        ],
+                        children: props.data.title,
                       },
                     },
                     {
@@ -112,22 +114,50 @@ export const GET: APIRoute = async () => {
                       props: {
                         style: {
                           display: "flex",
-                          justifyContent: "flex-end",
+                          justifyContent: "space-between",
                           width: "100%",
                           marginBottom: "8px",
                           fontSize: 28,
                         },
-                        children: {
-                          type: "span",
-                          props: {
-                            style: {
-                              overflow: "hidden",
-                              fontWeight: "bold",
-                              color: "#8BE9FD",
+                        children: [
+                          {
+                            type: "span",
+                            props: {
+                              children: [
+                                "by ",
+                                {
+                                  type: "span",
+                                  props: {
+                                    style: { color: "transparent" },
+                                    children: '"',
+                                  },
+                                },
+                                {
+                                  type: "span",
+                                  props: {
+                                    style: {
+                                      overflow: "hidden",
+                                      fontWeight: "bold",
+                                      color: "#BD93F9",
+                                    },
+                                    children: props.data.author,
+                                  },
+                                },
+                              ],
                             },
-                            children: new URL(config.site.url).hostname,
                           },
-                        },
+                          {
+                            type: "span",
+                            props: {
+                              style: {
+                                overflow: "hidden",
+                                fontWeight: "bold",
+                                color: "#8BE9FD",
+                              },
+                              children: config.site.title,
+                            },
+                          },
+                        ],
                       },
                     },
                   ],

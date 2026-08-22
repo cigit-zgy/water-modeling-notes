@@ -1,0 +1,58 @@
+/*
+ * Self-hosted production fonts.
+ *
+ * - LXGW WenKai Screen is imported from the version-pinned npm package and
+ *   keeps its upstream per-subset unicode-range declarations.
+ * - Latin Modern Sans WOFF2 files were converted from the upstream v1.0.1
+ *   WOFF webfonts without changing the glyph set.
+ * - Maple Mono is resolved directly from the version-pinned Fontsource
+ *   package, so the repository does not duplicate package assets.
+ */
+
+@font-face {
+  font-family: "Latin Modern Sans";
+  src: url("../assets/fonts/latin-modern-sans/latin-modern-sans-regular.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range:
+    U+0000-024f, U+1e00-1eff, U+2000-206f, U+20a0-20cf, U+2100-214f,
+    U+2190-22ff, U+25a0-25ff, U+fb00-fb06;
+}
+
+@font-face {
+  font-family: "Latin Modern Sans";
+  src: url("../assets/fonts/latin-modern-sans/latin-modern-sans-bold.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  unicode-range:
+    U+0000-024f, U+1e00-1eff, U+2000-206f, U+20a0-20cf, U+2100-214f,
+    U+2190-22ff, U+25a0-25ff, U+fb00-fb06;
+}
+
+@font-face {
+  font-family: "Maple Mono";
+  src: url("@fontsource/maple-mono/files/maple-mono-latin-400-normal.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range:
+    U+0000-024f, U+1e00-1eff, U+2000-206f, U+20a0-20cf, U+2100-214f,
+    U+2190-22ff, U+25a0-25ff, U+fb00-fb06;
+}
+
+@font-face {
+  font-family: "Maple Mono";
+  src: url("@fontsource/maple-mono/files/maple-mono-latin-400-italic.woff2")
+    format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range:
+    U+0000-024f, U+1e00-1eff, U+2000-206f, U+20a0-20cf, U+2100-214f,
+    U+2190-22ff, U+25a0-25ff, U+fb00-fb06;
+}
