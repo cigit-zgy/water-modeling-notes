@@ -13,7 +13,7 @@ const { variant: Heading = "h2", id, data, filePath } = Astro.props;
 const { title, description, ...props } = data;
 ---
 
-<li class="border-border border-b py-5 first:border-t last:border-b">
+<li class="writing-card border-border border-b py-5 first:border-t last:border-b">
   <a
     href={getPostUrl(id, filePath, Astro.currentLocale)}
     class:list={[
