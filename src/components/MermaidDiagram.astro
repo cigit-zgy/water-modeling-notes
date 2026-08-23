@@ -106,12 +106,12 @@ const safeCode = code
           output.innerHTML = svg;
           bindFunctions?.(output);
           shell.dataset.rendered = "true";
-        } catch (error) {
-          console.error("Mermaid diagram source failed to render", error);
+        } catch {
+          /* Keep the structural fallback visible; never expose parser errors. */
         }
       }
-    } catch (error) {
-      console.error("Mermaid renderer could not be loaded", error);
+    } catch {
+      /* Keep the structural fallback visible if the pinned module is unavailable. */
     }
   }
 
