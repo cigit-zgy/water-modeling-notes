@@ -1,20 +1,64 @@
 @plugin "@tailwindcss/typography";
 
 @layer base {
+  #main-content > header h1,
+  .app-prose h1 {
+    color: var(--accent-purple);
+  }
+
+  .app-prose h2 {
+    color: var(--accent-cyan);
+  }
+
+  .app-prose h3 {
+    color: var(--accent-magenta);
+  }
+
+  .app-prose h4 {
+    color: var(--accent-green);
+  }
+
+  #main-content > header h1,
+  .app-prose h1,
+  .app-prose h2,
+  .app-prose h3,
+  .app-prose h4 {
+    font-weight: 650;
+  }
+
+  #main-content > header > p.font-reading {
+    margin-top: 1.25rem;
+    padding: 0.85rem 1rem;
+    border-inline-start: 4px solid var(--accent-purple);
+    border-radius: 0 0.4rem 0.4rem 0;
+    background: color-mix(
+      in srgb,
+      var(--text-muted) 8%,
+      var(--background-secondary)
+    );
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
   .app-prose {
     @apply prose max-w-none;
     color: var(--text-secondary);
-    font-family: var(--font-body-serif);
+    font-family: var(--font-reading-family);
     font-size: 1.0625rem;
+    font-weight: 400;
     line-height: 1.78;
 
-    h1,
-    h2,
-    h3,
-    h4,
+    p,
+    li,
+    td,
+    blockquote {
+      font-weight: 400;
+    }
+
     th,
     strong {
       color: var(--text-primary);
+      font-weight: 650;
     }
 
     h2 {
@@ -38,6 +82,10 @@
       letter-spacing: 0.01em;
     }
 
+    .heading-link {
+      color: currentColor;
+    }
+
     p,
     ol,
     ul,
@@ -50,7 +98,7 @@
     a {
       color: var(--accent-link);
       text-decoration-color: color-mix(
-        in oklch,
+        in srgb,
         var(--accent-link) 58%,
         transparent
       );
@@ -76,11 +124,14 @@
     }
 
     figure {
+      max-width: 100%;
       margin-inline: 0;
       padding-block: 0.5rem;
+      overflow: hidden;
     }
 
-    img {
+    img,
+    figure > svg {
       width: auto;
       max-width: 100%;
       height: auto;
@@ -89,9 +140,10 @@
     }
 
     figcaption {
-      margin-top: 0.75rem;
+      margin-top: 0.8rem;
       color: var(--text-muted);
-      font-size: 0.875rem;
+      font-family: var(--font-ui);
+      font-size: 0.94rem;
       line-height: 1.55;
       text-align: center;
     }
@@ -102,14 +154,23 @@
     }
 
     blockquote {
-      border-inline-start: 2px solid var(--accent-purple);
+      padding: 0.85rem 1rem;
+      border-inline-start: 4px solid var(--accent-cyan);
+      border-radius: 0 0.35rem 0.35rem 0;
+      background: color-mix(
+        in srgb,
+        var(--text-muted) 7%,
+        var(--background-secondary)
+      );
       color: var(--text-secondary);
       font-style: normal;
-      opacity: 0.96;
+      opacity: 1;
     }
 
     table {
       width: 100%;
+      border: 1px solid var(--border-subtle);
+      background: var(--background-secondary);
       font-variant-numeric: tabular-nums;
       border-collapse: collapse;
     }
@@ -120,17 +181,31 @@
       border: 0;
       border-bottom: 1px solid var(--border-subtle);
       text-align: start;
+      transition: background-color 160ms ease;
     }
 
     thead th {
       border-top: 1px solid var(--border-subtle);
       border-bottom-color: color-mix(
-        in oklch,
-        var(--accent-cyan) 42%,
+        in srgb,
+        var(--accent-cyan) 35%,
         var(--border-subtle)
       );
+      background: var(--table-header-background);
       font-size: 0.9rem;
       font-weight: 650;
+    }
+
+    tbody tr:nth-child(odd) > td {
+      background: var(--table-row-odd);
+    }
+
+    tbody tr:nth-child(even) > td {
+      background: var(--table-row-even);
+    }
+
+    tbody tr:hover > td {
+      background: var(--table-row-hover);
     }
 
     code {
@@ -138,7 +213,7 @@
       border: 1px solid var(--code-border);
       border-radius: 0.2rem;
       background: var(--code-background);
-      color: var(--text-primary);
+      color: var(--code-inline-foreground);
       font-family: var(--font-mono);
       font-size: 0.88em;
       overflow-wrap: anywhere;
@@ -154,6 +229,7 @@
       overflow-x: auto;
       border: 1px solid var(--code-border);
       border-radius: 0.35rem;
+      background: var(--code-background) !important;
       font-family: var(--font-mono);
       font-size: 0.88rem;
       line-height: 1.7;
@@ -167,6 +243,7 @@
       padding: 0;
       border: 0;
       background: inherit;
+      color: inherit;
       overflow-wrap: normal;
     }
 
@@ -194,16 +271,32 @@
       font-size: 0.92rem;
     }
 
+    .academic-table {
+      margin-block: 1.9rem;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .academic-table__caption {
+      margin: 0 0 0.65rem;
+      color: var(--text-muted);
+      font-family: var(--font-ui);
+      font-size: 1.02rem;
+      font-weight: 500;
+      line-height: 1.55;
+      text-align: start;
+    }
+
     .academic-callout {
       margin-block: 1.75rem;
       padding: 0.95rem 1.05rem 0.9rem;
       border: 1px solid
-        color-mix(in oklch, var(--callout-accent) 30%, var(--border-subtle));
-      border-inline-start-width: 3px;
+        color-mix(in srgb, var(--callout-accent) 30%, var(--border-subtle));
+      border-inline-start-width: 4px;
       border-inline-start-color: var(--callout-accent);
       border-radius: 0.45rem;
       background: color-mix(
-        in oklch,
+        in srgb,
         var(--callout-accent) 7%,
         var(--background-secondary)
       );
@@ -218,7 +311,7 @@
     }
 
     .academic-callout[data-kind="method"] {
-      --callout-accent: var(--accent-teal);
+      --callout-accent: var(--accent-green);
     }
 
     .academic-callout[data-kind="caution"] {
@@ -226,13 +319,17 @@
     }
 
     .academic-callout__label {
-      margin: 0 0 0.35rem;
+      margin: 0 0 0.42rem;
       color: var(--callout-accent);
       font-family: var(--font-ui);
-      font-size: 0.75rem;
-      font-weight: 650;
-      letter-spacing: 0.08em;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.065em;
       text-transform: uppercase;
+    }
+
+    .academic-callout__body {
+      font-weight: 400;
     }
 
     .academic-callout__body > :first-child {
@@ -247,7 +344,7 @@
   .astro-code {
     display: flex;
     border-color: var(--code-border);
-    background: var(--shiki-light-bg);
+    background: var(--code-background) !important;
     color: var(--shiki-light);
   }
 
@@ -256,7 +353,7 @@
   }
 
   html[data-theme="dark"] .astro-code {
-    background: var(--shiki-dark-bg);
+    background: var(--code-background) !important;
     color: var(--shiki-dark);
   }
 
@@ -268,25 +365,26 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    background: color-mix(in oklch, var(--accent-success) 14%, transparent);
+    background: color-mix(in srgb, var(--accent-success) 14%, transparent);
   }
 
   .astro-code .line.diff.remove {
     position: relative;
     display: inline-block;
     width: 100%;
-    background: color-mix(in oklch, var(--accent-danger) 14%, transparent);
+    background: color-mix(in srgb, var(--accent-danger) 14%, transparent);
   }
 
   .astro-code .line.highlighted {
     display: inline-block;
     width: 100%;
-    background: color-mix(in oklch, var(--accent-purple) 15%, transparent);
+    background: color-mix(in srgb, var(--accent-purple) 15%, transparent);
   }
 
   .astro-code .highlighted-word {
     padding-inline: 0.125rem;
-    border: 1px solid color-mix(in oklch, var(--accent-cyan) 38%, var(--border-subtle));
+    border: 1px solid
+      color-mix(in srgb, var(--accent-cyan) 38%, var(--border-subtle));
     border-radius: 0.125rem;
   }
 }

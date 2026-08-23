@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2026-08-23T09:14:00.000+08:00
-title: 从 TeX 文件到论文生命周期：sci-manuscript-skill 的设计思路与使用方法
+title: sci-manuscript-skill 的设计思路与使用方法
 featured: true
 topic: Research Notes
 tags:
@@ -28,7 +28,7 @@ LaTeX 已经很好地解决了科研论文的排版问题，但它并没有替�
 
 这些问题在只有一个 `manuscript.tex` 时并不突出，但随着返修轮次、共同作者和投稿附件增加，隐含状态会快速累积。
 
-<ResponsiveTable variant="minimal">
+<ResponsiveTable caption="Table 1. 科研稿件生命周期中的典型工程问题与对应控制策略" variant="striped-minimal">
 
 | 常见问题 | 直接风险 | `sci-manuscript-skill` 的处理 |
 | :-- | :-- | :-- |
@@ -51,7 +51,7 @@ LaTeX 已经很好地解决了科研论文的排版问题，但它并没有替�
 
 ### 六个核心约束
 
-<ResponsiveTable variant="minimal">
+<ResponsiveTable caption="Table 2. 工作流的六项核心设计约束" variant="striped-minimal">
 
 | 约束 | 实现方式 | 控制的风险 |
 | :-- | :-- | :-- |
@@ -70,7 +70,7 @@ LaTeX 已经很好地解决了科研论文的排版问题，但它并没有替�
 
 CLI 与 Python API 最终复用同一套 domain logic，因此命令行使用和 Agent 调用不会形成两套逐渐漂移的实现。
 
-<ResponsiveTable variant="minimal">
+<ResponsiveTable caption="Table 3. sci-manuscript-skill 的分层架构与职责" variant="striped-minimal">
 
 | 层次 | 主要对象 | 职责 |
 | :-- | :-- | :-- |
@@ -122,34 +122,35 @@ existing-project/
 一篇稿件从 `r00` 开始。初稿可以构建 clean manuscript 和 initial submission package；收到审稿意见后，`revision` 只允许创建紧邻当前版本的下一轮。新 revision 继承上一轮科研内容，同时建立新的 response workspace。
 
 <MermaidDiagram
-  code={`flowchart TB
-    A["已有科研项目"] --> B["doctor<br/>环境检查"]
-    B --> C["init<br/>initial_submission / r00"]
-    C --> D["显式编辑<br/>manuscript"]
-    D --> E["build<br/>clean manuscript"]
-    E --> F{"当前任务"}
-    F -->|初次投稿| G["submission package"]
-    F -->|收到审稿意见| H["revision<br/>revision_01 / r01"]
-    H --> I["显式修改<br/>正文 + responses"]
-    I --> J["submission"]
-    J --> K["clean + marked<br/>response letter + package"]
-    K --> L{"还有下一轮审稿？"}
-    L -->|是| H
-    L -->|否| M["Final handoff"]
-    H -. "最新 revision 未被编辑" .-> N["rollback<br/>00_archive"]
-
-    classDef base fill:#44475a,stroke:#6272a4,color:#f8f8f2,stroke-width:1.5px;
-    classDef cyan fill:#343746,stroke:#8be9fd,color:#f8f8f2,stroke-width:2px;
-    classDef purple fill:#343746,stroke:#bd93f9,color:#f8f8f2,stroke-width:2px;
-    classDef green fill:#343746,stroke:#50fa7b,color:#f8f8f2,stroke-width:2px;
-    classDef amber fill:#343746,stroke:#ffb86c,color:#f8f8f2,stroke-width:2px;
-    class A,D,G,K,M,N base;
-    class B,E cyan;
-    class C,H purple;
-    class I,J green;
-    class F,L amber;`}
+  code={`flowchart TD
+A["已有科研项目"] --> B["doctor：环境检查"]
+B --> C["init：initial_submission / r00"]
+C --> D["显式编辑 manuscript"]
+D --> E["build：clean manuscript"]
+E --> F{"当前任务"}
+F -->|初次投稿| G["submission package"]
+F -->|收到审稿意见| H["revision：revision_01 / r01"]
+H --> I["显式修改：正文 + responses"]
+I --> J["submission"]
+J --> K["clean + marked + response letter + package"]
+K --> L{"还有下一轮审稿？"}
+L -->|是| H
+L -->|否| M["Final handoff"]
+H -.-> N["rollback：00_archive"]
+classDef neutral fill:#2a3448,stroke:#a8b0c5,color:#f8f8f2,stroke-width:1.5px
+classDef purple fill:#2a3448,stroke:#a978e7,color:#f8f8f2,stroke-width:2px
+classDef magenta fill:#2a3448,stroke:#df5aa4,color:#f8f8f2,stroke-width:2px
+classDef amber fill:#2a3448,stroke:#e8b858,color:#f8f8f2,stroke-width:2px
+classDef green fill:#2a3448,stroke:#64bd75,color:#f8f8f2,stroke-width:2px
+classDef cyan fill:#2a3448,stroke:#55bddc,color:#f8f8f2,stroke-width:2px
+class A,D,G,M,N neutral
+class C,H purple
+class I,J magenta
+class F,L amber
+class K green
+class B,E cyan`}
 >
-  <strong>Figure 1.</strong> `sci-manuscript-skill` 的稿件生命周期。正常路径保持相邻 revision；rollback 只允许作用于尚未被编辑的最新 revision。
+  <strong>Figure 1.</strong> `sci-manuscript-skill` 的稿件生命周期。正常路径保持相邻 revision；rollback 只作用于尚未被编辑的最新 revision。
 </MermaidDiagram>
 
 版本关系本身保持简单：
@@ -178,7 +179,7 @@ revision_02 (r02)
 
 删除内容不要求研究者额外维护 wrapper，而是由相邻版本之间的 `latexdiff` 检测。marked manuscript 中 reviewer-linked addition、user-initiated addition 与 deletion 因此可以保持不同来源。
 
-<ResponsiveTable variant="minimal">
+<ResponsiveTable caption="Table 4. 审稿返修中不同修改来源的记录方式" variant="striped-minimal">
 
 | 修改来源 | manuscript 中的表达 | marked manuscript | 目的 |
 | :-- | :-- | :-- | :-- |
@@ -277,7 +278,7 @@ sci-manuscript sync-bib \
 
 ### 当前主要命令
 
-<ResponsiveTable variant="minimal">
+<ResponsiveTable caption="Table 5. CLI 命令与职责边界" variant="striped-minimal">
 
 | 命令 | 职责 | 是否修改科研正文 |
 | :-- | :-- | :--: |
@@ -302,7 +303,7 @@ sci-manuscript sync-bib \
 
 项目的 release gate 分为代码、生命周期、LaTeX 工具链和最终产物几个层次：
 
-<ResponsiveTable variant="minimal">
+<ResponsiveTable caption="Table 6. 工作流验证的层次、检查对象与证据范围" variant="striped-minimal">
 
 | 验证层次 | 代表性检查 | 回答的问题 |
 | :-- | :-- | :-- |

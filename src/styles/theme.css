@@ -1,4 +1,4 @@
-/* Register design tokens for Tailwind v4 */
+/* Register design tokens for Tailwind v4. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -16,57 +16,66 @@
   --color-danger: var(--accent-danger);
   --color-spectrum-purple: var(--accent-purple);
   --color-spectrum-magenta: var(--accent-magenta);
-  --color-spectrum-cyan: var(--accent-cyan);
-  --color-spectrum-teal: var(--accent-teal);
   --color-spectrum-amber: var(--accent-amber);
+  --color-spectrum-green: var(--accent-green);
+  --color-spectrum-teal: var(--accent-teal);
+  --color-spectrum-cyan: var(--accent-cyan);
   --font-app: var(--font-ui);
-  --font-reading: var(--font-body-serif);
+  --font-reading: var(--font-reading-family);
   --font-code: var(--font-mono);
 }
 
 /*
- * Academic Dracula at Night.
- * The base remains recognisably Dracula, while the page background is lifted
- * from near-black to a softer blue-violet slate for long-form reading.
- * The five-colour research spectrum is adapted from scientific figure palettes:
- * purple, magenta, cyan, teal and amber. These accents are intentionally local.
+ * Dracula At Night is the sole site palette.
+ * Reading surfaces use the quieter dark variants; semantic accents use the
+ * canonical Dracula colours. Do not add parallel article- or feature-local
+ * palettes.
  */
 :root,
 [data-theme="dark"] {
-  --background-primary: #1a1f2b;
-  --background-secondary: #212838;
-  --background-elevated: #293246;
+  --background-primary: #191a21;
+  --background-secondary: #21222c;
+  --background-elevated: #253340;
   --text-primary: #f8f8f2;
-  --text-secondary: #dddbe2;
-  --text-muted: #aab2c8;
-  --border-subtle: #3a4358;
+  --text-secondary: color-mix(in srgb, #f8f8f2 84%, #6272a4);
+  --text-muted: color-mix(in srgb, #6272a4 72%, #f8f8f2);
+  --border-subtle: #343746;
 
   --accent-primary: #bd93f9;
-  --accent-link: #69d4ef;
-  --accent-purple: #a879e8;
-  --accent-magenta: #e55aa8;
-  --accent-cyan: #55c3e5;
-  --accent-teal: #61c4aa;
-  --accent-amber: #f2b85b;
+  --accent-purple: #bd93f9;
+  --accent-magenta: #ff79c6;
+  --accent-amber: #ffb86c;
+  --accent-green: #50fa7b;
+  --accent-cyan: #8be9fd;
+  --accent-teal: #50fa7b;
+  --accent-link: #8be9fd;
 
-  --accent-info: var(--accent-cyan);
-  --accent-success: var(--accent-teal);
-  --accent-warning: var(--accent-amber);
-  --accent-danger: #ff6b7a;
-  --code-background: #111722;
-  --code-border: #343d52;
-  --selection-background: #624c82;
+  --accent-info: #8be9fd;
+  --accent-success: #50fa7b;
+  --accent-warning: #ffb86c;
+  --accent-danger: #ff5555;
+
+  /* Shiki's Dracula theme uses the standard Dracula code surface. */
+  --code-background: #282a36;
+  --code-border: #44475a;
+  --code-inline-foreground: #8be9fd;
+  --selection-background: #574473;
+
+  --table-header-background: #253340;
+  --table-row-odd: #21222c;
+  --table-row-even: color-mix(in srgb, #343746 54%, #21222c);
+  --table-row-hover: color-mix(in srgb, #6272a4 22%, #21222c);
 
   --background: var(--background-primary);
   --foreground: var(--text-primary);
   --accent: var(--accent-primary);
-  --accent-foreground: #161b25;
+  --accent-foreground: #191a21;
   --muted: var(--background-elevated);
   --muted-foreground: var(--text-muted);
   --border: var(--border-subtle);
 }
 
-/* Neutral reading mode with the same scientific accent relationships. */
+/* Light mode is an accessible inverse, not a second decorative palette. */
 [data-theme="light"] {
   --background-primary: #faf9fc;
   --background-secondary: #f2f0f6;
@@ -77,20 +86,28 @@
   --border-subtle: #ddd9e5;
 
   --accent-primary: #6b4bc4;
-  --accent-link: #117d9a;
-  --accent-purple: #7555c8;
+  --accent-purple: #6b4bc4;
   --accent-magenta: #b93882;
-  --accent-cyan: #2383a0;
-  --accent-teal: #2d806e;
   --accent-amber: #986200;
+  --accent-green: #2d7d42;
+  --accent-cyan: #117d9a;
+  --accent-teal: #2d7d42;
+  --accent-link: #117d9a;
 
-  --accent-info: var(--accent-cyan);
-  --accent-success: var(--accent-teal);
-  --accent-warning: var(--accent-amber);
-  --accent-danger: #b83a48;
-  --code-background: #f0eef4;
-  --code-border: #d8d4df;
-  --selection-background: #ded2f1;
+  --accent-info: #117d9a;
+  --accent-success: #2d7d42;
+  --accent-warning: #986200;
+  --accent-danger: #b23a48;
+
+  --code-background: #282a36;
+  --code-border: #44475a;
+  --code-inline-foreground: #8be9fd;
+  --selection-background: #ddd2ef;
+
+  --table-header-background: #f0edf5;
+  --table-row-odd: #ffffff;
+  --table-row-even: #f5f3f8;
+  --table-row-hover: #efebf5;
 
   --background: var(--background-primary);
   --foreground: var(--text-primary);
@@ -102,13 +119,10 @@
 }
 
 :root {
-  --font-body-cjk: "LXGW WenKai Screen", "Kaiti SC", STKaiti, "Songti SC";
-  --font-body-serif: Georgia, var(--font-body-cjk), "Times New Roman", serif;
-  --font-ui:
-    "Latin Modern Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --font-mono:
-    "Maple Mono", ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Monaco,
-    Consolas, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", monospace;
+  /* LXGW WenKai Screen is the only CJK family across the site. */
+  --font-body-cjk: "LXGW WenKai Screen";
+  --font-reading-family: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
+  --font-ui: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
+  --font-mono: "Maple Mono", "LXGW WenKai Screen", monospace;
   --font-math: KaTeX_Main, "Times New Roman", serif;
 }
