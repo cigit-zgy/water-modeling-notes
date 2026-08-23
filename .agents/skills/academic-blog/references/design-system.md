@@ -2,28 +2,20 @@
 
 ## Source and tokens
 
-The dark design remains rooted in `bceskavich/dracula-at-night`, especially its foreground and code palette. For long-form reading, the site surface is intentionally lifted from the original near-black background to a softer blue-violet slate. All colour usage must go through semantic variables in `src/styles/theme.css`.
+The dark palette is derived from the actual `bceskavich/dracula-at-night` source: background `#0E1419`, foreground `#F8F8F2`, purple `#BD93F9`, cyan `#8BE9FD`, with green, orange, and red reserved for code or semantic states. Use semantic variables from `src/styles/theme.css`; add a token there before using a new colour.
 
-A restrained scientific-figure spectrum supplements the Dracula base:
-
-- purple: primary identity and structural emphasis;
-- magenta: secondary interactive emphasis;
-- cyan: links and information;
-- teal: methods and positive/validated states;
-- amber: cautions and warm contrast.
-
-These colours are accents, not page-filling surfaces. Use translucent mixes for callouts and very short rules/markers for navigation or research-topic structure. Avoid large saturated areas.
-
-Dark mode is the first-visit default. Light mode is a neutral reading option using the same semantic colour relationships. Do not remove the persistent theme toggle.
+Dark mode is the first-visit default. Light mode is a neutral, low-saturation accessibility option. Do not remove the persistent theme toggle.
 
 ## Visual grammar
 
 - Latin Modern Sans is reserved for UI and metadata. Long-form English prose uses Georgia, Chinese prose falls through to the self-hosted LXGW WenKai Screen subset, and code uses Maple Mono with a system CJK fallback. KaTeX keeps its own Computer Modern-derived math fonts.
 - Reading text stays near 68–76 characters per line with generous line height.
-- Prefer whitespace, typography, thin rules, and small scientific-spectrum accents. Avoid decorative card grids, glows, large gradients, neon shadows, and oversized hero media.
+- Prefer whitespace, typography, and thin rules. Avoid decorative card grids, glows, large gradients, neon shadows, and oversized hero media.
+- Cyan identifies links/information; purple is the restrained brand accent. Pink is not a general UI colour.
+- The generated avatar is the single site logo. Keep it small and identity-oriented rather than turning it into a large hero illustration.
+- Decorative vector icons use one consistent library: Lucide. Keep them local, monochrome/current-colour, and sparse; one small icon per topical block is usually the upper limit. Do not mix icon libraries on the same page.
 - Figures use semantic `figure`/`img`/`figcaption`; tables use `ResponsiveTable` when horizontal overflow is possible.
-- Callouts use `AcademicCallout` with `note`, `definition`, `method`, or `caution`; a low-opacity tinted surface and narrow semantic edge are allowed, but the article must remain visually quiet.
-- Page transitions should feel soft and deliberate: roughly 300 ms with minimal vertical displacement. Preserve `prefers-reduced-motion` behaviour.
+- Callouts use `AcademicCallout` with `note`, `definition`, `method`, or `caution`; keep backgrounds transparent and hierarchy subtle.
 
 ## Responsive and accessibility checks
 

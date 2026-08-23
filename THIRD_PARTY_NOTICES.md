@@ -1,6 +1,6 @@
-# Third-party font notices
+# Third-party notices
 
-This project keeps its original AstroPaper MIT `LICENSE`. The following font software is distributed or bundled separately under the licenses named below.
+This project keeps its original AstroPaper MIT `LICENSE`. The following font and icon software is distributed or bundled separately under the licenses named below.
 
 ## LXGW WenKai Screen
 
@@ -30,6 +30,16 @@ The runtime uses only the Latin 400 normal and 400 italic WOFF2 files from the p
 - License text: [`licenses/LATIN-MODERN-GUST-FONT-LICENSE.txt`](licenses/LATIN-MODERN-GUST-FONT-LICENSE.txt)
 
 The upstream regular and bold WOFF webfonts were converted losslessly to WOFF2 without subsetting or glyph changes. No TTF, OTF, WOFF, or EOT source files are retained in this repository.
+
+## Lucide Icons
+
+- Runtime use: four small decorative research-topic icons on the homepage
+- Source: [lucide-icons/lucide](https://github.com/lucide-icons/lucide)
+- Icons: `waves`, `brain-circuit`, `chart-spline`, and `book-open-text`
+- License: ISC
+- License text: [`licenses/LUCIDE-ISC.txt`](licenses/LUCIDE-ISC.txt)
+
+The SVGs are stored locally and served from the deployment origin. No icon CDN or client-side icon runtime is used.
 
 ## Georgia and mathematics
 
