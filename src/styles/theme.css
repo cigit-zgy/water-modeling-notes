@@ -28,11 +28,15 @@
 /*
  * Scientific Dracula.
  *
- * Foundation: Dracula at Night provides the dark blue-violet reading surface,
- * neutral text hierarchy, and Dracula code semantics.
- * Accent spectrum: only five colours are used, adapted from the selected
- * scientific figure palette: purple, magenta, amber, green, and cyan.
- * Accents are local hierarchy/semantic cues; the page surface remains quiet.
+ * Dracula at Night supplies the dark blue-violet foundation and code semantics.
+ * The site-wide scientific accent system is deliberately restricted to three
+ * source colours selected by the author:
+ *   warm peach   #FFCE8C
+ *   muted plum   #6D5D68
+ *   lavender     #8081AF
+ *
+ * Lighter/darker derivatives of these three families are permitted only when
+ * needed for text contrast. Do not introduce additional decorative hue families.
  */
 :root,
 [data-theme="dark"] {
@@ -44,22 +48,28 @@
   --text-muted: #a8b0c5;
   --border-subtle: #3b465d;
 
-  --accent-primary: #b58af2;
-  --accent-purple: #a978e7;
-  --accent-magenta: #df5aa4;
-  --accent-amber: #e8b858;
-  --accent-green: #64bd75;
-  --accent-cyan: #55bddc;
-  --accent-teal: var(--accent-green);
-  --accent-link: var(--accent-cyan);
+  --scientific-peach: #ffce8c;
+  --scientific-plum: #6d5d68;
+  --scientific-lavender: #8081af;
+  --scientific-plum-text: #a59b9f;
+  --scientific-lavender-text: #9e9fc0;
 
-  --accent-info: var(--accent-cyan);
-  --accent-success: var(--accent-green);
-  --accent-warning: var(--accent-amber);
-  --accent-danger: var(--accent-magenta);
+  --accent-primary: var(--scientific-lavender);
+  --accent-purple: var(--scientific-lavender);
+  --accent-magenta: var(--scientific-plum-text);
+  --accent-amber: var(--scientific-peach);
+  --accent-green: var(--scientific-lavender-text);
+  --accent-cyan: var(--scientific-lavender-text);
+  --accent-teal: var(--scientific-plum-text);
+  --accent-link: var(--scientific-peach);
+
+  --accent-info: var(--scientific-lavender-text);
+  --accent-success: var(--scientific-lavender-text);
+  --accent-warning: var(--scientific-peach);
+  --accent-danger: var(--scientific-plum-text);
   --code-background: #282a36;
   --code-border: #44475a;
-  --selection-background: #5b4a78;
+  --selection-background: #5b536b;
 
   --background: var(--background-primary);
   --foreground: var(--text-primary);
@@ -70,32 +80,38 @@
   --border: var(--border-subtle);
 }
 
-/* Light mode preserves the same five-colour relationships. */
 [data-theme="light"] {
   --background-primary: #faf9fc;
-  --background-secondary: #f3f1f7;
+  --background-secondary: #f4f2f6;
   --background-elevated: #ffffff;
-  --text-primary: #24232b;
-  --text-secondary: #484752;
-  --text-muted: #707383;
-  --border-subtle: #ddd9e5;
+  --text-primary: #29262b;
+  --text-secondary: #4d4850;
+  --text-muted: #77727a;
+  --border-subtle: #ded9e1;
 
-  --accent-primary: #6d50bc;
-  --accent-purple: #7658c5;
-  --accent-magenta: #ad3f7d;
-  --accent-amber: #8b6500;
-  --accent-green: #357a45;
-  --accent-cyan: #247b96;
-  --accent-teal: var(--accent-green);
-  --accent-link: var(--accent-cyan);
+  --scientific-peach: #ffce8c;
+  --scientific-plum: #6d5d68;
+  --scientific-lavender: #8081af;
+  --scientific-peach-text: #8f632d;
+  --scientific-plum-text: #5a4b55;
+  --scientific-lavender-text: #62648d;
 
-  --accent-info: var(--accent-cyan);
-  --accent-success: var(--accent-green);
-  --accent-warning: var(--accent-amber);
-  --accent-danger: var(--accent-magenta);
+  --accent-primary: var(--scientific-lavender-text);
+  --accent-purple: var(--scientific-lavender-text);
+  --accent-magenta: var(--scientific-plum-text);
+  --accent-amber: var(--scientific-peach-text);
+  --accent-green: var(--scientific-lavender-text);
+  --accent-cyan: var(--scientific-lavender-text);
+  --accent-teal: var(--scientific-plum-text);
+  --accent-link: var(--scientific-lavender-text);
+
+  --accent-info: var(--scientific-lavender-text);
+  --accent-success: var(--scientific-lavender-text);
+  --accent-warning: var(--scientific-peach-text);
+  --accent-danger: var(--scientific-plum-text);
   --code-background: #282a36;
   --code-border: #44475a;
-  --selection-background: #ddd2ef;
+  --selection-background: #e5dff0;
 
   --background: var(--background-primary);
   --foreground: var(--text-primary);
@@ -107,7 +123,6 @@
 }
 
 :root {
-  /* LXGW WenKai Screen is the only CJK family across the site. */
   --font-body-cjk: "LXGW WenKai Screen";
   --font-body-serif: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
   --font-ui: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;

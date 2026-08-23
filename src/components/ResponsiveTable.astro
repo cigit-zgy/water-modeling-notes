@@ -2,13 +2,7 @@
 type Props = {
   class?: string;
   caption?: string;
-  variant?:
-    /** No borders. Zebra striping is applied globally by the academic design system. */
-    | "minimal"
-    /** Explicit zebra variant retained for backwards compatibility. */
-    | "striped"
-    /** No borders with explicit zebra variant. */
-    | "striped-minimal";
+  variant?: "minimal" | "striped" | "striped-minimal";
 };
 
 const {
@@ -17,18 +11,13 @@ const {
   variant = "minimal",
 } = Astro.props;
 
-const variantClasses = {
-  minimal: "[&_td]:border-0 [&_th]:border-0",
-  striped: "[&_tbody_tr]:even:bg-muted/20",
-};
+/* Zebra colouring is intentionally global in refinements.css. Do not attach
+ * Tailwind row-background utilities here: they compete with the global design
+ * system and make odd/even contrast browser-order dependent. */
+const minimalClasses = "[&_td]:border-0 [&_th]:border-0";
 ---
 
-<figure
-  class:list={[
-    "academic-table",
-    className,
-  ]}
->
+<figure class:list={["academic-table", className]}>
   {
     caption && (
       <figcaption class="academic-table__caption">{caption}</figcaption>
@@ -38,10 +27,8 @@ const variantClasses = {
     data-table-variant={variant}
     class:list={[
       "overflow-hidden rounded-md [&_table]:my-0 [&_table]:min-w-xl",
-      variant === "minimal" && variantClasses.minimal,
-      variant === "striped" && variantClasses.striped,
-      variant === "striped-minimal" &&
-        `${variantClasses.minimal} ${variantClasses.striped}`,
+      (variant === "minimal" || variant === "striped-minimal") &&
+        minimalClasses,
     ]}
   >
     <div class="relative w-full overflow-x-auto">
