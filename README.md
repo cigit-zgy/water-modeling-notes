@@ -50,3 +50,5 @@ Commit the repository to GitHub, then import it into Vercel. Use the detected pn
 ## Upstream and license
 
 This project is based on [AstroPaper](https://github.com/satnaing/astro-paper), initialized from upstream v6.1.0 (source snapshot `35cfa7f`, 2026-08-05). AstroPaper is Copyright © Sat Naing and contributors and licensed under the MIT License. The upstream [LICENSE](LICENSE) is retained. Font sources and their separate license texts are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+<!-- deployment trigger: 2026-08-23 -->
