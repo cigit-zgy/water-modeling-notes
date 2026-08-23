@@ -27,7 +27,7 @@ Create a descriptive `.md` or `.mdx` file in `src/content/posts/`. Do not prefix
 
 Images can be placed under `public/figures/` and referenced as `/figures/name.svg`, or imported from `src/assets/` when Astro image optimization is useful. Always provide meaningful alt text and place article images inside semantic `figure` and `figcaption` elements.
 
-Write inline mathematics as `$x(t)$` and display mathematics between `$$` delimiters. For MDX callouts, import `AcademicCallout` from `@/components/AcademicCallout.astro`. Wrap wide academic tables with `ResponsiveTable`.
+Write inline mathematics as `$x(t)$ and display mathematics between `$$` delimiters. For MDX callouts, import `AcademicCallout` from `@/components/AcademicCallout.astro`. Wrap wide academic tables with `ResponsiveTable`.
 
 `src/content/posts/academic-format-demo.mdx` is an internal draft covering equations, code, tables, figures, footnotes, references, and callouts. It is available during local development and intentionally absent from production output.
 
@@ -50,5 +50,3 @@ Commit the repository to GitHub, then import it into Vercel. Use the detected pn
 ## Upstream and license
 
 This project is based on [AstroPaper](https://github.com/satnaing/astro-paper), initialized from upstream v6.1.0 (source snapshot `35cfa7f`, 2026-08-05). AstroPaper is Copyright © Sat Naing and contributors and licensed under the MIT License. The upstream [LICENSE](LICENSE) is retained. Font sources and their separate license texts are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
-<!-- deployment trigger: 2026-08-23 -->
