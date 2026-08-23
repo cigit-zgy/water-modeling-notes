@@ -27,7 +27,7 @@ Create a descriptive `.md` or `.mdx` file in `src/content/posts/`. Do not prefix
 
 Images can be placed under `public/figures/` and referenced as `/figures/name.svg`, or imported from `src/assets/` when Astro image optimization is useful. Always provide meaningful alt text and place article images inside semantic `figure` and `figcaption` elements.
 
-Write inline mathematics as `$x(t)$ and display mathematics between `$$` delimiters. For MDX callouts, import `AcademicCallout` from `@/components/AcademicCallout.astro`. Wrap wide academic tables with `ResponsiveTable`.
+Write inline mathematics as `$x(t)$` and display mathematics between `$$` delimiters. For MDX callouts, import `AcademicCallout` from `@/components/AcademicCallout.astro`. Wrap wide academic tables with `ResponsiveTable`.
 
 `src/content/posts/academic-format-demo.mdx` is an internal draft covering equations, code, tables, figures, footnotes, references, and callouts. It is available during local development and intentionally absent from production output.
 
