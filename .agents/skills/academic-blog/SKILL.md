@@ -31,14 +31,28 @@ UI and typography rules are global. Do not solve shared design issues with artic
 - The visual system is **Scientific Dracula**: Dracula at Night provides the dark blue-violet foundation; the only decorative scientific accents are purple, magenta, amber, green, and cyan from the selected scientific-figure palette.
 - Keep accent use sparse. Do not introduce additional decorative hue families without an explicit project-level decision.
 - Chinese glyphs must use `LXGW WenKai Screen` everywhere: reading text, headings, header/navigation, metadata, tables, captions, TOC, callouts, and Chinese glyphs inside code. Do not add competing CJK families.
-- Long-form body text is non-serif. Latin reading/UI text uses the site's sans family; code uses Maple Mono; mathematical notation keeps KaTeX's math fonts.
+- Long-form body text is non-serif and regular weight (`400`). Bold is reserved for semantic emphasis and headings; do not make article body text globally bold or semibold.
+- Latin reading/UI text uses the site's sans family; code uses Maple Mono; mathematical notation keeps KaTeX's math fonts.
 - Fenced code and inline code both use Dracula code surfaces and syntax colours.
 - Heading hierarchy is global and stable: H1 purple, H2 cyan, H3 magenta, H4 green. Amber is reserved for captions, cautions, and small secondary emphasis.
-- Academic tables use a caption and subtle alternating-row backgrounds. Keep zebra contrast low enough for long reading sessions.
+- Academic tables use a caption above the table. Caption text is slightly larger than ordinary metadata and remains restrained rather than headline-like.
+- Academic tables use low-contrast zebra striping: odd and even rows must be visibly distinct, but both remain close to the base surface. Avoid saturated row fills.
+- `AcademicCallout` labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` should be slightly larger and stronger than metadata, while the callout body remains regular weight.
 - Article lead/deck and block quotations use a quiet grey-tinted surface with a visibly thicker accent rule on the left.
 - Figures, Mermaid SVGs, tables, and code blocks must never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, primarily tables and code.
 - The uploaded Ghibli-style avatar is the site identity image and must appear inside the circle to the left of `cigit-zgy` in the header.
 - The circular reading-progress/back-to-top control must work on both mobile and desktop.
+
+## Mermaid contract
+
+Mermaid diagrams are publication artifacts and must not depend on client-side CDN execution.
+
+- Author workflow/process diagrams in Mermaid source.
+- Render Mermaid to SVG during the Astro/Vercel build, not after page load in the reader's browser.
+- A Mermaid syntax/rendering failure must fail the preview build. Never publish a page that replaces a failed diagram with a runtime error message.
+- Published pages show only the rendered SVG; never expose Mermaid source to readers.
+- Keep diagram syntax conservative and readable. Prefer simple `flowchart` structures and avoid syntax features that are unnecessary for the scientific message.
+- Diagram SVGs must remain inside the reading column at desktop and mobile widths.
 
 ## Deployment contract
 
@@ -60,8 +74,11 @@ Before presenting a preview or production result, check at minimum:
 
 - Astro/type build succeeds with no new errors;
 - the affected article route exists;
-- Mermaid has no syntax error and remains within the reading column;
-- table captions are present and zebra styling is readable in both themes;
+- Mermaid is rendered to SVG during the build; syntax/rendering errors fail the build rather than appearing at runtime;
+- Mermaid remains within the reading column;
+- table captions are present, sufficiently legible, and zebra styling is visible but low contrast in both themes;
+- article body text is regular weight; only semantic emphasis and headings are bold/semibold;
+- callout labels are visually distinct from callout body text;
 - fenced and inline code use Dracula;
 - H1–H4 colours follow the global hierarchy;
 - Chinese glyphs use LXGW WenKai Screen, including `On this page` content;

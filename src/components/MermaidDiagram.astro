@@ -1,70 +1,44 @@
 ---
+import { deflateSync } from "node:zlib";
+
 type Props = {
   code: string;
+  alt?: string;
 };
 
-const { code } = Astro.props;
+const {
+  code,
+  alt = "sci-manuscript-skill 稿件生命周期流程图",
+} = Astro.props;
+
+const encoded = deflateSync(Buffer.from(code, "utf8")).toString("base64url");
+const renderUrl = `https://kroki.io/mermaid/svg/${encoded}`;
+const response = await fetch(renderUrl, {
+  signal: AbortSignal.timeout(15000),
+});
+
+if (!response.ok) {
+  throw new Error(
+    `Mermaid build-time rendering failed: ${response.status} ${response.statusText}`
+  );
+}
+
+const svg = await response.text();
+
+if (!svg.includes("<svg")) {
+  throw new Error("Mermaid build-time rendering returned invalid SVG output.");
+}
 ---
 
 <figure class="mermaid-figure" data-pagefind-ignore>
-  <pre class="mermaid" set:text={code}></pre>
+  <div
+    class="mermaid-svg"
+    role="img"
+    aria-label={alt}
+    set:html={svg}
+  />
   <figcaption><slot /></figcaption>
 </figure>
-
-<script is:inline type="module">
-  async function renderMermaidDiagrams() {
-    const nodes = Array.from(
-      document.querySelectorAll("pre.mermaid:not([data-processed='true'])")
-    );
-
-    if (nodes.length === 0) return;
-
-    try {
-      const { default: mermaid } = await import(
-        "https://cdn.jsdelivr.net/npm/mermaid@11.17.0/dist/mermaid.esm.min.mjs"
-      );
-
-      mermaid.initialize({
-        startOnLoad: false,
-        securityLevel: "strict",
-        theme: "base",
-        fontFamily: '"LXGW WenKai Screen", sans-serif',
-        themeVariables: {
-          background: "#1b2130",
-          primaryColor: "#2a3448",
-          primaryTextColor: "#f8f8f2",
-          primaryBorderColor: "#a978e7",
-          secondaryColor: "#222a3a",
-          tertiaryColor: "#282a36",
-          lineColor: "#a8b0c5",
-          textColor: "#f8f8f2",
-          edgeLabelBackground: "#1b2130",
-          clusterBkg: "#1b2130",
-          clusterBorder: "#3b465d",
-          fontFamily: '"LXGW WenKai Screen", sans-serif',
-        },
-        flowchart: {
-          useMaxWidth: true,
-          htmlLabels: false,
-          curve: "basis",
-          nodeSpacing: 30,
-          rankSpacing: 40,
-        },
-      });
-
-      await mermaid.run({ nodes });
-    } catch (error) {
-      console.error("Mermaid rendering failed", error);
-      for (const node of nodes) {
-        node.dataset.mermaidError = "true";
-        node.textContent = "流程图渲染失败，请刷新页面后重试。";
-      }
-    }
-  }
-
-  renderMermaidDiagrams();
-  document.addEventListener("astro:page-load", renderMermaidDiagrams);
-</script>
 
 <style>
   .mermaid-figure {
@@ -72,38 +46,26 @@ const { code } = Astro.props;
     overflow: hidden;
   }
 
-  .mermaid {
-    min-height: 11rem;
-    margin: 0;
+  .mermaid-svg {
+    width: 100%;
+    max-width: 100%;
     padding: 1rem;
     overflow: hidden;
     border: 1px solid var(--code-border);
     border-radius: 0.5rem;
     background: #1b2130;
-    white-space: pre-wrap;
-  }
-
-  .mermaid[data-processed="true"] {
-    min-height: auto;
-  }
-
-  .mermaid[data-mermaid-error="true"] {
-    display: grid;
-    min-height: 8rem;
-    place-items: center;
-    color: var(--accent-magenta);
   }
 
   .mermaid-figure figcaption {
     margin-top: 0.75rem;
     color: var(--text-muted);
     font-family: var(--font-ui);
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     line-height: 1.55;
     text-align: center;
   }
 
-  :global(.mermaid svg) {
+  :global(.mermaid-svg svg) {
     display: block;
     width: 100% !important;
     max-width: 100% !important;
@@ -111,12 +73,12 @@ const { code } = Astro.props;
     margin-inline: auto;
   }
 
-  :global(.mermaid svg text) {
+  :global(.mermaid-svg svg text) {
     font-family: "LXGW WenKai Screen", sans-serif !important;
   }
 
   @media (max-width: 639px) {
-    .mermaid {
+    .mermaid-svg {
       padding: 0.5rem;
     }
   }

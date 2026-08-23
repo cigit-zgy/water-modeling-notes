@@ -5,13 +5,11 @@
  * other shared UI conventions.
  */
 :root {
-  /* Latin reading/UI: non-serif. All CJK glyphs fall through to LXGW. */
   --font-body-cjk: "LXGW WenKai Screen";
   --font-body-serif: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
   --font-ui: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
   --font-mono: "Maple Mono", "LXGW WenKai Screen", monospace;
 
-  /* Standard Dracula code surface in both site themes. */
   --code-background: #282a36;
   --code-border: #44475a;
   --code-inline-foreground: #8be9fd;
@@ -38,7 +36,31 @@ body,
   font-family: var(--font-ui);
 }
 
-/* The Header uses the explicit avatar image; disable the older pseudo-logo. */
+body,
+.app-prose,
+.app-prose p,
+.app-prose li,
+.app-prose td,
+.app-prose blockquote {
+  font-weight: 400;
+}
+
+.app-prose strong {
+  font-weight: 650;
+}
+
+.app-prose h1,
+.app-prose h2,
+.app-prose h3,
+.app-prose h4,
+#main-content > header h1,
+main h1,
+main h2,
+main h3,
+main h4 {
+  font-weight: 650;
+}
+
 header > div > a:first-child::before {
   display: none !important;
   content: none !important;
@@ -48,7 +70,6 @@ header > div > a:first-child::before {
   box-shadow: 0 0 0 2px color-mix(in oklch, var(--accent-cyan) 24%, transparent);
 }
 
-/* Global heading hierarchy. */
 #main-content > header h1,
 main h1,
 .app-prose h1 {
@@ -81,7 +102,6 @@ main h4,
   color: currentColor;
 }
 
-/* Article deck / description: a restrained quotation-like lead block. */
 #main-content > header > p.font-reading {
   margin-top: 1.25rem;
   padding: 0.85rem 1rem;
@@ -93,9 +113,9 @@ main h4,
     var(--background-secondary)
   );
   color: var(--text-secondary);
+  font-weight: 400;
 }
 
-/* Block quotations share the same visual grammar. */
 .app-prose blockquote {
   padding: 0.85rem 1rem;
   border-inline-start: 4px solid var(--accent-cyan);
@@ -110,14 +130,12 @@ main h4,
   opacity: 1;
 }
 
-/* Inline code uses Dracula as well as fenced code. */
 .app-prose :not(pre) > code {
   border-color: #44475a;
   background: #282a36;
   color: var(--code-inline-foreground);
 }
 
-/* Shiki is configured with Dracula for both light and dark site modes. */
 .app-prose .astro-code {
   border-color: #44475a;
   background: #282a36 !important;
@@ -128,31 +146,31 @@ main h4,
   color: inherit;
 }
 
-/* Academic tables: captions above, subtle zebra striping, restrained hover. */
+/* Academic tables: captions above and intentionally quiet zebra rows. */
 .academic-table {
   margin-block: 1.9rem !important;
   padding: 0 !important;
 }
 
 .academic-table__caption {
-  margin: 0 0 0.6rem !important;
+  margin: 0 0 0.65rem !important;
   color: var(--text-muted) !important;
   font-family: var(--font-ui) !important;
-  font-size: 0.9rem !important;
-  font-weight: 600;
-  line-height: 1.5 !important;
+  font-size: 0.98rem !important;
+  font-weight: 500 !important;
+  line-height: 1.55 !important;
   text-align: start !important;
 }
 
 .app-prose table {
-  border: 1px solid var(--border-subtle);
+  border: 1px solid color-mix(in oklch, var(--border-subtle) 84%, transparent);
   background: var(--background-secondary);
 }
 
 .app-prose thead {
   background: color-mix(
     in oklch,
-    var(--accent-cyan) 8%,
+    var(--accent-cyan) 4%,
     var(--background-elevated)
   );
 }
@@ -160,15 +178,15 @@ main h4,
 .app-prose tbody tr:nth-child(odd) {
   background: color-mix(
     in oklch,
-    var(--background-secondary) 97%,
-    var(--text-primary)
+    var(--text-primary) 1.5%,
+    var(--background-secondary)
   );
 }
 
 .app-prose tbody tr:nth-child(even) {
   background: color-mix(
     in oklch,
-    var(--accent-purple) 5%,
+    var(--accent-purple) 3%,
     var(--background-secondary)
   );
 }
@@ -180,12 +198,23 @@ main h4,
 .app-prose tbody tr:hover {
   background: color-mix(
     in oklch,
-    var(--accent-cyan) 7%,
+    var(--accent-cyan) 4%,
     var(--background-secondary)
   );
 }
 
-/* Figures and Mermaid diagrams may never exceed the reading column. */
+/* Callout keywords should be visible without dominating the body. */
+.app-prose .academic-callout__label {
+  margin-bottom: 0.42rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.065em;
+}
+
+.app-prose .academic-callout__body {
+  font-weight: 400;
+}
+
 .app-prose figure,
 .app-prose figure > svg,
 .app-prose figure img,
@@ -199,7 +228,6 @@ main h4,
   overflow: hidden;
 }
 
-/* On-page navigation follows the same type system as the article. */
 #main-content aside,
 #main-content details,
 #main-content nav,
