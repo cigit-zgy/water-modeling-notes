@@ -14,57 +14,84 @@
   --color-success: var(--accent-success);
   --color-warning: var(--accent-warning);
   --color-danger: var(--accent-danger);
+  --color-spectrum-purple: var(--accent-purple);
+  --color-spectrum-magenta: var(--accent-magenta);
+  --color-spectrum-cyan: var(--accent-cyan);
+  --color-spectrum-teal: var(--accent-teal);
+  --color-spectrum-amber: var(--accent-amber);
   --font-app: var(--font-ui);
   --font-reading: var(--font-body-serif);
   --font-code: var(--font-mono);
 }
 
-/* Academic Dracula at Night. Source palette: bceskavich/dracula-at-night. */
+/*
+ * Academic Dracula at Night.
+ * The base remains recognisably Dracula, while the page background is lifted
+ * from near-black to a softer blue-violet slate for long-form reading.
+ * The five-colour research spectrum is adapted from scientific figure palettes:
+ * purple, magenta, cyan, teal and amber. These accents are intentionally local.
+ */
 :root,
 [data-theme="dark"] {
-  --background-primary: #0e1419;
-  --background-secondary: #191a21;
-  --background-elevated: #21222c;
+  --background-primary: #1a1f2b;
+  --background-secondary: #212838;
+  --background-elevated: #293246;
   --text-primary: #f8f8f2;
-  --text-secondary: #d7d4c8;
-  --text-muted: #9aa6c7;
-  --border-subtle: #253340;
+  --text-secondary: #dddbe2;
+  --text-muted: #aab2c8;
+  --border-subtle: #3a4358;
+
   --accent-primary: #bd93f9;
-  --accent-link: #8be9fd;
-  --accent-info: #8be9fd;
-  --accent-success: #50fa7b;
-  --accent-warning: #ffb86c;
-  --accent-danger: #ff5555;
-  --code-background: #0b1014;
-  --code-border: #253340;
-  --selection-background: #574473;
+  --accent-link: #69d4ef;
+  --accent-purple: #a879e8;
+  --accent-magenta: #e55aa8;
+  --accent-cyan: #55c3e5;
+  --accent-teal: #61c4aa;
+  --accent-amber: #f2b85b;
+
+  --accent-info: var(--accent-cyan);
+  --accent-success: var(--accent-teal);
+  --accent-warning: var(--accent-amber);
+  --accent-danger: #ff6b7a;
+  --code-background: #111722;
+  --code-border: #343d52;
+  --selection-background: #624c82;
+
   --background: var(--background-primary);
   --foreground: var(--text-primary);
   --accent: var(--accent-primary);
-  --accent-foreground: #0e1419;
+  --accent-foreground: #161b25;
   --muted: var(--background-elevated);
   --muted-foreground: var(--text-muted);
   --border: var(--border-subtle);
 }
 
-/* Neutral, low-saturation reading option. */
+/* Neutral reading mode with the same scientific accent relationships. */
 [data-theme="light"] {
-  --background-primary: #f7f7f4;
-  --background-secondary: #efefe9;
+  --background-primary: #faf9fc;
+  --background-secondary: #f2f0f6;
   --background-elevated: #ffffff;
-  --text-primary: #202329;
-  --text-secondary: #454952;
-  --text-muted: #686d78;
-  --border-subtle: #d9dad4;
-  --accent-primary: #6842b8;
-  --accent-link: #006d7a;
-  --accent-info: #006d7a;
-  --accent-success: #26733c;
-  --accent-warning: #8a4f08;
-  --accent-danger: #b22d2d;
-  --code-background: #f0f0eb;
-  --code-border: #d4d5cf;
-  --selection-background: #d9ccf2;
+  --text-primary: #24232b;
+  --text-secondary: #484752;
+  --text-muted: #707383;
+  --border-subtle: #ddd9e5;
+
+  --accent-primary: #6b4bc4;
+  --accent-link: #117d9a;
+  --accent-purple: #7555c8;
+  --accent-magenta: #b93882;
+  --accent-cyan: #2383a0;
+  --accent-teal: #2d806e;
+  --accent-amber: #986200;
+
+  --accent-info: var(--accent-cyan);
+  --accent-success: var(--accent-teal);
+  --accent-warning: var(--accent-amber);
+  --accent-danger: #b83a48;
+  --code-background: #f0eef4;
+  --code-border: #d8d4df;
+  --selection-background: #ded2f1;
+
   --background: var(--background-primary);
   --foreground: var(--text-primary);
   --accent: var(--accent-primary);
