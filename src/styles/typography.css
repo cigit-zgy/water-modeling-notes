@@ -61,12 +61,12 @@
     }
 
     a:hover {
-      color: var(--text-primary);
-      text-decoration-color: var(--accent-link);
+      color: var(--accent-magenta);
+      text-decoration-color: var(--accent-magenta);
     }
 
     li::marker {
-      color: var(--accent-primary);
+      color: var(--accent-purple);
     }
 
     hr {
@@ -102,10 +102,10 @@
     }
 
     blockquote {
-      border-inline-start: 2px solid var(--accent-primary);
+      border-inline-start: 2px solid var(--accent-purple);
       color: var(--text-secondary);
       font-style: normal;
-      opacity: 0.95;
+      opacity: 0.96;
     }
 
     table {
@@ -124,7 +124,11 @@
 
     thead th {
       border-top: 1px solid var(--border-subtle);
-      border-bottom-color: var(--text-muted);
+      border-bottom-color: color-mix(
+        in oklch,
+        var(--accent-cyan) 42%,
+        var(--border-subtle)
+      );
       font-size: 0.9rem;
       font-weight: 650;
     }
@@ -149,7 +153,7 @@
       max-width: 100%;
       overflow-x: auto;
       border: 1px solid var(--code-border);
-      border-radius: 0.25rem;
+      border-radius: 0.35rem;
       font-family: var(--font-mono);
       font-size: 0.88rem;
       line-height: 1.7;
@@ -192,25 +196,33 @@
 
     .academic-callout {
       margin-block: 1.75rem;
-      padding: 0.9rem 0 0.2rem;
-      border-top: 1px solid var(--callout-accent, var(--border-subtle));
-      background: transparent;
+      padding: 0.95rem 1.05rem 0.9rem;
+      border: 1px solid
+        color-mix(in oklch, var(--callout-accent) 30%, var(--border-subtle));
+      border-inline-start-width: 3px;
+      border-inline-start-color: var(--callout-accent);
+      border-radius: 0.45rem;
+      background: color-mix(
+        in oklch,
+        var(--callout-accent) 7%,
+        var(--background-secondary)
+      );
     }
 
     .academic-callout[data-kind="note"] {
-      --callout-accent: var(--accent-info);
+      --callout-accent: var(--accent-cyan);
     }
 
     .academic-callout[data-kind="definition"] {
-      --callout-accent: var(--accent-primary);
+      --callout-accent: var(--accent-purple);
     }
 
     .academic-callout[data-kind="method"] {
-      --callout-accent: var(--accent-success);
+      --callout-accent: var(--accent-teal);
     }
 
     .academic-callout[data-kind="caution"] {
-      --callout-accent: var(--accent-warning);
+      --callout-accent: var(--accent-amber);
     }
 
     .academic-callout__label {
@@ -269,12 +281,12 @@
   .astro-code .line.highlighted {
     display: inline-block;
     width: 100%;
-    background: color-mix(in oklch, var(--text-muted) 18%, transparent);
+    background: color-mix(in oklch, var(--accent-purple) 15%, transparent);
   }
 
   .astro-code .highlighted-word {
     padding-inline: 0.125rem;
-    border: 1px solid var(--border-subtle);
+    border: 1px solid color-mix(in oklch, var(--accent-cyan) 38%, var(--border-subtle));
     border-radius: 0.125rem;
   }
 }
