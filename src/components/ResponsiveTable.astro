@@ -1,35 +1,51 @@
 ---
 type Props = {
   class?: string;
+  caption?: string;
   variant?:
-    /** No borders */
+    /** No borders. Zebra striping is applied globally by the academic design system. */
     | "minimal"
-    /** 1st, 3rd, 5th … body rows tinted — classic zebra. */
+    /** Explicit zebra variant retained for backwards compatibility. */
     | "striped"
-    /** 1st, 3rd, 5th … body rows tinted + no borders. */
+    /** No borders with explicit zebra variant. */
     | "striped-minimal";
 };
 
-const { class: className, variant } = Astro.props;
+const {
+  class: className,
+  caption,
+  variant = "minimal",
+} = Astro.props;
 
 const variantClasses = {
   minimal: "[&_td]:border-0 [&_th]:border-0",
-  striped: "[&_tbody_tr]:odd:bg-muted/25",
+  striped: "[&_tbody_tr]:even:bg-muted/20",
 };
 ---
 
-<div
-  data-table-variant={variant}
+<figure
   class:list={[
-    "overflow-hidden [&_table]:my-0 [&_table]:min-w-xl",
-    variant === "minimal" && variantClasses.minimal,
-    variant === "striped" && variantClasses.striped,
-    variant === "striped-minimal" &&
-      `${variantClasses.minimal} ${variantClasses.striped}`,
+    "academic-table",
     className,
   ]}
 >
-  <div class="relative w-full overflow-x-auto">
-    <slot />
+  {
+    caption && (
+      <figcaption class="academic-table__caption">{caption}</figcaption>
+    )
+  }
+  <div
+    data-table-variant={variant}
+    class:list={[
+      "overflow-hidden rounded-md [&_table]:my-0 [&_table]:min-w-xl",
+      variant === "minimal" && variantClasses.minimal,
+      variant === "striped" && variantClasses.striped,
+      variant === "striped-minimal" &&
+        `${variantClasses.minimal} ${variantClasses.striped}`,
+    ]}
+  >
+    <div class="relative w-full overflow-x-auto">
+      <slot />
+    </div>
   </div>
-</div>
+</figure>

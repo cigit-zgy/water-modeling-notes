@@ -11,7 +11,7 @@ const { code } = Astro.props;
   <figcaption><slot /></figcaption>
 </figure>
 
-<script is:inline type="module" data-astro-rerun>
+<script is:inline type="module">
   async function renderMermaidDiagrams() {
     const nodes = Array.from(
       document.querySelectorAll("pre.mermaid:not([data-processed='true'])")
@@ -19,42 +19,51 @@ const { code } = Astro.props;
 
     if (nodes.length === 0) return;
 
-    const { default: mermaid } = await import(
-      "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"
-    );
+    try {
+      const { default: mermaid } = await import(
+        "https://cdn.jsdelivr.net/npm/mermaid@11.17.0/dist/mermaid.esm.min.mjs"
+      );
 
-    mermaid.initialize({
-      startOnLoad: false,
-      securityLevel: "strict",
-      theme: "base",
-      fontFamily: '"LXGW WenKai Screen", sans-serif',
-      themeVariables: {
-        background: "#282a36",
-        primaryColor: "#44475a",
-        primaryTextColor: "#f8f8f2",
-        primaryBorderColor: "#bd93f9",
-        secondaryColor: "#343746",
-        tertiaryColor: "#21222c",
-        lineColor: "#6272a4",
-        textColor: "#f8f8f2",
-        edgeLabelBackground: "#282a36",
-        clusterBkg: "#282a36",
-        clusterBorder: "#44475a",
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: "strict",
+        theme: "base",
         fontFamily: '"LXGW WenKai Screen", sans-serif',
-      },
-      flowchart: {
-        useMaxWidth: true,
-        htmlLabels: true,
-        curve: "basis",
-        nodeSpacing: 28,
-        rankSpacing: 38,
-      },
-    });
+        themeVariables: {
+          background: "#1b2130",
+          primaryColor: "#2a3448",
+          primaryTextColor: "#f8f8f2",
+          primaryBorderColor: "#a978e7",
+          secondaryColor: "#222a3a",
+          tertiaryColor: "#282a36",
+          lineColor: "#a8b0c5",
+          textColor: "#f8f8f2",
+          edgeLabelBackground: "#1b2130",
+          clusterBkg: "#1b2130",
+          clusterBorder: "#3b465d",
+          fontFamily: '"LXGW WenKai Screen", sans-serif',
+        },
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: false,
+          curve: "basis",
+          nodeSpacing: 30,
+          rankSpacing: 40,
+        },
+      });
 
-    await mermaid.run({ nodes });
+      await mermaid.run({ nodes });
+    } catch (error) {
+      console.error("Mermaid rendering failed", error);
+      for (const node of nodes) {
+        node.dataset.mermaidError = "true";
+        node.textContent = "流程图渲染失败，请刷新页面后重试。";
+      }
+    }
   }
 
   renderMermaidDiagrams();
+  document.addEventListener("astro:page-load", renderMermaidDiagrams);
 </script>
 
 <style>
@@ -64,22 +73,31 @@ const { code } = Astro.props;
   }
 
   .mermaid {
+    min-height: 11rem;
     margin: 0;
     padding: 1rem;
     overflow: hidden;
     border: 1px solid var(--code-border);
     border-radius: 0.5rem;
-    background: #282a36;
-    visibility: hidden;
+    background: #1b2130;
+    white-space: pre-wrap;
   }
 
   .mermaid[data-processed="true"] {
-    visibility: visible;
+    min-height: auto;
+  }
+
+  .mermaid[data-mermaid-error="true"] {
+    display: grid;
+    min-height: 8rem;
+    place-items: center;
+    color: var(--accent-magenta);
   }
 
   .mermaid-figure figcaption {
     margin-top: 0.75rem;
     color: var(--text-muted);
+    font-family: var(--font-ui);
     font-size: 0.875rem;
     line-height: 1.55;
     text-align: center;
@@ -93,8 +111,7 @@ const { code } = Astro.props;
     margin-inline: auto;
   }
 
-  :global(.mermaid .label),
-  :global(.mermaid .edgeLabel) {
+  :global(.mermaid svg text) {
     font-family: "LXGW WenKai Screen", sans-serif !important;
   }
 

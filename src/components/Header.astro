@@ -7,7 +7,7 @@ import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconX from "@/assets/icons/IconX.svg";
 import LinkButton from "./LinkButton.astro";
-import { stripBase, stripLocale } from "@/utils/withBase";
+import { getAssetPath, stripBase, stripLocale } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -16,8 +16,6 @@ const { site, features } = config;
 const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
 
-// Strip the base prefix so isActive comparisons work regardless of deploy subdirectory.
-// e.g. with base "/blog": "/blog/posts/slug" → "/posts/slug"
 const relativePath = stripBase(Astro.url.pathname);
 const pathWithoutTrailingSlash =
   relativePath.endsWith("/") && relativePath !== "/"
@@ -49,9 +47,17 @@ const isActive = (path: string) => {
   >
     <a
       href={getRelativeLocaleUrl(locale, "")}
-      class="absolute py-1 text-lg leading-8 font-semibold tracking-[-0.02em] whitespace-nowrap sm:static sm:my-auto sm:text-xl sm:leading-none"
+      class="site-brand absolute flex items-center gap-2.5 py-1 text-lg leading-8 font-semibold tracking-[-0.02em] whitespace-nowrap sm:static sm:my-auto sm:text-xl sm:leading-none"
     >
-      {site.title}
+      <img
+        src={getAssetPath("images/avatar-logo.webp")}
+        alt=""
+        width="36"
+        height="36"
+        class="site-avatar border-border bg-surface size-9 rounded-full border object-cover"
+        aria-hidden="true"
+      />
+      <span>{site.title}</span>
     </a>
     <nav
       id="nav-menu"
@@ -191,9 +197,7 @@ const isActive = (path: string) => {
         target.addEventListener(
           "blur",
           () => target.removeAttribute("tabindex"),
-          {
-            once: true,
-          }
+          { once: true }
         );
         target.focus();
         target.scrollIntoView({ behavior: "smooth" });
