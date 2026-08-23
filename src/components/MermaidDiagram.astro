@@ -11,7 +11,7 @@ const { code } = Astro.props;
   <figcaption><slot /></figcaption>
 </figure>
 
-<script>
+<script is:inline type="module" data-astro-rerun>
   async function renderMermaidDiagrams() {
     const nodes = Array.from(
       document.querySelectorAll("pre.mermaid:not([data-processed='true'])")
@@ -20,7 +20,6 @@ const { code } = Astro.props;
     if (nodes.length === 0) return;
 
     const { default: mermaid } = await import(
-      /* @vite-ignore */
       "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"
     );
 
@@ -56,7 +55,6 @@ const { code } = Astro.props;
   }
 
   renderMermaidDiagrams();
-  document.addEventListener("astro:page-load", renderMermaidDiagrams);
 </script>
 
 <style>
