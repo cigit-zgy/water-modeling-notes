@@ -43,6 +43,13 @@ const researchTopics = [
       <p class="text-link text-xs font-semibold tracking-[0.12em] uppercase">
         Academic research notebook
       </p>
+      <div class="mt-5 flex items-center gap-1.5" aria-hidden="true">
+        <span class="bg-spectrum-purple h-1.5 w-8 rounded-full"></span>
+        <span class="bg-spectrum-magenta h-1.5 w-4 rounded-full"></span>
+        <span class="bg-spectrum-cyan h-1.5 w-4 rounded-full"></span>
+        <span class="bg-spectrum-teal h-1.5 w-4 rounded-full"></span>
+        <span class="bg-spectrum-amber h-1.5 w-4 rounded-full"></span>
+      </div>
       <h1
         class="mt-5 max-w-3xl text-4xl leading-[1.08] font-semibold tracking-[-0.04em] sm:text-6xl"
       >
@@ -104,7 +111,7 @@ const researchTopics = [
       <h2 class="mb-6 text-2xl font-semibold tracking-[-0.02em]">
         Research Topics
       </h2>
-      <div class="grid gap-x-10 md:grid-cols-2">
+      <div class="research-spectrum grid gap-x-10 md:grid-cols-2">
         {
           researchTopics.map(topic => (
             <section class="border-border border-t py-5">
