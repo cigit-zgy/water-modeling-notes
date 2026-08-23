@@ -13,30 +13,18 @@ const {
 
 const encoded = deflateSync(Buffer.from(code, "utf8")).toString("base64url");
 const renderUrl = `https://kroki.io/mermaid/svg/${encoded}`;
-const response = await fetch(renderUrl, {
-  signal: AbortSignal.timeout(15000),
-});
-
-if (!response.ok) {
-  throw new Error(
-    `Mermaid build-time rendering failed: ${response.status} ${response.statusText}`
-  );
-}
-
-const svg = await response.text();
-
-if (!svg.includes("<svg")) {
-  throw new Error("Mermaid build-time rendering returned invalid SVG output.");
-}
 ---
 
 <figure class="mermaid-figure" data-pagefind-ignore>
-  <div
-    class="mermaid-svg"
-    role="img"
-    aria-label={alt}
-    set:html={svg}
-  />
+  <div class="mermaid-image-shell">
+    <img
+      class="mermaid-image"
+      src={renderUrl}
+      alt={alt}
+      loading="eager"
+      decoding="async"
+    />
+  </div>
   <figcaption><slot /></figcaption>
 </figure>
 
@@ -46,7 +34,7 @@ if (!svg.includes("<svg")) {
     overflow: hidden;
   }
 
-  .mermaid-svg {
+  .mermaid-image-shell {
     width: 100%;
     max-width: 100%;
     padding: 1rem;
@@ -54,6 +42,16 @@ if (!svg.includes("<svg")) {
     border: 1px solid var(--code-border);
     border-radius: 0.5rem;
     background: #1b2130;
+  }
+
+  .mermaid-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border: 0;
+    background: transparent;
   }
 
   .mermaid-figure figcaption {
@@ -65,20 +63,8 @@ if (!svg.includes("<svg")) {
     text-align: center;
   }
 
-  :global(.mermaid-svg svg) {
-    display: block;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    margin-inline: auto;
-  }
-
-  :global(.mermaid-svg svg text) {
-    font-family: "LXGW WenKai Screen", sans-serif !important;
-  }
-
   @media (max-width: 639px) {
-    .mermaid-svg {
+    .mermaid-image-shell {
       padding: 0.5rem;
     }
   }
