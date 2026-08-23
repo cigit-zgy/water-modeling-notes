@@ -1,0 +1,108 @@
+---
+type Props = {
+  code: string;
+};
+
+const { code } = Astro.props;
+---
+
+<figure class="mermaid-figure" data-pagefind-ignore>
+  <pre class="mermaid" set:text={code}></pre>
+  <figcaption><slot /></figcaption>
+</figure>
+
+<script>
+  async function renderMermaidDiagrams() {
+    const nodes = Array.from(
+      document.querySelectorAll("pre.mermaid:not([data-processed='true'])")
+    );
+
+    if (nodes.length === 0) return;
+
+    const { default: mermaid } = await import(
+      /* @vite-ignore */
+      "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"
+    );
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      theme: "base",
+      fontFamily: '"LXGW WenKai Screen", sans-serif',
+      themeVariables: {
+        background: "#282a36",
+        primaryColor: "#44475a",
+        primaryTextColor: "#f8f8f2",
+        primaryBorderColor: "#bd93f9",
+        secondaryColor: "#343746",
+        tertiaryColor: "#21222c",
+        lineColor: "#6272a4",
+        textColor: "#f8f8f2",
+        edgeLabelBackground: "#282a36",
+        clusterBkg: "#282a36",
+        clusterBorder: "#44475a",
+        fontFamily: '"LXGW WenKai Screen", sans-serif',
+      },
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: "basis",
+        nodeSpacing: 28,
+        rankSpacing: 38,
+      },
+    });
+
+    await mermaid.run({ nodes });
+  }
+
+  renderMermaidDiagrams();
+  document.addEventListener("astro:page-load", renderMermaidDiagrams);
+</script>
+
+<style>
+  .mermaid-figure {
+    margin-block: 2rem;
+    overflow: hidden;
+  }
+
+  .mermaid {
+    margin: 0;
+    padding: 1rem;
+    overflow: hidden;
+    border: 1px solid var(--code-border);
+    border-radius: 0.5rem;
+    background: #282a36;
+    visibility: hidden;
+  }
+
+  .mermaid[data-processed="true"] {
+    visibility: visible;
+  }
+
+  .mermaid-figure figcaption {
+    margin-top: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  :global(.mermaid svg) {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin-inline: auto;
+  }
+
+  :global(.mermaid .label),
+  :global(.mermaid .edgeLabel) {
+    font-family: "LXGW WenKai Screen", sans-serif !important;
+  }
+
+  @media (max-width: 639px) {
+    .mermaid {
+      padding: 0.5rem;
+    }
+  }
+</style>

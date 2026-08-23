@@ -15,7 +15,6 @@ import {
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import config from "./astro-paper.config";
-import { draculaAtNightShiki } from "./src/config/draculaAtNightShiki";
 
 const katexWoff2Only = () => ({
   name: "katex-woff2-only",
@@ -56,7 +55,7 @@ export default defineConfig({
       rehypePlugins: [rehypeKatex, rehypeCallouts],
     }),
     shikiConfig: {
-      themes: { light: "github-light-default", dark: draculaAtNightShiki },
+      themes: { light: "dracula", dark: "dracula" },
       defaultColor: false,
       wrap: false,
       transformers: [
