@@ -9,8 +9,11 @@ const {
   alt = "sci-manuscript-skill 稿件生命周期流程图",
 } = Astro.props;
 
-/* Keep the publication source conservative. Older article drafts included
- * classDef/class lines; presentation now comes from the global Mermaid theme. */
+/*
+ * Diagram presentation is centralized here. Older article drafts may contain
+ * classDef/class lines; strip those directives so article content cannot create
+ * a parallel colour system or override the global diagram theme.
+ */
 const safeCode = code
   .split("\n")
   .filter(line => {
@@ -26,9 +29,10 @@ const safeCode = code
     class="mermaid-shell"
     data-mermaid-shell
     data-mermaid-source={safeCode}
+    role="img"
     aria-label={alt}
   >
-    <div class="mermaid-output" role="img" aria-label={alt}></div>
+    <div class="mermaid-output" aria-hidden="true"></div>
     <div class="mermaid-fallback" aria-hidden="true">
       <span>科研项目</span>
       <i>→</i>
@@ -64,29 +68,29 @@ const safeCode = code
         theme: "base",
         fontFamily: '"LXGW WenKai Screen", sans-serif',
         themeVariables: {
-          background: "#1b2130",
-          primaryColor: "#2a3448",
-          primaryTextColor: "#f8f8f2",
-          primaryBorderColor: "#8081AF",
-          secondaryColor: "#6D5D68",
-          secondaryTextColor: "#f8f8f2",
-          secondaryBorderColor: "#8081AF",
-          tertiaryColor: "#FFCE8C",
-          tertiaryTextColor: "#1b2130",
-          tertiaryBorderColor: "#8081AF",
-          lineColor: "#8081AF",
-          textColor: "#f8f8f2",
-          edgeLabelBackground: "#1b2130",
-          clusterBkg: "#222a3a",
-          clusterBorder: "#8081AF",
+          background: "#191A21",
+          primaryColor: "#21222C",
+          primaryTextColor: "#F8F8F2",
+          primaryBorderColor: "#BD93F9",
+          secondaryColor: "#253340",
+          secondaryTextColor: "#F8F8F2",
+          secondaryBorderColor: "#8BE9FD",
+          tertiaryColor: "#343746",
+          tertiaryTextColor: "#F8F8F2",
+          tertiaryBorderColor: "#50FA7B",
+          lineColor: "#6272A4",
+          textColor: "#F8F8F2",
+          edgeLabelBackground: "#191A21",
+          clusterBkg: "#21222C",
+          clusterBorder: "#6272A4",
           fontFamily: '"LXGW WenKai Screen", sans-serif',
         },
         flowchart: {
           useMaxWidth: true,
           htmlLabels: false,
-          curve: "basis",
-          nodeSpacing: 28,
-          rankSpacing: 38,
+          curve: "linear",
+          nodeSpacing: 30,
+          rankSpacing: 42,
         },
       });
 
@@ -118,6 +122,7 @@ const safeCode = code
 <style>
   .mermaid-figure {
     margin-block: 2rem;
+    max-width: 100%;
     overflow: hidden;
   }
 
@@ -127,9 +132,9 @@ const safeCode = code
     min-height: 10rem;
     padding: 1rem;
     overflow: hidden;
-    border: 1px solid var(--code-border);
+    border: 1px solid #343746;
     border-radius: 0.5rem;
-    background: #1b2130;
+    background: #191a21;
   }
 
   .mermaid-output:empty {
@@ -164,13 +169,13 @@ const safeCode = code
 
   .mermaid-fallback span {
     padding: 0.55rem 0.7rem;
-    border: 1px solid #8081af;
+    border: 1px solid #6272a4;
     border-radius: 0.35rem;
-    background: #2a3448;
+    background: #21222c;
   }
 
   .mermaid-fallback i {
-    color: #ffce8c;
+    color: #ffb86c;
     font-style: normal;
   }
 

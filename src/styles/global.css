@@ -55,6 +55,7 @@
 
   body {
     line-height: 1.65;
+    font-weight: 400;
     transition:
       background-color 260ms ease,
       color 220ms ease;
@@ -125,27 +126,12 @@
   text-underline-offset: 0.5rem;
 }
 
-/* The generated avatar is the single site logo; keep it small and identity-only. */
-header > div > a:first-child {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
+/* Header identity uses the real image element rendered by Header.astro. */
+.site-avatar {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-cyan) 25%, transparent);
 }
 
-header > div > a:first-child::before {
-  width: 2rem;
-  height: 2rem;
-  flex: 0 0 2rem;
-  border: 1px solid color-mix(in oklch, var(--accent-cyan) 38%, var(--border-subtle));
-  border-radius: 999px;
-  background-color: var(--background-secondary);
-  background-image: url("/images/avatar-logo.webp");
-  background-position: center;
-  background-size: cover;
-  content: "";
-}
-
-/* Small scientific-figure accents: local, semantic, and intentionally sparse. */
+/* Home-page research accents reuse only centralized Dracula tokens. */
 .research-spectrum > section {
   position: relative;
   padding-right: 3rem;
@@ -251,7 +237,7 @@ header > div > a:first-child::before {
 }
 
 .topic-tag {
-  border-color: color-mix(in oklch, var(--accent-purple) 48%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent-purple) 48%, transparent) !important;
 }
 
 .topic-tag:hover,
