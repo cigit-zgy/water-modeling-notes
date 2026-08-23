@@ -237,7 +237,11 @@
 }
 
 .topic-tag {
-  border-color: color-mix(in srgb, var(--accent-purple) 48%, transparent) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--accent-purple) 48%,
+    transparent
+  ) !important;
 }
 
 .topic-tag:hover,

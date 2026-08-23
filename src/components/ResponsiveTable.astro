@@ -5,13 +5,9 @@ type Props = {
   variant?: "minimal" | "striped" | "striped-minimal";
 };
 
-const {
-  class: className,
-  caption,
-  variant = "minimal",
-} = Astro.props;
+const { class: className, caption, variant = "minimal" } = Astro.props;
 
-/* Zebra colouring is intentionally global in refinements.css. Do not attach
+/* Zebra colouring is intentionally global in typography.css. Do not attach
  * Tailwind row-background utilities here: they compete with the global design
  * system and make odd/even contrast browser-order dependent. */
 const minimalClasses = "[&_td]:border-0 [&_th]:border-0";
