@@ -7,9 +7,19 @@ description: Maintain cigit-zgy pages, academic article patterns, Chinese techni
 
 Keep changes compatible with the existing AstroPaper structure. Preserve the static-first architecture, content collections, Pagefind, RSS, sitemap, accessibility, and Astro view transitions. Extend an existing layer/component before creating a new abstraction.
 
-Before changing visual presentation, read [references/design-system.md](references/design-system.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). Read both when a task changes an article component or layout.
+Before changing visual presentation, read [references/design-system.md](references/design-system.md) and [references/apple-design-references.md](references/apple-design-references.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). Read all relevant references when a task changes both article structure and UI.
 
-For Apple-like Web UI, consult `bowen31337/apple-design` as the secondary design reference: https://github.com/bowen31337/apple-design . Its Liquid Glass, typography, motion, accessibility, and token guidance is subordinate to this repository's explicit constraints and the user's current instructions.
+## Design reference hierarchy
+
+For Apple-like Web UI, apply sources in this order:
+
+1. the user's current instruction;
+2. this project's `SKILL.md` and design-system reference;
+3. Apple Human Interface Guidelines and Apple Liquid Glass documentation;
+4. Emil Kowalski's `skills/apple-design` for interaction, material, motion, and typography judgment;
+5. `bowen31337/apple-design` for concrete Web implementation patterns.
+
+Do not vendor third-party skill text into this repository. Paraphrase principles, preserve source links, and review upstream licensing before copying implementation code. The exact sources and project adaptation are recorded in `references/apple-design-references.md`.
 
 ## Global writing contract
 
@@ -65,6 +75,15 @@ The site uses an Apple-inspired Liquid Glass design language. Content remains pr
 - The uploaded Ghibli-style avatar remains the site identity image directly left of `cigit-zgy`.
 - The circular reading-progress/back-to-top control remains available on both desktop and mobile and uses a glass control surface.
 
+## Interaction and motion contract
+
+- Give press feedback immediately; compact controls may use a subtle scale response on `:active`.
+- Keep navigation and reversible transitions spatially consistent.
+- Use CSS transitions for simple hover/focus/press states; do not add Motion, GSAP, or another motion dependency unless a real gesture requires interruptible spring behavior.
+- Avoid animation that delays access to academic content.
+- Prefer `transform` and `opacity` for animated properties.
+- Honor `prefers-reduced-motion` and keep the reduced-motion experience fully functional.
+
 ## Liquid Glass accessibility contract
 
 - Include both `backdrop-filter` and `-webkit-backdrop-filter`.
@@ -75,7 +94,6 @@ The site uses an Apple-inspired Liquid Glass design language. Content remains pr
 - Touch targets remain at least 44 px.
 - Use `focus-visible` on every interactive control.
 - Animate primarily `transform` and `opacity`; avoid layout-property animation.
-- Honor `prefers-reduced-motion`.
 
 ## Tables, callouts, figures, and code
 
@@ -91,6 +109,7 @@ The site uses an Apple-inspired Liquid Glass design language. Content remains pr
 Mermaid diagrams are publication artifacts, not a reader-facing debugging surface.
 
 - Author workflow/process diagrams in Mermaid source with conservative `flowchart` syntax.
+- Diagram presentation follows the current Apple semantic UI tokens rather than the retired site-wide Dracula palette.
 - Do not use Kroki, mermaid.ink, or another remote server renderer as a runtime dependency.
 - The browser renderer must remain version-pinned; never use an unpinned `latest` URL.
 - If Mermaid cannot load or parse, readers receive a quiet structural fallback. Never publish Mermaid source, parser stack traces, `Syntax error in text`, or refresh-to-retry messages.
@@ -125,7 +144,7 @@ Before presenting a preview or production result, check at minimum:
 - tables have captions and visible low-contrast zebra rows in both themes;
 - headings rely on hierarchy, not decorative rainbow colouring;
 - fenced and inline code use Dracula;
-- Mermaid never exposes runtime errors to readers;
+- Mermaid never exposes runtime errors to readers and uses semantic site tokens;
 - header avatar renders from the local asset;
 - reading-progress control works on desktop and mobile;
-- navigation, title wrapping, table/code overflow, figures, focus visibility, reduced motion, reduced transparency, and high contrast remain sound.
+- navigation, title wrapping, table/code overflow, figures, focus visibility, press feedback, reduced motion, reduced transparency, and high contrast remain sound.

@@ -4,7 +4,21 @@
 
 The blog uses an Apple-inspired Liquid Glass system for site chrome and floating controls while keeping academic content visually quiet. The design goal is hierarchy, depth, and polish without turning the article body into generic glassmorphism.
 
-Use Apple’s material logic as the reference model: content first, glass sparingly, hierarchy through material thickness, optical typography, and restrained motion.
+Use Apple’s material logic as the reference model: content first, glass sparingly, hierarchy through material thickness, optical typography, immediate feedback, and restrained motion.
+
+## Reference hierarchy
+
+Read [apple-design-references.md](apple-design-references.md) before significant UI work.
+
+Reference priority is:
+
+1. the user's current instruction;
+2. this repository's Skill and design contract;
+3. Apple Human Interface Guidelines and Liquid Glass documentation;
+4. Emil Kowalski's `skills/apple-design` for interaction and design judgment;
+5. Bowen's `apple-design` for web implementation patterns.
+
+Apple's official guidance is canonical when deciding where Liquid Glass belongs. Emil's rules help evaluate interaction quality and motion. Bowen's repository is implementation-oriented and should not be copied wholesale without license review.
 
 ## Material model
 
@@ -68,6 +82,7 @@ The site header is a floating regular-material surface with:
 
 - translucency;
 - `blur(20px) saturate(180%)`;
+- a subtle vertical specular gradient;
 - top-edge highlight;
 - hairline inner/outer rim;
 - soft shadow;
@@ -76,6 +91,8 @@ The site header is a floating regular-material surface with:
 Desktop TOC, mobile TOC, search controls, tags, and the reading-progress/back-to-top button use thin or regular materials according to hierarchy.
 
 The uploaded Ghibli-style avatar remains a real `<img>` immediately left of `cigit-zgy`.
+
+Press feedback is immediate and restrained. Compact controls may scale down slightly on `:active`; interaction feedback should not wait for navigation or click completion.
 
 ## Article surfaces
 
@@ -88,7 +105,7 @@ Article content remains mostly flat and readable.
 - Callouts: lightly tinted semantic panels, not stacked glass.
 - Code: Dracula-dark editor surface.
 
-This distinction is intentional: Liquid Glass should elevate navigation/control hierarchy while article content remains the visual anchor.
+This distinction is intentional: Liquid Glass elevates navigation/control hierarchy while article content remains the visual anchor.
 
 ## Tables
 
@@ -107,18 +124,21 @@ Inline and fenced code remain Dracula-dark. This preserves syntax semantics and 
 
 - Figures require alt text and captions.
 - Mermaid is preferred for workflow diagrams; readers see only rendered diagrams.
-- Mermaid may use neutral Apple-like surfaces and a restrained system-blue accent, but presentation remains centralized in `MermaidDiagram.astro` rather than article source.
+- Mermaid uses neutral Apple-like surfaces and the semantic primary interaction accent rather than the retired site-wide Dracula palette.
+- Presentation remains centralized in `MermaidDiagram.astro` rather than article source.
 - Do not use remote server-side renderers such as Kroki or mermaid.ink as runtime dependencies.
 - Keep diagrams within the reading column at all viewport widths.
 
-## Motion
+## Motion and interaction
 
 Motion is sparse and functional.
 
-- Use CSS transitions for simple hover/focus and fire-and-forget state changes.
+- Interactive feedback begins immediately on press.
+- Use CSS transitions for simple hover/focus/press and fire-and-forget state changes.
 - Do not add Motion or GSAP unless a real gesture/interruptible interaction requires them.
 - Prefer transform and opacity animation.
-- Interactive feedback should be immediate.
+- Keep reversible navigation spatially consistent.
+- Avoid animation that delays reading or navigation.
 - Respect `prefers-reduced-motion`.
 
 ## Accessibility and fallbacks
