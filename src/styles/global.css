@@ -218,11 +218,7 @@
 }
 
 #btt-btn-container button > span:nth-child(2) {
-  background: color-mix(
-    in srgb,
-    var(--background-primary) 82%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--background-primary) 82%, transparent);
 }
 
 .liquid-hero-mark {

@@ -55,7 +55,10 @@ const isActive = (path: string) => {
       <span>{site.title}</span>
     </a>
 
-    <nav id="nav-menu" class="ms-auto flex items-center sm:flex-1 sm:justify-end">
+    <nav
+      id="nav-menu"
+      class="ms-auto flex items-center sm:flex-1 sm:justify-end"
+    >
       <button
         id="menu-btn"
         class="focus-outline grid size-11 place-items-center rounded-full sm:hidden"
@@ -200,9 +203,13 @@ const isActive = (path: string) => {
       if (!target) return;
 
       target.setAttribute("tabindex", "-1");
-      target.addEventListener("blur", () => target.removeAttribute("tabindex"), {
-        once: true,
-      });
+      target.addEventListener(
+        "blur",
+        () => target.removeAttribute("tabindex"),
+        {
+          once: true,
+        }
+      );
       target.focus();
       target.scrollIntoView({ behavior: "smooth" });
     });
