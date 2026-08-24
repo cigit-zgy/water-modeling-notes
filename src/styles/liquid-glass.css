@@ -1,0 +1,63 @@
+@layer components {
+  .glass-surface {
+    position: relative;
+    background: var(--material-regular-tint);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 var(--glass-specular),
+      inset 0 0 0 0.5px var(--glass-inner-rim),
+      0 0 0 0.5px var(--glass-outer-rim),
+      var(--shadow-glass);
+  }
+
+  .glass-surface-thin {
+    position: relative;
+    background: var(--material-thin-tint);
+    -webkit-backdrop-filter: blur(14px) saturate(170%);
+    backdrop-filter: blur(14px) saturate(170%);
+    box-shadow:
+      inset 0 1px 0 var(--glass-specular-soft),
+      inset 0 0 0 0.5px var(--glass-inner-rim),
+      0 0 0 0.5px var(--glass-outer-rim),
+      var(--shadow-glass-soft);
+  }
+
+  .glass-surface-thick {
+    position: relative;
+    background: var(--material-thick-tint);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    backdrop-filter: blur(32px) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 var(--glass-specular),
+      inset 0 0 0 0.5px var(--glass-inner-rim),
+      0 0 0 0.5px var(--glass-outer-rim),
+      var(--shadow-glass-strong);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-surface,
+  .glass-surface-thin,
+  .glass-surface-thick {
+    background: var(--material-fallback);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-surface,
+  .glass-surface-thin,
+  .glass-surface-thick {
+    background: var(--background-secondary);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .glass-surface,
+  .glass-surface-thin,
+  .glass-surface-thick {
+    box-shadow: 0 0 0 1px var(--text-primary);
+  }
+}
