@@ -6,11 +6,6 @@ type Props = {
 
 const { code, alt = "sci-manuscript-skill 稿件生命周期流程图" } = Astro.props;
 
-/*
- * Diagram presentation is centralized here. Older article drafts may contain
- * classDef/class lines; strip those directives so article content cannot create
- * a parallel colour system or override the global diagram theme.
- */
 const safeCode = code
   .split("\n")
   .filter(line => {
@@ -60,33 +55,54 @@ const safeCode = code
       const { default: mermaid } =
         await import("https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.esm.min.mjs");
 
+      const isDark = document.documentElement.dataset.theme !== "light";
+      const palette = isDark
+        ? {
+            background: "#1C1C1E",
+            primary: "#2C2C2E",
+            secondary: "#242426",
+            tertiary: "#3A3A3C",
+            text: "#F5F5F7",
+            muted: "#8E8E93",
+            accent: "#0A84FF",
+          }
+        : {
+            background: "#FFFFFF",
+            primary: "#F2F2F7",
+            secondary: "#FFFFFF",
+            tertiary: "#E5E5EA",
+            text: "#1D1D1F",
+            muted: "#8E8E93",
+            accent: "#007AFF",
+          };
+
       mermaid.initialize({
         startOnLoad: false,
         securityLevel: "strict",
         theme: "base",
         fontFamily: '"LXGW WenKai Screen", sans-serif',
         themeVariables: {
-          background: "#191A21",
-          primaryColor: "#21222C",
-          primaryTextColor: "#F8F8F2",
-          primaryBorderColor: "#BD93F9",
-          secondaryColor: "#253340",
-          secondaryTextColor: "#F8F8F2",
-          secondaryBorderColor: "#8BE9FD",
-          tertiaryColor: "#343746",
-          tertiaryTextColor: "#F8F8F2",
-          tertiaryBorderColor: "#50FA7B",
-          lineColor: "#6272A4",
-          textColor: "#F8F8F2",
-          edgeLabelBackground: "#191A21",
-          clusterBkg: "#21222C",
-          clusterBorder: "#6272A4",
+          background: palette.background,
+          primaryColor: palette.primary,
+          primaryTextColor: palette.text,
+          primaryBorderColor: palette.accent,
+          secondaryColor: palette.secondary,
+          secondaryTextColor: palette.text,
+          secondaryBorderColor: palette.muted,
+          tertiaryColor: palette.tertiary,
+          tertiaryTextColor: palette.text,
+          tertiaryBorderColor: palette.muted,
+          lineColor: palette.muted,
+          textColor: palette.text,
+          edgeLabelBackground: palette.background,
+          clusterBkg: palette.secondary,
+          clusterBorder: palette.muted,
           fontFamily: '"LXGW WenKai Screen", sans-serif',
         },
         flowchart: {
           useMaxWidth: true,
           htmlLabels: false,
-          curve: "linear",
+          curve: "basis",
           nodeSpacing: 30,
           rankSpacing: 42,
         },
@@ -105,11 +121,11 @@ const safeCode = code
           bindFunctions?.(output);
           shell.dataset.rendered = "true";
         } catch {
-          /* Keep the structural fallback visible; never expose parser errors. */
+          /* Keep the quiet structural fallback visible. */
         }
       }
     } catch {
-      /* Keep the structural fallback visible if the pinned module is unavailable. */
+      /* Keep the quiet structural fallback visible. */
     }
   }
 
@@ -130,9 +146,14 @@ const safeCode = code
     min-height: 10rem;
     padding: 1rem;
     overflow: hidden;
-    border: 1px solid #343746;
-    border-radius: 0.5rem;
-    background: #191a21;
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    background: color-mix(
+      in srgb,
+      var(--background-secondary) 92%,
+      transparent
+    );
+    box-shadow: inset 0 1px 0 var(--glass-specular-soft);
   }
 
   .mermaid-output:empty {
@@ -157,7 +178,7 @@ const safeCode = code
     align-items: center;
     justify-content: center;
     gap: 0.65rem;
-    color: #f8f8f2;
+    color: var(--text-primary);
     font-family: var(--font-ui);
     font-size: 0.92rem;
     line-height: 1.35;
@@ -166,14 +187,14 @@ const safeCode = code
   }
 
   .mermaid-fallback span {
-    padding: 0.55rem 0.7rem;
-    border: 1px solid #6272a4;
-    border-radius: 0.35rem;
-    background: #21222c;
+    padding: 0.55rem 0.72rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.7rem;
+    background: var(--background-elevated);
   }
 
   .mermaid-fallback i {
-    color: #ffb86c;
+    color: var(--accent-primary);
     font-style: normal;
   }
 
@@ -185,14 +206,14 @@ const safeCode = code
     margin-top: 0.8rem;
     color: var(--text-muted);
     font-family: var(--font-ui);
-    font-size: 0.94rem;
+    font-size: 0.96rem;
     line-height: 1.55;
     text-align: center;
   }
 
   @media (max-width: 639px) {
     .mermaid-shell {
-      padding: 0.55rem;
+      padding: 0.6rem;
     }
 
     .mermaid-fallback {

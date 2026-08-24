@@ -1,94 +1,138 @@
-# Dracula At Night design system
+# Apple Liquid Glass design system
 
-## Palette
+## Design intent
 
-The site uses **Dracula At Night only**. Do not combine it with figure-derived palettes or create article-local colour systems.
+The blog uses an Apple-inspired Liquid Glass system for site chrome and floating controls while keeping academic content visually quiet. The design goal is hierarchy, depth, and polish without turning the article body into generic glassmorphism.
 
-Dark-mode foundation:
+Use Apple’s material logic as the reference model: content first, glass sparingly, hierarchy through material thickness, optical typography, and restrained motion.
 
-| Role | Colour |
+## Material model
+
+A valid glass surface combines four optical layers:
+
+1. translucent tint;
+2. backdrop blur plus saturation;
+3. top-edge specular highlight plus a hairline rim;
+4. soft outer depth shadow.
+
+Refraction/lensing is optional and should be reserved for at most one or two hero moments. The current blog does not require refraction for the baseline design.
+
+Material roles:
+
+| Role | Use |
 | --- | --- |
-| Deep background | `#0E1419` |
-| Page background | `#191A21` |
-| Secondary surface | `#21222C` |
-| Elevated / diagram surface | `#253340` |
-| Border / quiet surface | `#343746` |
-| Primary text | `#F8F8F2` |
-| Muted / structural | `#6272A4` |
-| Purple | `#BD93F9` |
-| Pink | `#FF79C6` |
-| Cyan | `#8BE9FD` |
-| Green | `#50FA7B` |
-| Orange | `#FFB86C` |
-| Red | `#FF5555` |
+| Ultra-thin | hover/temporary emphasis |
+| Thin | tags, compact controls, TOC |
+| Regular | header/navigation, search, floating controls |
+| Thick | menus/sheets only when needed |
 
-Light mode is an accessible inverse of the same semantic relationships, not a separate decorative palette. Shared components consume semantic variables from `src/styles/theme.css`; new hex values should not be scattered through pages or MDX.
+Never stack two translucent materials directly on one another.
+
+## Semantic token layer
+
+All colour, material, shadow, table, and text values are centralized in `src/styles/theme.css`. Shared components must consume semantic variables rather than hardcoded site colours.
+
+The site follows Apple-like system relationships rather than a decorative palette:
+
+- primary/secondary/muted labels;
+- system blue for primary interaction;
+- restrained semantic info/success/warning/danger colours;
+- adaptive translucent material tints in light and dark modes;
+- low-saturation blue/purple/cyan light fields behind selected glass surfaces.
+
+Code is an independent editor-like surface and remains Dracula-dark in both reading themes.
 
 ## Style architecture
 
-The stylesheet architecture is intentionally fixed:
+The stylesheet architecture has five explicit owners:
 
-1. `fonts.css` defines self-hosted Latin and code font faces.
-2. `theme.css` owns colour and font-family tokens.
-3. `typography.css` owns article typography, tables, code, quotations, figures, and callouts.
-4. `global.css` owns layout utilities, navigation/interactions, transitions, and home-page accents.
+1. `fonts.css`: font-face definitions.
+2. `theme.css`: semantic design tokens.
+3. `liquid-glass.css`: reusable material recipes and accessibility fallbacks.
+4. `typography.css`: article typography, tables, code, quotations, figures, callouts.
+5. `global.css`: layout, navigation, interaction, identity, homepage, placement.
 
-Do not add a `refinements.css`, `overrides.css`, article-local shared UI CSS, or another patch layer. If a shared visual rule changes, modify the owning layer.
+Do not add `refinements.css`, `overrides.css`, or article-local shared UI patches.
 
 ## Typography
 
-- `LXGW WenKai Screen` is the only CJK family across the site: body, headings, navigation, metadata, TOC, tables, captions, callouts, and Chinese glyphs inside code.
-- Long-form body text is sans-serif and regular weight (`400`).
-- Latin reading/UI text uses Latin Modern Sans; code uses Maple Mono; KaTeX keeps its mathematical font stack.
-- Bold/semibold is reserved for headings, table headers, labels, and semantic emphasis.
+- `LXGW WenKai Screen` is the only CJK family across body, headings, navigation, metadata, TOC, tables, captions, and callouts.
+- Latin UI/reading text uses Latin Modern Sans; code uses Maple Mono; KaTeX keeps its mathematical font stack.
+- Long-form body copy is regular weight `400`.
+- Heading hierarchy uses size, weight, line-height, tracking, and spacing rather than per-level decorative colours.
+- Large headings use tighter tracking; smaller headings relax tracking progressively.
 
-## Heading hierarchy
+## Navigation and floating chrome
 
-Heading colour is global and semantic:
+The site header is a floating regular-material surface with:
 
-- H1: Dracula purple
-- H2: Dracula cyan
-- H3: Dracula pink
-- H4: Dracula green
-- Orange: cautions, captions, and limited secondary emphasis
+- translucency;
+- `blur(20px) saturate(180%)`;
+- top-edge highlight;
+- hairline inner/outer rim;
+- soft shadow;
+- rounded continuous-looking geometry.
 
-Paragraphs remain neutral.
+Desktop TOC, mobile TOC, search controls, tags, and the reading-progress/back-to-top button use thin or regular materials according to hierarchy.
 
-## Code
+The uploaded Ghibli-style avatar remains a real `<img>` immediately left of `cigit-zgy`.
 
-All fenced code and inline code use Dracula. Astro/Shiki is configured with `dracula` for both site themes so syntax meaning does not change when the reading theme changes. Inline code uses the same dark Dracula surface rather than a separate light token.
+## Article surfaces
+
+Article content remains mostly flat and readable.
+
+- Lead/deck text: quiet semantic surface, no mandatory glass.
+- Block quotes: quiet surface plus a stronger left rule.
+- Tables: grouped system surface with a subtle zebra pattern.
+- Figures: clean border, restrained radius, no gratuitous glass.
+- Callouts: lightly tinted semantic panels, not stacked glass.
+- Code: Dracula-dark editor surface.
+
+This distinction is intentional: Liquid Glass should elevate navigation/control hierarchy while article content remains the visual anchor.
 
 ## Tables
 
-- Every substantive article table requires a caption above the table.
-- Caption text is slightly larger than ordinary metadata but remains subordinate to headings.
-- Table headers use an elevated Dracula surface.
-- Odd and even rows use two visibly distinct, low-contrast dark surfaces. Zebra striping is defined globally in `typography.css`, never by per-table utility classes.
-- Tables may scroll horizontally on narrow screens; the page itself must not overflow.
+- Every substantive academic table has a caption above it.
+- Caption text is slightly larger than metadata.
+- Header rows use an elevated system surface.
+- Odd/even rows use visibly distinct but low-contrast backgrounds.
+- Hover is subtle and does not introduce a new hue.
+- Narrow screens scroll the table container rather than the page.
+
+## Code
+
+Inline and fenced code remain Dracula-dark. This preserves syntax semantics and avoids mixing site material transparency with code token contrast.
 
 ## Figures and Mermaid
 
-- Figures use semantic `figure`/`figcaption` and meaningful alt text.
-- Mermaid is preferred for workflow diagrams; readers see the rendered diagram, not Mermaid source.
-- Mermaid presentation is centralized in `MermaidDiagram.astro` and uses only Dracula At Night colours.
-- Do not use remote server-side renderers such as Kroki or mermaid.ink as page dependencies. The current client renderer is version-pinned and has a quiet non-error fallback if the module cannot load.
-- Keep Mermaid syntax conservative. Avoid article-local `classDef` styling; component-level presentation owns colours.
-- SVGs/images must remain inside the reading column at desktop and mobile widths.
+- Figures require alt text and captions.
+- Mermaid is preferred for workflow diagrams; readers see only rendered diagrams.
+- Mermaid may use neutral Apple-like surfaces and a restrained system-blue accent, but presentation remains centralized in `MermaidDiagram.astro` rather than article source.
+- Do not use remote server-side renderers such as Kroki or mermaid.ink as runtime dependencies.
+- Keep diagrams within the reading column at all viewport widths.
 
-## Lead text, quotations, and callouts
+## Motion
 
-Article lead/deck text and block quotations use a quiet Dracula surface and a thicker left accent rule. Callout labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are larger/stronger than metadata, while callout body text stays regular weight.
+Motion is sparse and functional.
 
-## Identity and navigation
+- Use CSS transitions for simple hover/focus and fire-and-forget state changes.
+- Do not add Motion or GSAP unless a real gesture/interruptible interaction requires them.
+- Prefer transform and opacity animation.
+- Interactive feedback should be immediate.
+- Respect `prefers-reduced-motion`.
 
-- The uploaded Ghibli-style avatar is the site identity image and appears inside the circular mark directly left of `cigit-zgy`.
-- Render the avatar as a real `<img>` element; do not duplicate it with pseudo-elements.
-- Research-topic vector icons remain sparse and reuse centralized Dracula tokens.
+## Accessibility and fallbacks
 
-## Reading progress
+Every reusable glass recipe must support:
 
-The circular reading-progress/back-to-top control appears at the lower-right on both desktop and mobile. Its ring uses a Dracula accent and retains an accessible click target.
+- `-webkit-backdrop-filter` for Safari;
+- a near-solid fallback when backdrop filtering is unavailable;
+- `prefers-reduced-transparency: reduce`;
+- `prefers-contrast: more`;
+- minimum 4.5:1 effective contrast for body text;
+- touch targets of at least 44 px;
+- visible focus states.
 
-## Responsive and accessibility checks
+## Responsive validation
 
-Check representative 1440, 1024, 768, and 390 px widths. Verify navigation, title wrapping, TOC, equations, code/table overflow, Mermaid/figures, search, footer, progress control, focus visibility, both themes, and reduced motion. Interactive targets should remain at least 44 px on mobile.
+Check representative widths around 1440, 1024, 768, and 390 px. Verify header wrapping, mobile menu, TOC, equations, tables/code overflow, figures, search, footer, progress control, focus visibility, light/dark modes, reduced motion, reduced transparency, and high contrast.

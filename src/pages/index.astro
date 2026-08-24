@@ -39,19 +39,13 @@ const researchTopics = [
 <Layout>
   <Header />
   <main id="main-content" class="app-layout">
-    <section class="border-border border-b pt-16 pb-14 sm:pt-24 sm:pb-20">
+    <section class="pt-16 pb-14 sm:pt-24 sm:pb-20">
       <p class="text-link text-xs font-semibold tracking-[0.12em] uppercase">
         Academic research notebook
       </p>
-      <div class="mt-5 flex items-center gap-1.5" aria-hidden="true">
-        <span class="bg-spectrum-purple h-1.5 w-8 rounded-full"></span>
-        <span class="bg-spectrum-magenta h-1.5 w-4 rounded-full"></span>
-        <span class="bg-spectrum-cyan h-1.5 w-4 rounded-full"></span>
-        <span class="bg-spectrum-teal h-1.5 w-4 rounded-full"></span>
-        <span class="bg-spectrum-amber h-1.5 w-4 rounded-full"></span>
-      </div>
+      <div class="liquid-hero-mark mt-5" aria-hidden="true"></div>
       <h1
-        class="mt-5 max-w-3xl text-4xl leading-[1.08] font-semibold tracking-[-0.04em] sm:text-6xl"
+        class="mt-6 max-w-3xl text-4xl leading-[1.06] font-semibold tracking-[-0.045em] sm:text-6xl"
       >
         cigit-zgy
       </h1>
@@ -63,9 +57,9 @@ const researchTopics = [
       </p>
     </section>
 
-    <section class="border-border border-b py-12 sm:py-14">
+    <section class="border-border border-t py-12 sm:py-14">
       <div class="mb-5 flex items-baseline justify-between gap-4">
-        <h2 class="text-2xl font-semibold tracking-[-0.02em]">
+        <h2 class="text-2xl font-semibold tracking-[-0.025em]">
           Featured Writing
         </h2>
         <a
@@ -81,15 +75,15 @@ const researchTopics = [
             ))}
           </ul>
         ) : (
-          <p class="border-border text-muted-foreground border-t py-5">
+          <p class="text-muted-foreground py-5">
             No featured essays have been published yet.
           </p>
         )
       }
     </section>
 
-    <section class="border-border border-b py-12 sm:py-14">
-      <h2 class="mb-5 text-2xl font-semibold tracking-[-0.02em]">
+    <section class="border-border border-t py-12 sm:py-14">
+      <h2 class="mb-5 text-2xl font-semibold tracking-[-0.025em]">
         Recent Writing
       </h2>
       {
@@ -100,22 +94,22 @@ const researchTopics = [
             ))}
           </ul>
         ) : (
-          <p class="border-border text-muted-foreground border-t py-5">
+          <p class="text-muted-foreground py-5">
             The first published research note will appear here.
           </p>
         )
       }
     </section>
 
-    <section class="py-12 sm:py-14">
-      <h2 class="mb-6 text-2xl font-semibold tracking-[-0.02em]">
+    <section class="border-border border-t py-12 sm:py-14">
+      <h2 class="mb-6 text-2xl font-semibold tracking-[-0.025em]">
         Research Topics
       </h2>
       <div class="research-spectrum grid gap-x-10 md:grid-cols-2">
         {
           researchTopics.map(topic => (
-            <section class="border-border border-t py-5">
-              <h3 class="font-semibold">{topic.title}</h3>
+            <section class="border-border border-t">
+              <h3 class="font-semibold tracking-[-0.01em]">{topic.title}</h3>
               <p class="text-muted-foreground mt-2 text-sm leading-relaxed">
                 {topic.description}
               </p>
@@ -124,7 +118,7 @@ const researchTopics = [
         }
       </div>
       <a
-        class="text-link mt-4 inline-block underline underline-offset-4"
+        class="text-link mt-5 inline-block underline underline-offset-4"
         href={getRelativeLocaleUrl(locale, "research")}
       >
         View the research map
