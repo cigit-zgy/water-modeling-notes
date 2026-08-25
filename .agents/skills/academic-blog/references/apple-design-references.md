@@ -15,6 +15,8 @@ When guidance conflicts, apply this order:
 
 The blog is an academic reading surface. Third-party Apple guidance is adapted to that purpose rather than copied wholesale.
 
+For homepage structure and motion, also read [apple-homepage-patterns.md](apple-homepage-patterns.md). It records the project-specific translation of Apple homepage hierarchy, non-sticky navigation, editorial rhythm, reveal motion, press feedback, and stronger Liquid Glass treatment.
+
 ## Apple — canonical platform guidance
 
 Primary sources:
@@ -23,14 +25,17 @@ Primary sources:
 - Design principles: https://developer.apple.com/design/human-interface-guidelines/design-principles
 - Layout: https://developer.apple.com/design/human-interface-guidelines/layout
 - Liquid Glass overview: https://developer.apple.com/documentation/TechnologyOverviews/liquid-glass
+- Public homepage reference: https://www.apple.com/
 
 Project interpretation:
 
 - Liquid Glass belongs to the functional layer: navigation, controls, search, TOC, floating actions, and transient interaction.
-- Do not use Liquid Glass as the article content layer.
-- Use the material sparingly so content remains visually dominant.
+- The homepage may use stronger glass on a small number of large editorial/navigation panels.
+- Do not use Liquid Glass as the long-form article prose layer.
+- Use the material sparingly enough that content remains visually dominant.
 - Prefer hierarchy, alignment, predictable placement, and scroll-edge separation over decorative effects.
 - Accessibility settings for reduced transparency, increased contrast, and reduced motion are release requirements.
+- The site header is deliberately non-sticky and scrolls away with the document.
 
 ## Emil Kowalski — design and interaction judgment
 
@@ -71,7 +76,9 @@ For `water-modeling-notes`, the adopted subset is intentionally narrow:
 
 - Astro remains static-first; no framework migration is justified by the visual redesign.
 - Header/navigation, article TOC, search, tags, and reading-progress controls may use Liquid Glass.
+- Homepage featured-writing and research-topic panels may use stronger Liquid Glass to create Apple-like editorial hierarchy.
 - Prose, tables, figures, equations, callouts, and references remain standard content surfaces.
 - Motion libraries are not added unless a real gesture or interruptible interaction requires them.
+- Viewport entry motion uses CSS transforms/opacity plus `IntersectionObserver`, with no hidden-content dependency when JavaScript is unavailable.
 - Chinese glyphs remain `LXGW WenKai Screen`; code remains Dracula for stable syntax semantics.
 - The site must remain readable when transparency, animation, or backdrop filtering is unavailable.

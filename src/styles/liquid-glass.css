@@ -1,55 +1,85 @@
 @layer components {
-  .glass-surface {
+  .glass-surface,
+  .glass-surface-thin,
+  .glass-surface-thick {
     position: relative;
-    background-color: var(--material-regular-tint);
-    background-image: linear-gradient(
-      180deg,
-      var(--glass-specular-soft),
-      transparent 34%
-    );
     background-clip: padding-box;
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    backdrop-filter: blur(20px) saturate(180%);
+    isolation: isolate;
+  }
+
+  .glass-surface {
+    background-color: var(--material-regular-tint);
+    background-image:
+      radial-gradient(
+        circle at 18% 0%,
+        var(--glass-specular),
+        transparent 34%
+      ),
+      linear-gradient(
+        180deg,
+        var(--glass-specular-soft),
+        transparent 32%
+      ),
+      linear-gradient(
+        110deg,
+        var(--glass-accent-sheen),
+        transparent 48%
+      );
+    -webkit-backdrop-filter: blur(28px) saturate(210%);
+    backdrop-filter: blur(28px) saturate(210%);
     box-shadow:
       inset 0 1px 0 var(--glass-specular),
-      inset 0 0 0 0.5px var(--glass-inner-rim),
-      0 0 0 0.5px var(--glass-outer-rim),
+      inset 0 0 0 0.75px var(--glass-inner-rim),
+      0 0 0 0.75px var(--glass-outer-rim),
       var(--shadow-glass);
   }
 
   .glass-surface-thin {
-    position: relative;
     background-color: var(--material-thin-tint);
-    background-image: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--glass-specular-soft) 78%, transparent),
-      transparent 30%
-    );
-    background-clip: padding-box;
-    -webkit-backdrop-filter: blur(14px) saturate(170%);
-    backdrop-filter: blur(14px) saturate(170%);
+    background-image:
+      radial-gradient(
+        circle at 20% 0%,
+        color-mix(in srgb, var(--glass-specular) 82%, transparent),
+        transparent 30%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--glass-specular-soft) 88%, transparent),
+        transparent 28%
+      );
+    -webkit-backdrop-filter: blur(20px) saturate(195%);
+    backdrop-filter: blur(20px) saturate(195%);
     box-shadow:
       inset 0 1px 0 var(--glass-specular-soft),
-      inset 0 0 0 0.5px var(--glass-inner-rim),
-      0 0 0 0.5px var(--glass-outer-rim),
+      inset 0 0 0 0.65px var(--glass-inner-rim),
+      0 0 0 0.65px var(--glass-outer-rim),
       var(--shadow-glass-soft);
   }
 
   .glass-surface-thick {
-    position: relative;
     background-color: var(--material-thick-tint);
-    background-image: linear-gradient(
-      180deg,
-      var(--glass-specular-soft),
-      transparent 38%
-    );
-    background-clip: padding-box;
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    backdrop-filter: blur(32px) saturate(180%);
+    background-image:
+      radial-gradient(
+        circle at 16% 0%,
+        var(--glass-specular),
+        transparent 38%
+      ),
+      linear-gradient(
+        180deg,
+        var(--glass-specular-soft),
+        transparent 36%
+      ),
+      linear-gradient(
+        120deg,
+        color-mix(in srgb, var(--glass-accent-sheen) 80%, transparent),
+        transparent 50%
+      );
+    -webkit-backdrop-filter: blur(40px) saturate(215%);
+    backdrop-filter: blur(40px) saturate(215%);
     box-shadow:
       inset 0 1px 0 var(--glass-specular),
-      inset 0 0 0 0.5px var(--glass-inner-rim),
-      0 0 0 0.5px var(--glass-outer-rim),
+      inset 0 0 0 0.9px var(--glass-inner-rim),
+      0 0 0 0.9px var(--glass-outer-rim),
       var(--shadow-glass-strong);
   }
 }

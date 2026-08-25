@@ -36,7 +36,7 @@ const isActive = (path: string) => {
   {t.a11y.skipToContent}
 </a>
 
-<header class="site-header app-layout sticky z-40">
+<header class="site-header app-layout relative z-20">
   <div
     class="site-header-shell glass-surface flex w-full flex-wrap items-center gap-2 px-3 py-2 sm:flex-nowrap sm:px-4"
   >
@@ -206,9 +206,7 @@ const isActive = (path: string) => {
       target.addEventListener(
         "blur",
         () => target.removeAttribute("tabindex"),
-        {
-          once: true,
-        }
+        { once: true }
       );
       target.focus();
       target.scrollIntoView({ behavior: "smooth" });

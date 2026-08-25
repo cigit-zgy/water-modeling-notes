@@ -26,19 +26,18 @@
 }
 
 /*
- * Apple-inspired semantic tokens for the web. The site uses Liquid Glass as a
- * material system, not as a decorative palette. Code remains Dracula-dark so
- * syntax semantics stay stable across reading themes.
+ * Apple-inspired semantic tokens. Liquid Glass is intentionally more visible
+ * than the previous restrained pass, while code remains Dracula-dark.
  */
 :root,
 [data-theme="dark"] {
-  --background-primary: #0b0b0d;
-  --background-secondary: #1c1c1e;
-  --background-elevated: #242426;
+  --background-primary: #09090b;
+  --background-secondary: #18181b;
+  --background-elevated: #232327;
   --text-primary: #f5f5f7;
-  --text-secondary: rgba(235, 235, 245, 0.82);
-  --text-muted: rgba(235, 235, 245, 0.58);
-  --border-subtle: rgba(255, 255, 255, 0.11);
+  --text-secondary: rgba(245, 245, 247, 0.84);
+  --text-muted: rgba(235, 235, 245, 0.6);
+  --border-subtle: rgba(255, 255, 255, 0.12);
 
   --accent-primary: #0a84ff;
   --accent-link: #64d2ff;
@@ -54,22 +53,23 @@
   --accent-warning: #ffd60a;
   --accent-danger: #ff453a;
 
-  --material-ultrathin-tint: rgba(28, 28, 30, 0.42);
-  --material-thin-tint: rgba(28, 28, 30, 0.56);
-  --material-regular-tint: rgba(28, 28, 30, 0.7);
-  --material-thick-tint: rgba(28, 28, 30, 0.84);
+  --material-ultrathin-tint: rgba(28, 28, 30, 0.28);
+  --material-thin-tint: rgba(28, 28, 30, 0.38);
+  --material-regular-tint: rgba(28, 28, 30, 0.5);
+  --material-thick-tint: rgba(28, 28, 30, 0.7);
   --material-fallback: rgba(28, 28, 30, 0.96);
-  --glass-specular: rgba(255, 255, 255, 0.16);
-  --glass-specular-soft: rgba(255, 255, 255, 0.1);
-  --glass-inner-rim: rgba(255, 255, 255, 0.07);
-  --glass-outer-rim: rgba(0, 0, 0, 0.48);
-  --shadow-glass: 0 12px 40px rgba(0, 0, 0, 0.24);
-  --shadow-glass-soft: 0 8px 28px rgba(0, 0, 0, 0.18);
-  --shadow-glass-strong: 0 18px 56px rgba(0, 0, 0, 0.32);
+  --glass-specular: rgba(255, 255, 255, 0.28);
+  --glass-specular-soft: rgba(255, 255, 255, 0.17);
+  --glass-inner-rim: rgba(255, 255, 255, 0.12);
+  --glass-outer-rim: rgba(0, 0, 0, 0.56);
+  --glass-accent-sheen: rgba(100, 210, 255, 0.12);
+  --shadow-glass: 0 18px 54px rgba(0, 0, 0, 0.34);
+  --shadow-glass-soft: 0 12px 36px rgba(0, 0, 0, 0.25);
+  --shadow-glass-strong: 0 26px 76px rgba(0, 0, 0, 0.42);
 
-  --aurora-a: rgba(10, 132, 255, 0.14);
-  --aurora-b: rgba(191, 90, 242, 0.11);
-  --aurora-c: rgba(100, 210, 255, 0.08);
+  --aurora-a: rgba(10, 132, 255, 0.22);
+  --aurora-b: rgba(191, 90, 242, 0.18);
+  --aurora-c: rgba(100, 210, 255, 0.14);
 
   --table-header-background: rgba(44, 44, 46, 0.9);
   --table-row-odd: rgba(28, 28, 30, 0.78);
@@ -95,9 +95,9 @@
   --background-secondary: #ffffff;
   --background-elevated: #f2f2f7;
   --text-primary: #1d1d1f;
-  --text-secondary: rgba(60, 60, 67, 0.82);
-  --text-muted: rgba(60, 60, 67, 0.6);
-  --border-subtle: rgba(60, 60, 67, 0.16);
+  --text-secondary: rgba(60, 60, 67, 0.84);
+  --text-muted: rgba(60, 60, 67, 0.62);
+  --border-subtle: rgba(60, 60, 67, 0.15);
 
   --accent-primary: #007aff;
   --accent-link: #0066cc;
@@ -113,22 +113,23 @@
   --accent-warning: #9a6700;
   --accent-danger: #d70015;
 
-  --material-ultrathin-tint: rgba(255, 255, 255, 0.46);
-  --material-thin-tint: rgba(255, 255, 255, 0.6);
-  --material-regular-tint: rgba(255, 255, 255, 0.72);
-  --material-thick-tint: rgba(255, 255, 255, 0.86);
-  --material-fallback: rgba(255, 255, 255, 0.96);
-  --glass-specular: rgba(255, 255, 255, 0.72);
-  --glass-specular-soft: rgba(255, 255, 255, 0.54);
-  --glass-inner-rim: rgba(255, 255, 255, 0.32);
-  --glass-outer-rim: rgba(0, 0, 0, 0.08);
-  --shadow-glass: 0 14px 40px rgba(31, 35, 48, 0.12);
-  --shadow-glass-soft: 0 8px 24px rgba(31, 35, 48, 0.08);
-  --shadow-glass-strong: 0 20px 60px rgba(31, 35, 48, 0.16);
+  --material-ultrathin-tint: rgba(255, 255, 255, 0.3);
+  --material-thin-tint: rgba(255, 255, 255, 0.42);
+  --material-regular-tint: rgba(255, 255, 255, 0.56);
+  --material-thick-tint: rgba(255, 255, 255, 0.75);
+  --material-fallback: rgba(255, 255, 255, 0.97);
+  --glass-specular: rgba(255, 255, 255, 0.9);
+  --glass-specular-soft: rgba(255, 255, 255, 0.68);
+  --glass-inner-rim: rgba(255, 255, 255, 0.46);
+  --glass-outer-rim: rgba(0, 0, 0, 0.1);
+  --glass-accent-sheen: rgba(0, 122, 255, 0.08);
+  --shadow-glass: 0 18px 52px rgba(31, 35, 48, 0.17);
+  --shadow-glass-soft: 0 12px 32px rgba(31, 35, 48, 0.11);
+  --shadow-glass-strong: 0 28px 76px rgba(31, 35, 48, 0.2);
 
-  --aurora-a: rgba(0, 122, 255, 0.12);
-  --aurora-b: rgba(175, 82, 222, 0.1);
-  --aurora-c: rgba(90, 200, 250, 0.1);
+  --aurora-a: rgba(0, 122, 255, 0.18);
+  --aurora-b: rgba(175, 82, 222, 0.14);
+  --aurora-c: rgba(90, 200, 250, 0.15);
 
   --table-header-background: rgba(242, 242, 247, 0.94);
   --table-row-odd: rgba(255, 255, 255, 0.9);
@@ -150,7 +151,6 @@
 }
 
 :root {
-  /* Latin Modern Sans covers Latin only; Chinese therefore falls through to LXGW. */
   --font-body-cjk: "LXGW WenKai Screen";
   --font-reading-family: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
   --font-ui: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
