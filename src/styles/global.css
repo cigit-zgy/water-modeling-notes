@@ -300,7 +300,8 @@
 .home-primary-action {
   background: var(--accent-primary);
   color: white;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent-primary) 28%, transparent);
+  box-shadow: 0 8px 24px
+    color-mix(in srgb, var(--accent-primary) 28%, transparent);
 }
 
 .home-secondary-action {

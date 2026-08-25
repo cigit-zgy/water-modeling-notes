@@ -10,21 +10,9 @@
   .glass-surface {
     background-color: var(--material-regular-tint);
     background-image:
-      radial-gradient(
-        circle at 18% 0%,
-        var(--glass-specular),
-        transparent 34%
-      ),
-      linear-gradient(
-        180deg,
-        var(--glass-specular-soft),
-        transparent 32%
-      ),
-      linear-gradient(
-        110deg,
-        var(--glass-accent-sheen),
-        transparent 48%
-      );
+      radial-gradient(circle at 18% 0%, var(--glass-specular), transparent 34%),
+      linear-gradient(180deg, var(--glass-specular-soft), transparent 32%),
+      linear-gradient(110deg, var(--glass-accent-sheen), transparent 48%);
     -webkit-backdrop-filter: blur(28px) saturate(210%);
     backdrop-filter: blur(28px) saturate(210%);
     box-shadow:
@@ -59,16 +47,8 @@
   .glass-surface-thick {
     background-color: var(--material-thick-tint);
     background-image:
-      radial-gradient(
-        circle at 16% 0%,
-        var(--glass-specular),
-        transparent 38%
-      ),
-      linear-gradient(
-        180deg,
-        var(--glass-specular-soft),
-        transparent 36%
-      ),
+      radial-gradient(circle at 16% 0%, var(--glass-specular), transparent 38%),
+      linear-gradient(180deg, var(--glass-specular-soft), transparent 36%),
       linear-gradient(
         120deg,
         color-mix(in srgb, var(--glass-accent-sheen) 80%, transparent),
