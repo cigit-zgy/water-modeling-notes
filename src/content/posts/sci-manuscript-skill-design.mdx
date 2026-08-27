@@ -1,337 +1,301 @@
 ---
 pubDatetime: 2026-08-23T09:14:00.000+08:00
-title: sci-manuscript-skill 的设计思路与使用方法
+modDatetime: 2026-08-28T07:45:00.000+08:00
+title: 从 LaTeX 文件到可验证稿件生命周期：sci-manuscript-skill 的设计
 featured: true
 topic: Research Notes
 tags:
   - LaTeX
   - Scientific Writing
   - Agent Workflow
-description: 一个面向 LaTeX 科研稿件的可复现生命周期工作流：如何管理版本、审稿回复、差异标记、回滚和投稿打包，同时保持科研内容的人工控制权。
+description: 从版本状态、修改 provenance、结构化差异到 TeX 原生验证，介绍 sci-manuscript-skill 如何把 LaTeX 论文返修组织成可检查、可恢复、可复现的稿件生命周期。
 ---
 
 import AcademicCallout from '@/components/AcademicCallout.astro';
 import ResponsiveTable from '@/components/ResponsiveTable.astro';
 import MermaidDiagram from '@/components/MermaidDiagram.astro';
 
-LaTeX 已经很好地解决了科研论文的排版问题，但它并没有替研究者管理“论文如何演化”。一篇稿件从初稿进入投稿、返修、再次投稿直至最终归档后，研究者需要同时维护 clean manuscript、marked manuscript、审稿回复、参考文献、作者信息、投稿附件以及不同轮次的源文件。引入 LLM/Agent 后，问题还会进一步扩大：Agent 可以读写文件，但“能访问”并不等于“被授权修改科研内容”。
+LaTeX 擅长解决论文“如何排版”，却没有回答论文“如何演化”。一篇稿件从初稿进入投稿、返修、再次投稿到最终归档，研究者需要同时维护当前正文、历史版本、marked manuscript、审稿回复、参考文献、作者信息和投稿附件。只要其中一类状态仍靠文件名、复制习惯或个人记忆维持，返修轮次增加以后就容易出现版本来源不清、产物过期或修改 provenance 丢失的问题。
 
-[`sci-manuscript-skill`](https://github.com/cigit-zgy/sci-manuscript-skill) 是我围绕这一问题设计的一套 LaTeX 科研稿件生命周期工作流。它并不尝试自动写完论文，而是把原本依赖个人记忆和文件习惯的操作，转换为**有状态、有边界、可检查、可恢复的科研工程流程**。
+LLM Agent 的加入进一步放大了这一矛盾。Agent 可以读取和写入文件，也可以调用编译器和脚本，但“能够操作文件”并不等于“获得了修改科学内容的授权”。因此，科研写作自动化首先需要解决的不是让 Agent 更会写，而是让**稿件状态、操作权限和产物关系显式化**。
+
+[`sci-manuscript-skill`](https://github.com/cigit-zgy/sci-manuscript-skill) 就是围绕这个问题设计的。当前正式版本为 [`v2.1.0`](https://github.com/cigit-zgy/sci-manuscript-skill/releases/tag/v2.1.0)。它不负责自动生成论文，而是把初始化、版本演化、返修标记、审稿回复、回滚、重编号、参考文献状态和投稿打包组织成一个可验证的 LaTeX 稿件生命周期。
 
 <AcademicCallout kind="definition">
-  本文所说的**稿件生命周期工程（manuscript lifecycle engineering）**，是指对稿件初始化、编译、版本演化、审稿回复、差异追踪、参考文献同步、回滚、重编号和投稿打包等操作建立明确的状态、规则与产物契约。它管理稿件的工程状态，不替代科学判断。
+  本文所说的**稿件生命周期工程（manuscript lifecycle engineering）**，是指为稿件状态、版本关系、修改来源、构建过程和正式产物建立明确契约。它管理科研写作的工程状态，不替代研究者的科学判断。
 </AcademicCallout>
 
-## 为什么要做这套工作流
+## 问题不只是“版本管理”
 
-科研写作中的很多事故与科学内容本身无关，而来自“文件和状态没有被严格定义”。例如：第三轮返修究竟应该从第二轮的哪个文件继续；某段新增文字对应哪条 reviewer comment；删除内容如何进入 marked manuscript；误创建 revision 后能否安全回滚；删除中间轮次以后，剩余版本能否重新编号而不破坏科研源文件。
+Git 已经能够保存文件历史，但科研返修还包含 Git 本身并不了解的语义：当前轮次的直接父版本是谁；某个修改是否由 Reviewer 1 的 Comment 2-2 引起；当前 response letter 应该引用 marked manuscript 的哪一处位置；一个旧 PDF 是否仍对应当前源文件；历史轮次能否在今天重新构建出一致结果。
 
-这些问题在只有一个 `manuscript.tex` 时并不突出，但随着返修轮次、共同作者和投稿附件增加，隐含状态会快速累积。
+同样，`latexdiff` 能够提供文本差异证据，但它并不知道哪些差异代表当前稿件中应展示的自然修改单元，也不知道修改属于 reviewer 还是作者，更不能单独承担整个稿件生命周期的状态管理。
 
-<ResponsiveTable caption="Table 1. 科研稿件生命周期中的典型工程问题与对应控制策略" variant="striped-minimal">
+<ResponsiveTable caption="Table 1. 常见工具能够解决的问题与仍然缺失的稿件语义" variant="striped-minimal">
 
-| 常见问题 | 直接风险 | `sci-manuscript-skill` 的处理 |
+| 工具或做法 | 能解决什么 | 仍然缺失什么 |
 | :-- | :-- | :-- |
-| 版本名称和父版本依赖人工记忆 | 从错误版本继续修改 | 固定 `r00 → r01 → r02` 的相邻版本关系 |
-| Agent 获得文件权限后顺手润色正文 | 科研内容的授权边界消失 | `SKILL.md` 明确禁止未经授权修改 manuscript content |
-| clean、marked、response 和 submission 分散生成 | 无法确认是否属于同一轮 | 每轮按照固定 artifact contract 构建 |
-| 手工删除或重命名 revision | 已编辑源文件可能丢失 | rollback 使用摘要保护；reindex 先归档再事务式替换 |
-| 每个 revision 复制一份 bibliography | 共享信息逐轮漂移 | 根 `references/` 维护单一来源 |
-| 编译中间文件长期残留 | 工作区逐渐失去可读性 | 临时文件进入 `tmp/`，正式产物进入稳定目录 |
+| Git | 保存文件历史和 commit graph | 稿件轮次、审稿 provenance、正式产物状态 |
+| LaTeX | 确定性排版与交叉引用 | revision ancestry 和返修工作流 |
+| `latexdiff` | 提供 parent/current 差异证据 | 科学结构、修改所有权和可读高亮粒度 |
+| 手工目录复制 | 快速保留一个快照 | 可验证 ancestry、stale artifact 检测和回滚保护 |
+| Agent | 自动执行多步骤操作 | 科学内容授权边界和确定性状态约束 |
 
 </ResponsiveTable>
 
-因此，这个项目首先解决的不是“如何让 Agent 更会写”，而是两个更基础的问题：**稿件当前处于什么状态，以及谁有权改变什么。**
+因此，`sci-manuscript-skill` 的设计目标不是取代这些工具，而是在它们之上增加一层**稿件生命周期语义**。
 
-## 设计原则：内容控制与工程自动化分离
+## 第一原则：科学内容和工程操作分离
 
-整个系统最重要的一条规则是：生命周期命令不构成正文修改授权。`build`、`revision`、`rollback`、`reindex`、`sync-bib` 和 `submission` 都属于工程操作；reviewer comment 本身也不等于编辑许可。
+系统最重要的约束是：生命周期命令不构成科学内容修改授权。`build`、`revision`、`rollback`、`reindex`、`sync-bib` 和 `submission` 可以改变工程状态，但不能因为 Agent 获得了文件权限，就默认允许它润色正文、改公式、补引用或重写 response。
 
-研究者拥有论文中的科学论证、正文、图表、回复内容和 cover letter。程序负责状态检查、合法版本创建、编译、差异计算、位置定位和正式产物组织。换句话说，系统优先自动化**确定性较高且可验证的机械操作**，而不是替代研究者做科学判断。
+这使系统形成了一个明确的职责边界：研究者负责论文中的科学论证和科学修改；Skill 负责告诉 Agent 什么可以做、何时必须停止；Python package 负责执行可确定、可检查的机械操作。
 
-### 六个核心约束
+<ResponsiveTable caption="Table 2. sci-manuscript-skill 的核心职责边界" variant="striped-minimal">
 
-<ResponsiveTable caption="Table 2. 工作流的六项核心设计约束" variant="striped-minimal">
-
-| 约束 | 实现方式 | 控制的风险 |
+| 对象 | 主要责任 | 不应该承担的责任 |
 | :-- | :-- | :-- |
-| 内容所有权明确 | build 不覆盖研究者维护的科学源文件 | Agent 或构建工具越权改稿 |
-| 版本身份确定 | `initial_submission = r00`，后续固定宽度编号 | “当前到底是哪一版”的歧义 |
-| 共享信息单一来源 | 作者库、BibTeX、revision style 位于根 `references/` | 多轮复制产生不一致 |
-| 差异只比较相邻版本 | marked manuscript 比较直接父版本与当前版本 | 跨轮 diff 造成来源混淆 |
-| 破坏性操作必须验证 | rollback 检查 digest；reindex 先归档再替换 | 误删或错误重编号 |
-| 正式产物与临时文件分离 | `output/`、`submission/` 与 `tmp/` 分离 | 工作区污染 |
+| 研究者 | 科学判断、正文、图表、回复内容 | 手工维护所有构建状态 |
+| `SKILL.md` | 请求路由、授权边界、fail-closed 规则 | 直接实现底层文件操作 |
+| Python package | 生命周期、构建、验证、状态与产物 | 自行决定科学内容 |
+| LaTeX / TeX state | 排版、编号、引用、位置和执行状态 | 判断科学内容为什么改变 |
+| PDF | 最终阅读与交付 | 反向定义科学状态 |
 
 </ResponsiveTable>
 
-## 系统架构：Skill 负责约束，Python package 负责执行
+这也是项目和普通“自动写论文 Agent”的主要区别：自动化对象首先是**工作流本身**，而不是研究者的科学判断。
 
-项目把“Agent 应该怎么做”和“程序具体怎么做”拆成两层。`SKILL.md` 是 Agent 的行为契约，负责请求路由、禁止事项、确认点和 handoff 条件；`sci_manuscript` Python package 才承担 workspace、metadata、compile、diff、response 和 artifact 相关逻辑。
+## 两层架构：Skill 约束 Agent，package 执行确定性操作
 
-CLI 与 Python API 最终复用同一套 domain logic，因此命令行使用和 Agent 调用不会形成两套逐渐漂移的实现。
+项目将 Agent 行为和程序执行拆成两层。`SKILL.md` 是面向 Agent 的入口，规定请求应路由到哪个操作、哪些内容未经授权不能修改，以及出现歧义时应该继续还是停止。安装后的 `sci_manuscript` package 则提供 CLI 和 Python API，并集中实现 workspace、metadata、revision、compile、diff、response、submission 和状态验证。
 
-<ResponsiveTable caption="Table 3. sci-manuscript-skill 的分层架构与职责" variant="striped-minimal">
-
-| 层次 | 主要对象 | 职责 |
-| :-- | :-- | :-- |
-| Agent contract | `SKILL.md`、workflow references | 请求路由、授权边界、操作前确认 |
-| Execution API | CLI、`ManuscriptProject` | 提供稳定的生命周期入口 |
-| Domain logic | workspace、metadata、compile、diff、response | 执行版本约束、构建与差异组织 |
-| Runtime resources | publisher classes、correspondence templates | 随 package 安装，构建时调用 |
-| User workspace | `manuscript/` | 保存研究者拥有的稿件、回复与正式产物 |
-
-</ResponsiveTable>
-
-这一拆分也意味着：生成的论文项目不依赖 `sci-manuscript-skill` 源码 checkout，也无需在每篇论文中复制运行脚本。工作流能力来自安装后的 package，稿件目录本身保持稳定和可审阅。
-
-## 稿件在磁盘上如何组织
-
-初始化只在已有科研项目中建立 `manuscript/` 工作区，不接管整个项目。共享信息位于根 `references/`；每一个 revision 只保存该轮自己的稿件状态、回复和投稿产物。
+这种分层避免了两个问题。第一，Agent 不需要自己临时发明目录规则或版本语义；第二，命令行与 Agent 调用复用同一套 domain logic，不会逐渐演变成两套互不一致的实现。
 
 ```text
-existing-project/
-└── manuscript/
-    ├── 00_archive/
-    ├── references/
-    │   ├── authors.yaml
-    │   ├── references.bib
-    │   └── revision_style.tex
-    ├── initial_submission/          # r00
-    │   ├── meta.yaml
-    │   ├── manuscript.tex
-    │   ├── sections/
-    │   ├── figures/
-    │   ├── tables/
-    │   ├── output/
-    │   └── submission/
-    └── revision_01/                 # r01
-        ├── meta.yaml
-        ├── revision_creation.yaml
-        ├── manuscript.tex
-        ├── response/
-        │   ├── reviewer_comments.md
-        │   └── responses.tex
-        ├── output/
-        └── submission/
+Agent request
+    ↓
+SKILL.md / references       # 行为约束与 progressive disclosure
+    ↓
+CLI / ManuscriptProject     # 稳定执行入口
+    ↓
+domain logic                # lifecycle / revision / response / validation
+    ↓
+TeX + package resources     # 确定性构建
+    ↓
+user-facing artifacts
 ```
 
-这个结构刻意避免把 publisher class、临时 flattened TeX 或运行脚本复制到每一轮。工作目录优先保存**研究者真正拥有和需要人工审阅的文件**。
+## 工作区只保存研究者真正需要管理的状态
 
-## 生命周期：每一步都是明确的状态转换
+`sci-manuscript-skill` 不接管整个科研项目，而是在项目中维护 `manuscript/` 工作区。当前结构的重点不是“每轮复制一切”，而是把**可编辑源、冻结状态、运行诊断和正式产物**分开。
 
-一篇稿件从 `r00` 开始。初稿可以构建 clean manuscript 和 initial submission package；收到审稿意见后，`revision` 只允许创建紧邻当前版本的下一轮。新 revision 继承上一轮科研内容，同时建立新的 response workspace。
+```text
+project/
+└── manuscript/
+    ├── references/             # 当前 BibTeX 与 revision style
+    ├── initial_submission/     # r00
+    ├── revision_01/            # r01
+    ├── revision_02/            # r02 ...
+    ├── state/                  # manifest 与冻结历史状态
+    └── tmp/                    # TeX/AUX/log/cache/audit 等运行信息
+```
+
+每个正式轮次都有自己的科学源和输出状态，但 publisher class、response template 和 revision runtime 等基础设施由安装后的 package 提供，不需要复制到每篇论文里。最终用户面对的 `output/` 只保存当前有效的 PDF；TeX、AUX、日志、timing 和审计信息留在 `tmp/`。
+
+## 生命周期：相邻 revision，而不是任意版本跳转
+
+一篇稿件从 `initial_submission` 开始，内部记为 `r00`。进入返修后，`revision_01` 的 parent 是 `r00`，`revision_02` 的 parent 是 `revision_01`。这种相邻 ancestry 看起来保守，但它让“当前修改相对于谁”只有一个答案。
 
 <MermaidDiagram
   code={`flowchart TD
-A["已有科研项目"] --> B["doctor：环境检查"]
-B --> C["init：initial_submission / r00"]
-C --> D["显式编辑 manuscript"]
-D --> E["build：clean manuscript"]
-E --> F{"当前任务"}
-F -->|初次投稿| G["submission package"]
-F -->|收到审稿意见| H["revision：revision_01 / r01"]
-H --> I["显式修改：正文 + responses"]
-I --> J["submission"]
-J --> K["clean + marked + response letter + package"]
-K --> L{"还有下一轮审稿？"}
-L -->|是| H
-L -->|否| M["Final handoff"]
-H -.-> N["rollback：00_archive"]
-classDef neutral fill:#2a3448,stroke:#a8b0c5,color:#f8f8f2,stroke-width:1.5px
-classDef purple fill:#2a3448,stroke:#a978e7,color:#f8f8f2,stroke-width:2px
-classDef magenta fill:#2a3448,stroke:#df5aa4,color:#f8f8f2,stroke-width:2px
-classDef amber fill:#2a3448,stroke:#e8b858,color:#f8f8f2,stroke-width:2px
-classDef green fill:#2a3448,stroke:#64bd75,color:#f8f8f2,stroke-width:2px
-classDef cyan fill:#2a3448,stroke:#55bddc,color:#f8f8f2,stroke-width:2px
-class A,D,G,M,N neutral
-class C,H purple
-class I,J magenta
-class F,L amber
-class K green
-class B,E cyan`}
+A[科研项目] --> B[doctor 环境检查]
+B --> C[init initial_submission r00]
+C --> D[编辑并 build clean manuscript]
+D --> E{下一步}
+E -->|首次投稿| F[submission]
+E -->|收到审稿意见| G[revision_01 r01]
+G --> H[正文修改 + responses]
+H --> I[build marked / response / all]
+I --> J{还有下一轮审稿}
+J -->|是| K[revision_02 r02]
+K --> H
+J -->|否| L[final handoff]
+G -.需要撤销.-> M[rollback]
+`}
+  alt="sci-manuscript-skill 从初稿到返修和最终交付的稿件生命周期流程图"
 >
-  <strong>Figure 1.</strong> `sci-manuscript-skill` 的稿件生命周期。正常路径保持相邻 revision；rollback 只作用于尚未被编辑的最新 revision。
+  <strong>Figure 1.</strong> 稿件生命周期始终沿相邻 revision 演化；构建、回复和投稿产物均绑定到明确的当前轮次。
 </MermaidDiagram>
 
-版本关系本身保持简单：
+`--round` 可以选择已有历史轮次进行构建，但不会静默改变 active round；不存在的 round 会显式失败。历史轮次在构建前还会检查被冻结的源文件、参考文献、作者信息和 ancestry 状态，避免“今天的共享文件”悄悄改变“昨天的投稿版本”。
+
+## 最关键的变化：marked manuscript 不再等于 raw diff
+
+早期版本最容易犯的错误，是把文本 diff 直接等同于高亮结果。实际稿件中，一个 source line break、段落顺序变化、公式移动，甚至 surrounding context 的改变，都可能让纯文本 matcher 产生错误的 visual change。对于返修稿，这种 false positive 会直接误导作者和审稿人。
+
+v2.1.0 将这一过程改成结构感知、identity-first 的 revision pipeline。核心原则可以概括为：
 
 ```text
-initial_submission (r00)
-        ↓
-revision_01 (r01)
-        ↓
-revision_02 (r02)
-        ↓
-...
+STRUCTURE
+→ IDENTITY
+→ MATCH / CHANGE PROOF
+→ PROVENANCE
+→ PRESENTATION
+→ TEX-NATIVE VERIFICATION
 ```
 
-“只允许相邻演化”看起来保守，但它使 marked manuscript 的比较对象、response location 和 revision provenance 都具有唯一解释。
+其中最重要的是顺序：**先证明一个自然单元是否仍然相同，再决定是否需要高亮；只有已经证明发生变化的内容，才进入 provenance 和 presentation。** 句子切分只决定“已经变化以后染多大”，不能决定“有没有变化”。
 
-## 审稿修改如何追踪来源
+<AcademicCallout kind="method">
+  `sci-manuscript-skill` 对 revision highlighting 采用 fail-closed 策略：匹配失败或上下文歧义本身不能授权颜色。没有正向 change evidence，就没有 revision color。
+</AcademicCallout>
 
-返修阶段需要同时回答两个问题：**改了什么，以及为什么改。** 项目用两种手工 provenance wrapper 区分修改来源：
+这套规则不仅用于普通段落。normalized-identical 的 display equation 即使移动位置也保持黑色；figure asset 变化不会借用未变化的 caption 作为视觉代理；citation、DOI 和 URL 则作为受保护的 inline unit 保留独立呈现。
 
-```latex
-\review{1-1}{Text revised in response to Reviewer 1, Comment 1.}
+## 为什么需要“proof-carrying highlighting”
 
-\user{Additional text introduced by the authors.}
-```
+为了避免“Python 认为改了”和“TeX 实际染了”之间再次出现隐式路径，v2.1.0 把 visible revision 进一步组织成带证明的状态链。
 
-删除内容不要求研究者额外维护 wrapper，而是由相邻版本之间的 `latexdiff` 检测。marked manuscript 中 reviewer-linked addition、user-initiated addition 与 deletion 因此可以保持不同来源。
+系统内部区分四类信息：
 
-<ResponsiveTable caption="Table 4. 审稿返修中不同修改来源的记录方式" variant="striped-minimal">
+<ResponsiveTable caption="Table 3. revision rendering 中的四类证明与事件" variant="striped-minimal">
 
-| 修改来源 | manuscript 中的表达 | marked manuscript | 目的 |
-| :-- | :-- | :-- | :-- |
-| Reviewer / Editor 驱动修改 | `\review{ID}{...}` | 蓝色 | 将正文修改与具体 comment 建立对应 |
-| 作者主动新增 | `\user{...}` | 绿色 | 与审稿驱动修改区分 |
-| 删除 | 直接删除原文 | 红色 `latexdiff` | 避免人为维护删除 wrapper |
+| 状态 | 证明什么 | 对最终高亮的影响 |
+| :-- | :-- | :-- |
+| `IdentityCertificate` | parent/current 自然单元保持一致 | hard veto，保持黑色 |
+| `ChangeCertificate` | current unit 确实 changed 或 added | 才有资格进入 revision color |
+| `StructuralEvent` | 发生移动、asset change 等结构事件 | 不自动产生视觉高亮 |
+| `RenderCertificate` | TeX 实际执行了已授权 revision event | 与 `ChangeCertificate` 一一核对 |
 
 </ResponsiveTable>
 
-reviewer comment 还可以区分为 `manuscript_revised` 和 `response_only`。前者要求正文中存在对应 `\review{...}`，并在 response letter 中引用 marked manuscript 的真实位置；后者只要求回复，不虚构正文修改位置。
+renderer 不再可以随意输出一个红色或绿色 span。每个可见 revision event 都需要确定的 event ID；TeX 编译过程中，package-owned macro 会把实际执行事件写入轻量 `.sci` sidecar。编译结束后，Python 预期的 change registry 与 TeX 实际执行 registry 必须一致，否则构建失败。
 
-## 为什么 rollback 和 reindex 必须保守
+这种设计的目的不是增加复杂度，而是消除一种危险的隐式逻辑：**“因为 matcher 不确定，所以先染出来再说。”** 在科研返修中，不确定性更适合触发显式错误，而不是被转换为视觉事实。
 
-版本管理中风险最高的动作不是创建文件，而是删除和重编号，因为它们可能直接影响已经形成的科研源文件。
+## 修改来源：WHAT 必须先于 WHO
 
-`revision_creation.yaml` 会记录受保护用户源文件的摘要。`rollback` 只有在最新 revision 的摘要没有变化时才允许自动归档；一旦研究者已经修改过该轮源文件，程序会拒绝自动 rollback。
+返修时还要区分“改了什么”和“为什么改”。项目只使用 `\review{ID}{...}` 描述 reviewer provenance：
 
-`reindex` 的约束更严格：先将受影响 revision 复制到 `00_archive/`，再准备新的编号布局，检查科学源文件摘要，最后执行目录替换。核心原则是：
+```latex
+\review{2-2}{The current text revised in response to Reviewer 2, Comment 2.}
+```
 
-<AcademicCallout kind="method">
-  **编号整齐的价值低于科研源文件的完整性。** 如果无法证明重编号不会改变或丢失研究者内容，程序应当停止，而不是“尽量完成”。
-</AcademicCallout>
+这里的 `\review` 只回答“如果这段内容确实发生变化，它属于哪个 reviewer comment”。它不会自动把 wrapper 里面的全部文字染色。若 parent/current 内容完全相同，即使 current source 被 `\review{...}` 包裹，也仍然保持黑色。
 
-Git 仍然负责通用版本控制；这个 Skill 只对论文生命周期中高风险、可形式化的动作施加更窄的约束。
+作者主动修改不需要另一套 `\user` wrapper：**不属于 reviewer provenance、但被 change proof 确认为当前修改的内容，即为 author-driven change。** 这使 WHAT 和 WHO 保持分离，也避免为了视觉效果在科学正文里堆积越来越多 markup。
 
-## 从零开始如何使用
+当前 marked manuscript 的 presentation contract 是：
 
-项目要求 Python 3.11+、PyYAML、LaTeX 工具链、`latexdiff` 和 Poppler。第一次使用先检查真实运行环境：
+<ResponsiveTable caption="Table 4. v2.1.0 marked manuscript 的视觉语义" variant="striped-minimal">
+
+| 当前内容 | 最终表现 |
+| :-- | :-- |
+| Reviewer / Editor 驱动的当前新增或替换 | `RubineRed` |
+| 作者主动的当前新增或替换 | `ForestGreen` |
+| 未变化科学内容 | black |
+| citation marker、DOI、URL | xcolor 原生 `blue` |
+| parent-only deletion | 不显示 |
+
+</ResponsiveTable>
+
+这里有一个容易忽略但很重要的定义：**marked manuscript = current clean manuscript + revision highlighting**。它不是 forensic diff，也不展示已经从 current source 删除的 parent-only 内容。
+
+## Source、TeX、State 和 PDF 各自负责什么
+
+另一个容易引发错误的设计是从最终 PDF 反向推断正文、编号或 response correctness。PDF 是排版后的结果，文本提取顺序、字体编码和页面几何都可能受模板影响，因此它不适合作为科学状态 authority。
+
+v2.1.0 将 authority 明确拆成四层：
+
+<ResponsiveTable caption="Table 5. 构建过程中不同状态来源的权威边界" variant="striped-minimal">
+
+| Authority | 负责的状态 | 不负责什么 |
+| :-- | :-- | :-- |
+| Source | 科学内容、结构、parent/current 比较 | 页面坐标和最终排版 |
+| TeX | labels、citations、bibliography、line locations、package events | 判断修改为什么发生 |
+| State | round ancestry、冻结历史、artifact freshness | 重写科学内容 |
+| PDF | 最终阅读、视觉检查和交付 | 反向定义 revision / response 科学正确性 |
+
+</ResponsiveTable>
+
+因此，response location 使用 `lineno` 与 AUX labels 获取；编号、引用和 bibliography 状态来自 TeX 中间状态；response 的关键执行事件也通过 TeX sidecar 验证。PDF 仍然需要做最终视觉 QA，但它不再反馈到 change detection 或 scientific-state 判断。
+
+## Response letter 也是 lifecycle 的一部分
+
+每轮 revision 有自己的 reviewer comments 和 `responses.tex`。作者为每条 detailed comment 填写一个 `\Response{ID}{...}`；如果 reviewer 确实导致 reference addition 或 metadata change，还可以使用 `\ReviewReference` 建立 causal provenance。
+
+Response letter 的 opening、correspondence block 和签署结构由 package-owned template 统一生成，正文回复仍由研究者控制。当前 line location 从最终 marked source 的 TeX-native state 得到，而不是从 PDF bbox 反推。
+
+这使 response 不再是一个和正文分离的 Word/TeX 文件，而是能够与 comment ID、manuscript provenance、line location 和当前 revision 共同接受 audit 的正式 artifact。
+
+## 回滚、重编号和历史可复现性为什么必须保守
+
+生命周期系统中最危险的操作不是创建新文件，而是删除、回滚和重编号，因为它们可能改变已经形成的科研历史。
+
+因此 `rollback` 和 `reindex` 都要求显式确认，并在变更前保存 archive；历史轮次还会使用冻结状态验证 source、bibliography、authors 和 ancestry。构建 manifest 同时将正式 artifact 标记为 `CURRENT`、`STALE` 或 `MISSING`，输入发生变化后不会继续把一个旧 PDF 当作当前结果。
+
+这套设计的目标不是追求“自动修复一切”，而是让危险状态尽早暴露。对于无法唯一解析的 duplicate/context、部分复杂数学定位环境和不满足 contract 的历史状态，系统宁可 fail closed，也不静默猜测。
+
+## 最小使用流程
+
+安装后先检查环境：
 
 ```bash
 git clone https://github.com/cigit-zgy/sci-manuscript-skill.git
 cd sci-manuscript-skill
 python -m pip install .
-
 sci-manuscript doctor
 ```
 
-中文稿件可以额外检查 CJK 编译与字形：
+初始化稿件并构建初稿：
 
 ```bash
-sci-manuscript doctor --language zh
+sci-manuscript init --project /path/to/paper
+sci-manuscript build --project /path/to/paper
 ```
 
-作者资料可以作为用户级复用库保存，但作者在某一篇论文中的角色仍在初始化时显式指定：
+收到审稿意见后创建下一轮：
 
 ```bash
-sci-manuscript authors configure ~/authors.yaml
-sci-manuscript authors list
+sci-manuscript revision --project /path/to/paper --yes
 ```
 
-初始化论文工作区：
+研究者显式修改正文和 response 后，可以只构建 marked manuscript，也可以执行完整交叉验证：
 
 ```bash
-sci-manuscript init \
-  --project /path/to/existing-project \
-  --title "Manuscript title" \
-  --journal "Target Journal" \
-  --publisher elsevier \
-  --language en \
-  --article-type "Research Article" \
-  --first-author first_author \
-  --corresponding-author corresponding_author
+sci-manuscript build --project /path/to/paper --target marked
+sci-manuscript build --project /path/to/paper --target all
 ```
 
-日常构建：
+常用 build target 的含义如下。
 
-```bash
-sci-manuscript status --project /path/to/existing-project
-sci-manuscript build --project /path/to/existing-project
-```
+<ResponsiveTable caption="Table 6. revision round 的主要 build target" variant="striped-minimal">
 
-收到审稿意见后，显式创建下一轮：
-
-```bash
-sci-manuscript revision \
-  --project /path/to/existing-project \
-  --reviews /path/to/reviewer_comments.md \
-  --yes
-```
-
-完成经过研究者确认的正文修改和回复后，再构建正式投稿产物：
-
-```bash
-sci-manuscript submission --project /path/to/existing-project
-```
-
-需要更新共享 BibTeX 时：
-
-```bash
-sci-manuscript sync-bib \
-  --project /path/to/existing-project \
-  --bib /path/to/export.bib
-```
-
-它使用用户显式提供的 BibTeX export，不需要连接 Zotero 进程或网络服务。
-
-### 当前主要命令
-
-<ResponsiveTable caption="Table 5. CLI 命令与职责边界" variant="striped-minimal">
-
-| 命令 | 职责 | 是否修改科研正文 |
-| :-- | :-- | :--: |
-| `doctor` | 检查依赖与真实编译环境 | 否 |
-| `authors configure/list/show` | 管理可复用作者资料 | 否 |
-| `init` | 创建并编译 `r00` 工作区 | 否 |
-| `status` | 报告当前轮次、父版本和正式产物 | 否 |
-| `build` | 编译当前 clean manuscript | 否 |
-| `revision` | 经确认创建唯一的下一轮 revision | 否 |
-| `submission` | 构建当前轮正式投稿相关产物 | 否 |
-| `rollback` | 归档未编辑的最新 revision | 否 |
-| `reindex` | 事务式修复 revision 编号间隙 | 否 |
-| `sync-bib` | 原子替换共享 bibliography | 否 |
+| Target | 主要工作 |
+| :-- | :-- |
+| `clean` | current source + bibliography → clean PDF |
+| `marked` | parent/current comparison → marked PDF |
+| `response` | 获取当前 marked state、位置并构建 response letter |
+| `all` | clean + marked + response + cross-artifact validation |
 
 </ResponsiveTable>
 
-这张表也是整个 Skill 的基本边界：这些命令处理**稿件状态**，不隐含对 scientific prose 的修改权限。
+如果需要撤销误创建 revision 或整理编号，可以分别使用 `rollback --yes` 和 `reindex --yes`。这些命令属于破坏性 lifecycle 操作，因此不会像普通 build 那样静默执行。
 
-## 如何验证这套工作流
+## 当前验证与边界
 
-如果一个工具强调“可复现”，仅有目录设计和命令约定并不够，关键状态转换必须通过真实工具链验证。
-
-项目的 release gate 分为代码、生命周期、LaTeX 工具链和最终产物几个层次：
-
-<ResponsiveTable caption="Table 6. 工作流验证的层次、检查对象与证据范围" variant="striped-minimal">
-
-| 验证层次 | 代表性检查 | 回答的问题 |
-| :-- | :-- | :-- |
-| 代码质量 | `pytest`、Ruff、mypy、wheel build | 实现是否满足静态与单元级约束 |
-| 生命周期 | `r00 → r01 → r02` E2E、rollback、reindex | 状态转换是否按契约执行 |
-| LaTeX 工具链 | publisher compilation、`latexdiff`、Poppler | 真实外部依赖下能否得到目标产物 |
-| PDF 产物 | 修改来源、行位置、overfull box、页面检查 | 最终文件是否可读且来源一致 |
-
-</ResponsiveTable>
-
-这里必须区分**工程验证**和**科学有效性**。这些测试可以证明程序是否按照定义生成文件，却无法证明论文中的科学结论正确，也不能保证某一种 reviewer-response strategy 一定合理。
-
-## 我刻意没有让它做什么
-
-一个科研工作流的可信度同样取决于它拒绝承担哪些职责。当前项目不会自行生成或润色 scientific prose，不会替研究者决定 reviewer comment 应该如何回答，也不会根据缺失信息推断作者身份、科学结论或投稿策略。
+v2.1.0 的发布门禁包括 Python 单元/集成测试、真实 LaTeX 工具链、clean-wheel 安装与资源检查，以及完整稿件 parent/current gold-pair 的 revision truth audit。该 gold pair 中的 false positive、false negative 和 ambiguity 均为 0；这个结果证明的是**该验证对象与当前测试边界内的实现正确性**，而不是宣称任意 LaTeX 稿件都不存在未来 bug。
 
 <AcademicCallout kind="caution">
-  这套工具不能替代研究者对科学内容、期刊政策和最终 PDF 的审阅。自动化可以降低文件管理和重复构建的风险，但不能证明一篇论文的科学论证正确。
+  当前 revision scanner 是保守的 TeX-aware scanner，而不是通用 LaTeX AST；没有 fuzzy move detection、语义 NLP parser 或数学 AST。无法唯一证明的情况会 fail closed。Tectonic 拥有最完整的集成验证证据，传统 LaTeX toolchain 仍依赖本地安装环境。
 </AcademicCallout>
 
-## 结语
+这种限制是有意的。对科研基础设施而言，一个明确拒绝不确定输入的系统，通常比一个试图“聪明地猜完所有情况”的系统更容易审计。
 
-`sci-manuscript-skill` 的设计出发点并不复杂：科研论文是一个需要多轮演化、多人审阅和多种正式产物的长期对象，因此它应当拥有明确的生命周期模型。
+## 这套设计最终解决的是什么
 
-在 Agent 环境中，这种明确性尤其重要。Agent 适合承担编译、状态检查、版本创建、差异定位和打包等机械工作；研究者继续保留对正文、回复和科学判断的控制权。
+`sci-manuscript-skill` 最终并不是给 LaTeX 增加更多命令，而是把原本隐含在研究者习惯中的状态外显出来：版本有明确 ancestry，修改有明确 provenance，正式 artifact 有 freshness，revision color 需要 change proof，TeX 执行需要 render proof，历史轮次有冻结状态，Agent 操作有权限边界。
 
-因此，这套 Skill 的核心价值不是“自动写论文”，而是把原本依赖个人记忆和习惯的操作转换为**有边界、可检查、可恢复、可复现的科研工程流程**。如果后续继续扩展，我仍会优先维护这一原则：在增加自动化之前，先定义状态、所有权、失败条件和恢复路径。
+因此，LLM Agent 在这个工作流中的角色也更清楚：它可以成为一个执行者，但不应该成为隐式的科学内容所有者。真正值得自动化的，是那些能够被定义、检查和恢复的科研工程操作。
 
-## Reference
-
-1. [cigit-zgy/sci-manuscript-skill](https://github.com/cigit-zgy/sci-manuscript-skill)
+项目源码与正式版本：[`cigit-zgy/sci-manuscript-skill`](https://github.com/cigit-zgy/sci-manuscript-skill) · [`v2.1.0 Release`](https://github.com/cigit-zgy/sci-manuscript-skill/releases/tag/v2.1.0)
