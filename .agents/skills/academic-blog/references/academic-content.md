@@ -10,12 +10,14 @@ For Chinese technical prose, consult Fenng's `Tech-Doc-Style-Chinese` as a secon
 
 ## Writing metadata
 
-Place Markdown or MDX in `src/content/posts/`. Use a stable descriptive filename without a date prefix. Required frontmatter is `pubDatetime`, `title`, `description`, and `topic`; use only these topics:
+General Markdown or MDX writing belongs in `src/content/posts/`. Use a stable descriptive filename without a date prefix. Required frontmatter is `pubDatetime`, `title`, `description`, and `topic`; use only these topics:
 
 - Wastewater Modelling
 - Scientific Machine Learning
 - Scientific Computing
 - Research Notes
+
+`Paper Review` is an explicit separate content system. Its selection, evidence, scoring, file organization, and writing rules are defined only in the repository-root `PAPER_REVIEW.md`; this reference must not duplicate them.
 
 Add only tags supported by actual content. Use `featured: true` selectively. Keep unfinished layout or content checks as `draft: true`; drafts must remain absent from production routes, listings, RSS, sitemap, and Pagefind.
 

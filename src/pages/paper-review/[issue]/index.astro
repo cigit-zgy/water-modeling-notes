@@ -1,0 +1,32 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import PaperReviewLayout from "@/layouts/PaperReviewLayout.astro";
+
+export async function getStaticPaths() {
+  const issues = await getCollection("paperReviewIssues", ({ data }) => !data.draft);
+  return issues.map(issue => ({
+    params: { issue: issue.data.issue },
+    props: { issue },
+  }));
+}
+
+type Props = {
+  issue: CollectionEntry<"paperReviewIssues">;
+};
+
+const { issue }: Props = Astro.props;
+const { Content, headings } = await render(issue);
+---
+
+<PaperReviewLayout
+  title={issue.data.title}
+  description={issue.data.description}
+  pubDatetime={issue.data.pubDatetime}
+  modDatetime={issue.data.modDatetime}
+  {headings}
+  label={`Paper Review · ${issue.data.reviewStage}`}
+  backHref="/paper-review/"
+  backLabel="Paper Review"
+>
+  <Content />
+</PaperReviewLayout>

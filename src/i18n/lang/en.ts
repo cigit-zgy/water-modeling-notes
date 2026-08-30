@@ -6,6 +6,7 @@ export default {
     posts: "Posts",
     writing: "Writing",
     research: "Research",
+    paperReview: "Paper Review",
     publications: "Publications",
     tags: "Tags",
     about: "About",
