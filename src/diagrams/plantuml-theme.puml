@@ -1,7 +1,7 @@
 skinparam backgroundColor #111113
 skinparam shadowing false
 skinparam roundcorner 12
-skinparam defaultFontName "Noto Sans CJK SC"
+skinparam defaultFontName "Latin Modern Sans"
 skinparam defaultFontColor #F5F5F7
 skinparam defaultFontSize 12
 skinparam ArrowColor #8E8E93
