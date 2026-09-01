@@ -15,6 +15,20 @@ The blog supports two diagram-as-code formats only: Mermaid and PlantUML.
 - Keep labels short; split long labels over two lines.
 - Published pages use local static SVG only.
 
+## Typography contract
+
+Diagrams do not own a separate font system. They reuse the blog typography roles exactly:
+
+- ordinary Latin text: `Latin Modern Sans`;
+- Chinese/CJK glyphs: `LXGW WenKai Screen`;
+- bold labels/headings: the same UI stack at the site-defined bold weight;
+- monospaced identifiers/code: `Maple Mono`, falling back to `LXGW WenKai Screen` for CJK;
+- mathematics: KaTeX remains the owner of mathematical typography and should not be imitated inside diagram templates.
+
+The renderer CI installs the same pinned font versions used by the site before Mermaid or PlantUML lays out text. Published pages render generated SVGs through `DiagramFigure.astro`, which inlines each trusted local SVG at Astro build time. This is intentional: an SVG loaded as a standalone `<img>` document cannot reliably inherit the page's self-hosted web fonts, while an inline SVG can use the exact `--font-ui` and `--font-mono` tokens already loaded by the blog.
+
+Do not hardcode Noto, Arial, Helvetica, system-ui, or another diagram-only font in a published template. Do not add a new font solely for diagrams.
+
 ## Mermaid template
 
 Use `mermaid.config.json` for all shared styling. Keep diagram source semantic and small.
