@@ -1,0 +1,26 @@
+skinparam backgroundColor #111113
+skinparam shadowing false
+skinparam roundcorner 12
+skinparam defaultFontName "Noto Sans CJK SC"
+skinparam defaultFontColor #F5F5F7
+skinparam defaultFontSize 12
+skinparam ArrowColor #8E8E93
+skinparam ArrowFontColor #AEAEB2
+skinparam ArrowThickness 1
+skinparam ParticipantBackgroundColor #1C1C1E
+skinparam ParticipantBorderColor #0A84FF
+skinparam ParticipantFontColor #F5F5F7
+skinparam ActorBackgroundColor #242426
+skinparam ActorBorderColor #64D2FF
+skinparam ActorFontColor #F5F5F7
+skinparam LifeLineBorderColor #636366
+skinparam LifeLineBackgroundColor #1C1C1E
+skinparam SequenceGroupBackgroundColor #111113
+skinparam SequenceGroupBorderColor #3A3A3C
+skinparam SequenceGroupHeaderFontColor #F5F5F7
+skinparam NoteBackgroundColor #242426
+skinparam NoteBorderColor #BF5AF2
+skinparam NoteFontColor #F5F5F7
+skinparam BoxBackgroundColor #111113
+skinparam BoxBorderColor #3A3A3C
+hide footbox

@@ -1,0 +1,25 @@
+@startuml
+!include plantuml-theme.puml
+scale max 760 width
+
+actor Supervisor
+participant "LLM Agent" as Agent
+participant "SKILL.md" as Skill
+participant "Python package" as Package
+participant "LaTeX toolchain" as Toolchain
+
+Supervisor -> Agent : 请求生命周期操作
+Agent -> Skill : 路由请求并检查授权边界
+Skill -> Package : 调用确定性命令
+Package -> Toolchain : compile / diff / package
+Toolchain --> Package : PDF、diff、diagnostics
+Package --> Skill : 状态与正式产物
+Skill --> Agent : 验证后的结果
+Agent --> Supervisor : 报告结果或请求显式确认
+
+alt 需要修改科研内容
+  Supervisor -> Agent : 提供或确认精确修改
+  Agent -> Package : 仅应用已确认操作
+  Package --> Agent : 更新后的受控状态
+end
+@enduml

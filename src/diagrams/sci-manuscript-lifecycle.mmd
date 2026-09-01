@@ -1,0 +1,33 @@
+flowchart TB
+  subgraph INITIAL["Initial submission"]
+    direction LR
+    A["已有科研项目"] --> B["doctor<br/>环境检查"] --> C["init<br/>initial_submission / r00"] --> D["build<br/>clean manuscript"]
+  end
+
+  D --> E{"当前任务"}
+  E -->|"初次投稿"| F["submission package"]
+  E -->|"收到审稿意见"| G["revision<br/>revision_01 / r01"]
+
+  subgraph REVISION["Revision cycle"]
+    direction LR
+    G --> H["显式修改<br/>正文 + responses"] --> I["submission"] --> J["clean + marked<br/>response + package"]
+  end
+
+  J --> K{"还有下一轮审稿？"}
+  K -->|"是"| L["创建相邻下一轮 revision"] --> G
+  K -->|"否"| M["Final handoff"]
+  G -. "rollback" .-> N["00_archive"]
+
+  classDef base fill:#1C1C1E,stroke:#636366,color:#F5F5F7,stroke-width:1.2px;
+  classDef primary fill:#1C1C1E,stroke:#0A84FF,color:#F5F5F7,stroke-width:1.7px;
+  classDef secondary fill:#1C1C1E,stroke:#64D2FF,color:#F5F5F7,stroke-width:1.6px;
+  classDef decision fill:#242426,stroke:#BF5AF2,color:#F5F5F7,stroke-width:1.6px;
+  classDef success fill:#1C1C1E,stroke:#30D158,color:#F5F5F7,stroke-width:1.6px;
+  classDef caution fill:#1C1C1E,stroke:#FF9F0A,color:#F5F5F7,stroke-width:1.5px;
+
+  class A,H,L,M base;
+  class C,G,I primary;
+  class B,D secondary;
+  class E,K decision;
+  class J success;
+  class N caution;
