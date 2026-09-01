@@ -1,13 +1,13 @@
 ---
 name: academic-blog
-description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, and the Apple Liquid Glass visual system. Use when adding or changing site pages, design, academic components, or content patterns in this repository.
+description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, the Apple Liquid Glass visual system, and diagram-as-code publishing. Use when adding or changing site pages, design, academic components, or content patterns in this repository.
 ---
 
 # Academic blog maintenance
 
 Keep changes compatible with the existing AstroPaper structure. Preserve the static-first architecture, content collections, Pagefind, RSS, sitemap, accessibility, and Astro view transitions. Extend an existing layer/component before creating a new abstraction.
 
-Before changing visual presentation, read [references/design-system.md](references/design-system.md) and [references/apple-design-references.md](references/apple-design-references.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). Read all relevant references when a task changes both article structure and UI.
+Before changing visual presentation, read [references/design-system.md](references/design-system.md) and [references/apple-design-references.md](references/apple-design-references.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). For diagrams, also read `src/diagrams/README.md`. Read all relevant references when a task changes both article structure and UI.
 
 ## Design reference hierarchy
 
@@ -33,7 +33,6 @@ Treat the blog as an academic technical publication, not a marketing site.
 - Use consistent terminology; do not vary scientific or technical terms merely for stylistic variety.
 - Prefer direct, compact Chinese. Remove repetition before adding explanation.
 - Tables and figures must add information, not decoration. Every substantive table requires a caption; every figure requires a meaningful caption and alt text.
-- Use Graphviz/DOT for graph-structured workflow, dependency, state-transition, and architecture diagrams when appropriate. Published pages show only the rendered SVG, never DOT source.
 - For Chinese technical prose, also consult Fenng's `Tech-Doc-Style-Chinese` as a secondary writing reference: https://github.com/Fenng/Tech-Doc-Style-Chinese . Its priorities—fact fidelity, terminology consistency, controlled technical Chinese, and preservation of machine-readable content—are subordinate to this project's academic conventions and the user's current instructions.
 
 ## Architecture contract
@@ -101,21 +100,23 @@ The site uses an Apple-inspired Liquid Glass design language. Content remains pr
 - Tables use a clearly visible but low-contrast odd/even zebra pattern defined in `typography.css`.
 - `AcademicCallout` labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are stronger than metadata; callout bodies remain regular weight.
 - Article lead text and block quotations use quiet semantic surfaces; they do not need Liquid Glass.
-- Figures, Graphviz SVGs, tables, and code blocks never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
+- Figures, diagram SVGs, tables, and code blocks never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
 - Fenced code and inline code both use Dracula. Shiki remains `dracula` in both reading themes unless explicitly redesigned later.
 
-## Graphviz contract
+## Diagram contract
 
-Graphviz diagrams are publication artifacts. They are authored as DOT and rendered to static SVG before publication.
+The blog supports exactly two diagram-as-code formats for authored diagrams: Mermaid and PlantUML.
 
-- Keep DOT sources under `src/diagrams/` and rendered SVGs under `public/figures/` using matching descriptive basenames.
-- Use Graphviz `dot` for directed workflow/state/dependency diagrams unless another Graphviz engine is explicitly justified.
-- Render locally with `dot -Tsvg <source.dot> -o <figure.svg>` and inspect the resulting geometry before committing.
-- Published pages load only the committed local SVG. Do not use browser-side Graphviz/WASM, remote renderers, graph CDNs, or runtime parsing for article figures.
-- Use `LXGW WenKai Screen` for Chinese labels and restrained semantic Apple colours. Keep graph backgrounds transparent unless an opaque background is required for meaning.
-- Provide meaningful HTML `alt` text and a figure caption; DOT source is not exposed to readers.
-- Diagrams remain inside the reading column at desktop and mobile widths.
-- If a DOT change affects a published figure, regenerate the SVG in the same commit. Source/render mismatch is a release failure.
+- Use Mermaid for ordinary workflows, architecture overviews, state-like flows, and compact directed process diagrams.
+- Use PlantUML for sequence, component, class, and UML-style interaction diagrams where explicit participants and message order matter.
+- Keep every diagram source in `src/diagrams/`; do not scatter diagram source inside article MDX.
+- Shared Mermaid styling lives in `src/diagrams/mermaid.config.json`; shared PlantUML styling lives in `src/diagrams/plantuml-theme.puml`.
+- Prefer compact diagrams. Keep labels short, avoid decorative subgraphs, and use a target publication width around 680–760 px. Large diagrams should be reorganized before increasing width.
+- Published pages load pre-rendered local SVG only. Readers must not execute Mermaid, PlantUML, Java, WASM, Graphviz, or a remote diagram renderer.
+- Diagram rendering is performed by the repository workflow in `.github/workflows/render-diagrams.yml` with pinned Mermaid CLI and PlantUML versions.
+- A source change and its generated SVG are one logical artifact. Do not merge a diagram-source change unless the renderer has regenerated the corresponding SVG successfully.
+- Mermaid and PlantUML diagrams use the current Apple/Liquid Glass dark semantic palette: near-black background, neutral elevated nodes, system blue/cyan interaction edges, restrained purple for decisions/groups, and green/orange only for semantic outcomes or rollback paths.
+- Every diagram used in an article has meaningful alt text and a figure caption. The caption may name the source format when useful, but readers never see diagram source by default.
 
 ## Deployment contract
 
@@ -146,8 +147,9 @@ Before presenting a preview or production result, check at minimum:
 - tables have captions and visible low-contrast zebra rows in both themes;
 - headings rely on hierarchy, not decorative rainbow colouring;
 - fenced and inline code use Dracula;
-- no published article depends on Mermaid, a remote graph renderer, or browser-side diagram parsing;
-- every Graphviz source used by a published post has a regenerated local SVG with matching content;
+- every Mermaid/PlantUML source used by a published post has a regenerated local SVG;
+- no published article depends on browser-side diagram parsing or a remote renderer;
+- diagram width remains within the reading column at desktop and mobile widths;
 - header avatar renders from the local asset;
 - reading-progress control works on desktop and mobile;
 - navigation, title wrapping, table/code overflow, figures, focus visibility, press feedback, reduced motion, reduced transparency, and high contrast remain sound.
