@@ -1,0 +1,106 @@
+---
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
+type Props = {
+  src: string;
+  alt: string;
+  variant?: "compact" | "wide";
+};
+
+const { src, alt, variant = "wide" } = Astro.props;
+
+if (!src.startsWith("/figures/") || !src.endsWith(".svg") || src.includes("..")) {
+  throw new Error(`DiagramFigure only accepts local /figures/*.svg assets: ${src}`);
+}
+
+const absolutePath = path.join(process.cwd(), "public", src.slice(1));
+const sourceSvg = await readFile(absolutePath, "utf8");
+
+if (!sourceSvg.includes("<svg")) {
+  throw new Error(`DiagramFigure received an invalid SVG: ${src}`);
+}
+
+const svg = sourceSvg.replace(
+  /<svg\b/,
+  '<svg aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"'
+);
+---
+
+<figure
+  class:list={[
+    "diagram-figure",
+    variant === "compact" ? "diagram-figure--compact" : "diagram-figure--wide",
+  ]}
+  data-pagefind-ignore
+>
+  <div class="diagram-inline" role="img" aria-label={alt} set:html={svg} />
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .diagram-figure {
+    width: 100%;
+    margin-block: 2rem;
+  }
+
+  .diagram-figure--compact {
+    max-width: 47.5rem;
+    margin-inline: auto;
+  }
+
+  .diagram-figure--wide {
+    max-width: 47.5rem;
+    margin-inline: auto;
+  }
+
+  .diagram-inline {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    background: #111113;
+  }
+
+  .diagram-inline :global(svg) {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto;
+    font-family: var(--font-ui) !important;
+  }
+
+  .diagram-inline :global(svg text),
+  .diagram-inline :global(svg tspan),
+  .diagram-inline :global(svg foreignObject),
+  .diagram-inline :global(svg foreignObject div),
+  .diagram-inline :global(svg foreignObject span),
+  .diagram-inline :global(svg foreignObject p) {
+    font-family: var(--font-ui) !important;
+  }
+
+  .diagram-inline :global(.diagram-mono),
+  .diagram-inline :global(.diagram-mono text),
+  .diagram-inline :global(.diagram-mono tspan),
+  .diagram-inline :global(.diagram-mono span),
+  .diagram-inline :global(.diagram-mono p) {
+    font-family: var(--font-mono) !important;
+  }
+
+  .diagram-figure figcaption {
+    margin-top: 0.85rem;
+    color: var(--text-muted);
+    font-family: var(--font-ui);
+    font-size: 0.96rem;
+    font-weight: 400;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  @media (max-width: 639px) {
+    .diagram-inline {
+      border-radius: 0.8rem;
+    }
+  }
+</style>
