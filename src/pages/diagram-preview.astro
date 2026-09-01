@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import DiagramFigure from "@/components/DiagramFigure.astro";
 ---
 
 <Layout
@@ -18,7 +19,7 @@ import Footer from "@/components/Footer.astro";
         Mermaid + PlantUML
       </h1>
       <p class="text-muted-foreground mt-4 max-w-2xl text-lg leading-relaxed">
-        两套图形使用同一套 Apple/Liquid Glass 深色语义色，并统一限制在正文阅读宽度内。发布页只加载预渲染的本地 SVG。
+        两套图形使用同一套 Apple/Liquid Glass 深色语义色，并严格复用博客正文的字体角色。发布页只加载预渲染的本地 SVG，并在构建时内联，使图中文字与正文使用完全相同的 Web Font。
       </p>
     </header>
 
@@ -26,41 +27,36 @@ import Footer from "@/components/Footer.astro";
       <section>
         <h2>Mermaid：科研工作流</h2>
         <p>
-          Mermaid 用于普通 workflow、架构概览和有向流程。模板缩小 node/rank spacing，并优先通过分组方向压缩纵向高度。
+          Mermaid 用于普通 workflow、架构概览和有向流程。模板缩小 node/rank spacing，并优先通过分组方向压缩纵向高度。普通标签与正文相同，使用 Latin Modern Sans；中文由 LXGW WenKai Screen 呈现。
         </p>
-        <figure>
-          <img
-            src="/figures/sci-manuscript-lifecycle-mermaid.svg"
-            alt="使用 Mermaid 绘制的 sci-manuscript-skill 稿件生命周期流程图"
-            width="760"
-            height="475"
-            loading="eager"
-            decoding="async"
-          />
-          <figcaption>
-            <strong>Figure 1.</strong> Mermaid 模板示例：稿件生命周期。显示宽度约 760 px，节点和层级间距保持紧凑。
-          </figcaption>
-        </figure>
+        <DiagramFigure
+          src="/figures/sci-manuscript-lifecycle-mermaid.svg"
+          alt="使用 Mermaid 绘制的 sci-manuscript-skill 稿件生命周期流程图"
+          variant="compact"
+        >
+          <strong>Figure 1.</strong> Mermaid 模板示例：稿件生命周期。目标显示宽度不超过正文阅读列，节点和层级间距保持紧凑。
+        </DiagramFigure>
       </section>
 
       <section>
         <h2>PlantUML：人—Agent—工具链交互</h2>
         <p>
-          PlantUML 用于 sequence、component 和其他 UML 型图形。参与者数量受控，消息文本保持短句，避免横向无限扩张。
+          PlantUML 用于 sequence、component 和其他 UML 型图形。参与者数量受控，消息文本保持短句。页面内联 SVG 后会覆盖 PlantUML 生成环境的字体声明，因此最终显示字体与正文一致，而不会回退到 CI 环境中的 Noto 字体。
         </p>
-        <figure>
-          <img
-            src="/figures/sci-manuscript-operation.svg"
-            alt="使用 PlantUML 绘制的 Supervisor、LLM Agent、Skill、Python package 和 LaTeX toolchain 交互序列图"
-            width="691"
-            height="484"
-            loading="eager"
-            decoding="async"
-          />
-          <figcaption>
-            <strong>Figure 2.</strong> PlantUML 模板示例：生命周期操作的授权与执行边界。
-          </figcaption>
-        </figure>
+        <DiagramFigure
+          src="/figures/sci-manuscript-operation.svg"
+          alt="使用 PlantUML 绘制的 Supervisor、LLM Agent、Skill、Python package 和 LaTeX toolchain 交互序列图"
+          variant="wide"
+        >
+          <strong>Figure 2.</strong> PlantUML 模板示例：生命周期操作的授权与执行边界。
+        </DiagramFigure>
+      </section>
+
+      <section>
+        <h2>字体角色</h2>
+        <p>
+          图形不维护独立字体系统。普通文本、标题、中文和等宽标识分别复用博客现有的 typography token；数学内容仍交给 KaTeX，不在 Mermaid 或 PlantUML 中重新定义数学字体。
+        </p>
       </section>
     </article>
   </main>
