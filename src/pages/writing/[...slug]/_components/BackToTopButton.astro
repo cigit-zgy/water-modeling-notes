@@ -11,7 +11,7 @@ const t = useTranslations(Astro.currentLocale);
 >
   <button
     data-button="back-to-top"
-    class="group bg-background relative grid size-14 place-items-center rounded-full shadow-xl"
+    class="glass-surface group relative grid size-14 place-items-center rounded-full"
     title={t.post.backToTop}
     aria-label={t.post.backToTop}
   >
@@ -53,7 +53,7 @@ const t = useTranslations(Astro.currentLocale);
 
       progressIndicator.style.setProperty(
         "background-image",
-        `conic-gradient(var(--accent-cyan) 0 ${scrollPercent}%, var(--border-subtle) ${scrollPercent}% 100%)`
+        `conic-gradient(var(--accent-primary) 0 ${scrollPercent}%, var(--border-subtle) ${scrollPercent}% 100%)`
       );
 
       const isVisible = scrollTotal > 0 && scrollTop / scrollTotal > 0.16;

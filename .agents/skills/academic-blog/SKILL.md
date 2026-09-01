@@ -1,13 +1,25 @@
 ---
 name: academic-blog
-description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, and the Dracula At Night visual system. Use when adding or changing site pages, design, academic components, or content patterns in this repository.
+description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, and the Apple Liquid Glass visual system. Use when adding or changing site pages, design, academic components, or content patterns in this repository.
 ---
 
 # Academic blog maintenance
 
 Keep changes compatible with the existing AstroPaper structure. Preserve the static-first architecture, content collections, Pagefind, RSS, sitemap, accessibility, and Astro view transitions. Extend an existing layer/component before creating a new abstraction.
 
-Before changing visual presentation, read [references/design-system.md](references/design-system.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). Read both when a task changes an article component or layout.
+Before changing visual presentation, read [references/design-system.md](references/design-system.md) and [references/apple-design-references.md](references/apple-design-references.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). Read all relevant references when a task changes both article structure and UI.
+
+## Design reference hierarchy
+
+For Apple-like Web UI, apply sources in this order:
+
+1. the user's current instruction;
+2. this project's `SKILL.md` and design-system reference;
+3. Apple Human Interface Guidelines and Apple Liquid Glass documentation;
+4. Emil Kowalski's `skills/apple-design` for interaction, material, motion, and typography judgment;
+5. `bowen31337/apple-design` for concrete Web implementation patterns.
+
+Do not vendor third-party skill text into this repository. Paraphrase principles, preserve source links, and review upstream licensing before copying implementation code. The exact sources and project adaptation are recorded in `references/apple-design-references.md`.
 
 ## Global writing contract
 
@@ -21,71 +33,101 @@ Treat the blog as an academic technical publication, not a marketing site.
 - Use consistent terminology; do not vary scientific or technical terms merely for stylistic variety.
 - Prefer direct, compact Chinese. Remove repetition before adding explanation.
 - Tables and figures must add information, not decoration. Every substantive table requires a caption; every figure requires a meaningful caption and alt text.
-- Flowcharts should be authored with Mermaid when appropriate, but published pages show only the rendered diagram, never Mermaid source.
+- Use Graphviz/DOT for graph-structured workflow, dependency, state-transition, and architecture diagrams when appropriate. Published pages show only the rendered SVG, never DOT source.
 - For Chinese technical prose, also consult Fenng's `Tech-Doc-Style-Chinese` as a secondary writing reference: https://github.com/Fenng/Tech-Doc-Style-Chinese . Its priorities—fact fidelity, terminology consistency, controlled technical Chinese, and preservation of machine-readable content—are subordinate to this project's academic conventions and the user's current instructions.
 
 ## Architecture contract
 
-Keep the project small by removing only **confirmed** dead/duplicate code; do not strip AstroPaper features merely because they are currently disabled in configuration.
+Keep the project small by removing only confirmed dead or duplicate code; do not strip AstroPaper features merely because they are currently disabled in configuration.
 
-Shared styling has four owners and no fifth patch layer:
+Shared styling has five explicit owners:
 
 1. `src/styles/fonts.css`: font-face definitions only.
-2. `src/styles/theme.css`: colour tokens and font-family tokens only.
-3. `src/styles/typography.css`: article typography, headings, tables, code, quotations, figures, and callouts.
-4. `src/styles/global.css`: layout utilities, global interaction, transitions, navigation, identity, and home-page accents.
+2. `src/styles/theme.css`: semantic colour, material, shadow, and font-family tokens.
+3. `src/styles/liquid-glass.css`: reusable Liquid Glass material recipes and accessibility fallbacks.
+4. `src/styles/typography.css`: article typography, headings, tables, code, quotations, figures, and callouts.
+5. `src/styles/global.css`: layout utilities, global interaction, transitions, navigation, identity, home-page accents, and component placement.
 
 Rules:
 
 - Do not create `refinements.css`, `overrides.css`, or article-local CSS for shared UI.
-- Do not duplicate the same visual rule in a component and a global stylesheet. Components provide semantics/structure; the owning stylesheet provides shared presentation.
-- Do not represent the header avatar twice (for example `<img>` plus a pseudo-element).
+- `liquid-glass.css` is a first-class material layer, not a patch layer. Do not duplicate its blur/specular/rim/shadow recipe in arbitrary components.
+- Do not duplicate the same visual rule in a component and a shared stylesheet. Components provide semantics and structure; the owning stylesheet provides shared presentation.
+- Do not represent the header avatar twice.
 - Remove experiment assets, placeholder content, obsolete configuration files, and test-only posts once they are no longer used.
-- Preserve upstream optional capabilities unless their removal is an explicit project decision; this keeps AstroPaper updates tractable.
-- Dependencies are removed only after repository-wide use has been checked and the lockfile can be updated/validated in the same change.
+- Preserve upstream optional capabilities unless their removal is an explicit project decision.
+- Add runtime dependencies only for an observed requirement and update the lockfile in the same validated change.
 
 ## Global visual contract
 
-UI and typography rules are global.
+The site uses an Apple-inspired Liquid Glass design language. Content remains primary; glass is reserved for navigation, floating controls, search, TOC, compact controls, and selected high-hierarchy surfaces.
 
-- The visual system is **Dracula At Night only**. Do not combine it with figure-derived palettes or introduce a parallel scientific accent system.
-- Shared components use semantic variables from `src/styles/theme.css`; avoid scattered hex values. Mermaid's JS theme literals must mirror the canonical Dracula tokens.
-- Chinese glyphs use `LXGW WenKai Screen` everywhere: reading text, headings, navigation, metadata, tables, captions, TOC, callouts, and Chinese glyphs inside code.
+- Do not use Dracula At Night as the site UI palette. Dracula is retained only for fenced and inline code because it is a code-syntax surface, not site chrome.
+- Shared components consume semantic variables from `src/styles/theme.css`; avoid scattered hex values.
+- Glass must include translucency, blur plus saturation, a top-edge specular highlight, a hairline rim, and soft depth. Blur alone is not Liquid Glass.
+- Never stack two translucent glass surfaces directly on top of each other.
+- Use regular material for nav/toolbars, thin material for compact controls, thick material only for menus/sheets or rare high-hierarchy surfaces.
+- Use Liquid Glass sparingly. Article prose, tables, figures, equations, and code blocks prioritize readability over translucency.
+- Chinese glyphs use `LXGW WenKai Screen` everywhere. Latin reading/UI text uses Latin Modern Sans; code uses Maple Mono; KaTeX keeps its mathematical font stack.
 - Long-form body text is non-serif and regular weight (`400`). Bold/semibold is reserved for headings, labels, table headers, and semantic emphasis.
-- Latin reading/UI text uses Latin Modern Sans; code uses Maple Mono; mathematical notation keeps KaTeX's math fonts.
-- Fenced code and inline code both use Dracula. Shiki uses `dracula` for light and dark site themes.
-- Heading hierarchy is global: H1 purple, H2 cyan, H3 pink, H4 green. Orange is reserved for caution/caption/limited secondary emphasis.
+- Heading hierarchy is established through size, optical tracking, spacing, and weight. Do not assign decorative colours by heading level.
+- Use a restrained adaptive light field behind floating glass so material transparency remains perceptible without competing with article content.
+- The uploaded Ghibli-style avatar remains the site identity image directly left of `cigit-zgy`.
+- The circular reading-progress/back-to-top control remains available on both desktop and mobile and uses a glass control surface.
+
+## Interaction and motion contract
+
+- Give press feedback immediately; compact controls may use a subtle scale response on `:active`.
+- Keep navigation and reversible transitions spatially consistent.
+- Use CSS transitions for simple hover/focus/press states; do not add Motion, GSAP, or another motion dependency unless a real gesture requires interruptible spring behavior.
+- Avoid animation that delays access to academic content.
+- Prefer `transform` and `opacity` for animated properties.
+- Honor `prefers-reduced-motion` and keep the reduced-motion experience fully functional.
+
+## Liquid Glass accessibility contract
+
+- Include both `backdrop-filter` and `-webkit-backdrop-filter`.
+- Provide a solid or near-solid fallback when `backdrop-filter` is unsupported.
+- `prefers-reduced-transparency: reduce` removes glass blur and uses an opaque semantic surface.
+- `prefers-contrast: more` adds an unambiguous edge/border.
+- Body text must maintain at least 4.5:1 effective contrast through glass.
+- Touch targets remain at least 44 px.
+- Use `focus-visible` on every interactive control.
+- Animate primarily `transform` and `opacity`; avoid layout-property animation.
+
+## Tables, callouts, figures, and code
+
 - Every substantive academic table has a caption above it. Captions are slightly larger than ordinary metadata.
-- Tables use a restrained but clearly visible odd/even zebra pattern defined in `typography.css`; do not add competing Tailwind row backgrounds in `ResponsiveTable.astro`.
-- `AcademicCallout` labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are slightly larger and stronger than metadata; callout bodies remain regular weight.
-- Article lead/deck text and block quotations use a quiet Dracula surface with a visibly thicker accent rule on the left.
-- Figures, Mermaid SVGs, tables, and code blocks must never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
-- The uploaded Ghibli-style avatar is the site identity image and must appear as a real image element directly left of `cigit-zgy`.
-- The circular reading-progress/back-to-top control must work on both mobile and desktop.
+- Tables use a clearly visible but low-contrast odd/even zebra pattern defined in `typography.css`.
+- `AcademicCallout` labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are stronger than metadata; callout bodies remain regular weight.
+- Article lead text and block quotations use quiet semantic surfaces; they do not need Liquid Glass.
+- Figures, Graphviz SVGs, tables, and code blocks never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
+- Fenced code and inline code both use Dracula. Shiki remains `dracula` in both reading themes unless explicitly redesigned later.
 
-## Mermaid contract
+## Graphviz contract
 
-Mermaid diagrams are publication artifacts, not a reader-facing debugging surface.
+Graphviz diagrams are publication artifacts. They are authored as DOT and rendered to static SVG before publication.
 
-- Author workflow/process diagrams in Mermaid source with conservative `flowchart` syntax.
-- Keep colours and presentation out of article source when practical; `MermaidDiagram.astro` owns the centralized Dracula theme and strips legacy `classDef`/`class` directives.
-- Do not use Kroki, mermaid.ink, or another remote server renderer as a runtime dependency.
-- The current browser renderer is version-pinned. Never use an unpinned `latest` Mermaid URL.
-- If Mermaid cannot load or parse, readers receive a quiet structural fallback; never publish Mermaid source, parser stack traces, `Syntax error in text`, or “refresh to retry” error messages.
-- If Mermaid is later moved to a local npm/build-time renderer, update `package.json` and `pnpm-lock.yaml` together and validate the production build before removing the fallback.
-- Diagrams must remain inside the reading column at desktop and mobile widths.
+- Keep DOT sources under `src/diagrams/` and rendered SVGs under `public/figures/` using matching descriptive basenames.
+- Use Graphviz `dot` for directed workflow/state/dependency diagrams unless another Graphviz engine is explicitly justified.
+- Render locally with `dot -Tsvg <source.dot> -o <figure.svg>` and inspect the resulting geometry before committing.
+- Published pages load only the committed local SVG. Do not use browser-side Graphviz/WASM, remote renderers, graph CDNs, or runtime parsing for article figures.
+- Use `LXGW WenKai Screen` for Chinese labels and restrained semantic Apple colours. Keep graph backgrounds transparent unless an opaque background is required for meaning.
+- Provide meaningful HTML `alt` text and a figure caption; DOT source is not exposed to readers.
+- Diagrams remain inside the reading column at desktop and mobile widths.
+- If a DOT change affects a published figure, regenerate the SVG in the same commit. Source/render mismatch is a release failure.
 
 ## Deployment contract
 
 Preserve static output, stable `/writing/<slug>/` URLs, and production exclusion of drafts.
 
-Vercel deployments consume account resources. For non-trivial UI/content changes, normally:
+Vercel deployments consume account resources. For non-trivial UI/content changes:
 
 1. consolidate changes on a preview branch;
 2. validate the preview build and affected surfaces;
-3. provide a Preview URL when user review is requested;
-4. update `main` only after approval or when the user explicitly asks for direct publication;
-5. verify the production deployment once.
+3. provide a Preview URL for user review;
+4. update `main` only after approval or explicit direct-publication instruction;
+5. verify production once.
 
 Avoid repeated production pushes for visual iteration.
 
@@ -94,18 +136,18 @@ Avoid repeated production pushes for visual iteration.
 Before presenting a preview or production result, check at minimum:
 
 - Astro/type build succeeds with no new errors;
-- lint/format checks pass when CI is available;
-- the affected article route exists;
-- no unused experiment/placeholder file introduced by the current work remains;
-- shared CSS follows the four-layer ownership model and no patch stylesheet is added;
-- tables have captions and visible low-contrast zebra rows in both themes;
+- lint and formatting checks pass;
+- affected routes exist;
+- no temporary or placeholder files remain;
+- the five-layer CSS ownership model is respected;
+- Liquid Glass has specular, rim, blur+saturation, shadow, and accessibility fallbacks;
 - body text is regular weight and non-serif;
-- callout labels are distinct from callout bodies;
-- fenced and inline code use Dracula;
-- H1–H4 follow the global Dracula hierarchy;
 - Chinese glyphs use LXGW WenKai Screen, including TOC/navigation content;
-- Mermaid does not depend on a remote server renderer and never exposes runtime errors to readers;
-- Mermaid remains within the reading column;
-- header avatar renders from the local asset without a duplicate pseudo-element;
-- reading-progress circle appears on desktop and mobile;
-- navigation, title wrapping, table/code overflow, figures, focus visibility, and reduced-motion behaviour remain sound.
+- tables have captions and visible low-contrast zebra rows in both themes;
+- headings rely on hierarchy, not decorative rainbow colouring;
+- fenced and inline code use Dracula;
+- no published article depends on Mermaid, a remote graph renderer, or browser-side diagram parsing;
+- every Graphviz source used by a published post has a regenerated local SVG with matching content;
+- header avatar renders from the local asset;
+- reading-progress control works on desktop and mobile;
+- navigation, title wrapping, table/code overflow, figures, focus visibility, press feedback, reduced motion, reduced transparency, and high contrast remain sound.

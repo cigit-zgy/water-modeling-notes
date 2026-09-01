@@ -7,9 +7,8 @@ type Props = {
 const { code, alt = "sci-manuscript-skill 稿件生命周期流程图" } = Astro.props;
 
 /*
- * Diagram presentation is centralized here. Older article drafts may contain
- * classDef/class lines; strip those directives so article content cannot create
- * a parallel colour system or override the global diagram theme.
+ * Presentation belongs to this component. Strip legacy article-local class
+ * directives so diagram source cannot reintroduce an obsolete colour system.
  */
 const safeCode = code
   .split("\n")
@@ -60,27 +59,31 @@ const safeCode = code
       const { default: mermaid } =
         await import("https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.esm.min.mjs");
 
+      const rootStyles = getComputedStyle(document.documentElement);
+      const token = name => rootStyles.getPropertyValue(name).trim();
+
       mermaid.initialize({
         startOnLoad: false,
         securityLevel: "strict",
+        suppressErrorRendering: true,
         theme: "base",
         fontFamily: '"LXGW WenKai Screen", sans-serif',
         themeVariables: {
-          background: "#191A21",
-          primaryColor: "#21222C",
-          primaryTextColor: "#F8F8F2",
-          primaryBorderColor: "#BD93F9",
-          secondaryColor: "#253340",
-          secondaryTextColor: "#F8F8F2",
-          secondaryBorderColor: "#8BE9FD",
-          tertiaryColor: "#343746",
-          tertiaryTextColor: "#F8F8F2",
-          tertiaryBorderColor: "#50FA7B",
-          lineColor: "#6272A4",
-          textColor: "#F8F8F2",
-          edgeLabelBackground: "#191A21",
-          clusterBkg: "#21222C",
-          clusterBorder: "#6272A4",
+          background: token("--background-primary"),
+          primaryColor: token("--background-secondary"),
+          primaryTextColor: token("--text-primary"),
+          primaryBorderColor: token("--accent-primary"),
+          secondaryColor: token("--background-elevated"),
+          secondaryTextColor: token("--text-primary"),
+          secondaryBorderColor: token("--border-subtle"),
+          tertiaryColor: token("--background-elevated"),
+          tertiaryTextColor: token("--text-primary"),
+          tertiaryBorderColor: token("--border-subtle"),
+          lineColor: token("--text-muted"),
+          textColor: token("--text-primary"),
+          edgeLabelBackground: token("--background-primary"),
+          clusterBkg: token("--background-secondary"),
+          clusterBorder: token("--border-subtle"),
           fontFamily: '"LXGW WenKai Screen", sans-serif',
         },
         flowchart: {
@@ -99,17 +102,20 @@ const safeCode = code
         if (!source || !output) continue;
 
         try {
+          const valid = await mermaid.parse(source, { suppressErrors: true });
+          if (!valid) continue;
+
           const id = `mermaid-${Date.now()}-${index}`;
           const { svg, bindFunctions } = await mermaid.render(id, source);
           output.innerHTML = svg;
           bindFunctions?.(output);
           shell.dataset.rendered = "true";
         } catch {
-          /* Keep the structural fallback visible; never expose parser errors. */
+          /* Keep the quiet structural fallback; never expose parser errors. */
         }
       }
     } catch {
-      /* Keep the structural fallback visible if the pinned module is unavailable. */
+      /* Keep the fallback if the pinned browser module is unavailable. */
     }
   }
 
@@ -130,9 +136,14 @@ const safeCode = code
     min-height: 10rem;
     padding: 1rem;
     overflow: hidden;
-    border: 1px solid #343746;
-    border-radius: 0.5rem;
-    background: #191a21;
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    background: color-mix(
+      in srgb,
+      var(--background-secondary) 92%,
+      transparent
+    );
+    box-shadow: inset 0 1px 0 var(--glass-specular-soft);
   }
 
   .mermaid-output:empty {
@@ -157,7 +168,7 @@ const safeCode = code
     align-items: center;
     justify-content: center;
     gap: 0.65rem;
-    color: #f8f8f2;
+    color: var(--text-primary);
     font-family: var(--font-ui);
     font-size: 0.92rem;
     line-height: 1.35;
@@ -167,13 +178,13 @@ const safeCode = code
 
   .mermaid-fallback span {
     padding: 0.55rem 0.7rem;
-    border: 1px solid #6272a4;
-    border-radius: 0.35rem;
-    background: #21222c;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.7rem;
+    background: var(--background-elevated);
   }
 
   .mermaid-fallback i {
-    color: #ffb86c;
+    color: var(--accent-primary);
     font-style: normal;
   }
 
@@ -185,7 +196,7 @@ const safeCode = code
     margin-top: 0.8rem;
     color: var(--text-muted);
     font-family: var(--font-ui);
-    font-size: 0.94rem;
+    font-size: 0.96rem;
     line-height: 1.55;
     text-align: center;
   }

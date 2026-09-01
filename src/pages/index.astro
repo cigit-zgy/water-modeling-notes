@@ -39,93 +39,127 @@ const researchTopics = [
 <Layout>
   <Header />
   <main id="main-content" class="app-layout">
-    <section class="border-border border-b pt-16 pb-14 sm:pt-24 sm:pb-20">
-      <p class="text-link text-xs font-semibold tracking-[0.12em] uppercase">
-        Academic research notebook
-      </p>
-      <div class="mt-5 flex items-center gap-1.5" aria-hidden="true">
-        <span class="bg-spectrum-purple h-1.5 w-8 rounded-full"></span>
-        <span class="bg-spectrum-magenta h-1.5 w-4 rounded-full"></span>
-        <span class="bg-spectrum-cyan h-1.5 w-4 rounded-full"></span>
-        <span class="bg-spectrum-teal h-1.5 w-4 rounded-full"></span>
-        <span class="bg-spectrum-amber h-1.5 w-4 rounded-full"></span>
-      </div>
-      <h1
-        class="mt-5 max-w-3xl text-4xl leading-[1.08] font-semibold tracking-[-0.04em] sm:text-6xl"
-      >
-        cigit-zgy
-      </h1>
-      <p
-        class="text-muted-foreground mt-6 max-w-2xl text-xl leading-relaxed sm:text-2xl"
-      >
-        Wastewater process modelling, scientific machine learning, and
-        computational methods.
-      </p>
-    </section>
-
-    <section class="border-border border-b py-12 sm:py-14">
-      <div class="mb-5 flex items-baseline justify-between gap-4">
-        <h2 class="text-2xl font-semibold tracking-[-0.02em]">
-          Featured Writing
-        </h2>
-        <a
-          class="text-link text-sm underline underline-offset-4"
-          href={getRelativeLocaleUrl(locale, "writing")}>All writing</a
+    <section class="home-hero">
+      <div>
+        <p class="home-hero__eyebrow" data-reveal style="--reveal-delay: 40ms">
+          Academic research notebook
+        </p>
+        <h1 class="home-hero__title" data-reveal style="--reveal-delay: 100ms">
+          cigit-zgy
+        </h1>
+        <p class="home-hero__lede" data-reveal style="--reveal-delay: 160ms">
+          Wastewater process modelling, scientific machine learning, and
+          computational methods.
+        </p>
+        <div
+          class="home-hero__actions"
+          data-reveal
+          style="--reveal-delay: 220ms"
         >
+          <a
+            class="home-primary-action"
+            href={getRelativeLocaleUrl(locale, "writing")}
+          >
+            Explore writing
+          </a>
+          <a
+            class="home-secondary-action"
+            href={getRelativeLocaleUrl(locale, "research")}
+          >
+            Research map
+          </a>
+        </div>
       </div>
-      {
-        featuredPosts.length > 0 ? (
-          <ul>
-            {featuredPosts.map(post => (
-              <Card variant="h3" {...post} />
-            ))}
-          </ul>
-        ) : (
-          <p class="border-border text-muted-foreground border-t py-5">
-            No featured essays have been published yet.
-          </p>
-        )
-      }
     </section>
 
-    <section class="border-border border-b py-12 sm:py-14">
-      <h2 class="mb-5 text-2xl font-semibold tracking-[-0.02em]">
-        Recent Writing
+    <section class="home-section border-border border-t">
+      <p class="home-section__eyebrow" data-reveal>Featured</p>
+      <h2 class="home-section__heading" data-reveal>
+        Research writing, foregrounded.
       </h2>
-      {
-        recentPosts.length > 0 ? (
-          <ul>
-            {recentPosts.slice(0, config.posts.perIndex).map(post => (
-              <Card variant="h3" {...post} />
-            ))}
-          </ul>
-        ) : (
-          <p class="border-border text-muted-foreground border-t py-5">
-            The first published research note will appear here.
-          </p>
-        )
-      }
-    </section>
+      <p class="home-section__lead" data-reveal>
+        Long-form notes on modelling systems, scientific computation, and the
+        engineering required to make research workflows explicit and
+        reproducible.
+      </p>
 
-    <section class="py-12 sm:py-14">
-      <h2 class="mb-6 text-2xl font-semibold tracking-[-0.02em]">
-        Research Topics
-      </h2>
-      <div class="research-spectrum grid gap-x-10 md:grid-cols-2">
+      <div class="home-featured-panel glass-surface" data-reveal>
         {
-          researchTopics.map(topic => (
-            <section class="border-border border-t py-5">
-              <h3 class="font-semibold">{topic.title}</h3>
-              <p class="text-muted-foreground mt-2 text-sm leading-relaxed">
-                {topic.description}
-              </p>
+          featuredPosts.length > 0 ? (
+            <ul>
+              {featuredPosts.map(post => (
+                <Card variant="h2" {...post} />
+              ))}
+            </ul>
+          ) : (
+            <p class="text-muted-foreground py-5">
+              No featured essays have been published yet.
+            </p>
+          )
+        }
+      </div>
+
+      <a
+        class="text-link mt-6 inline-block text-sm underline underline-offset-4"
+        href={getRelativeLocaleUrl(locale, "writing")}
+        data-reveal
+      >
+        View all writing
+      </a>
+    </section>
+
+    <section class="home-section border-border border-t">
+      <p class="home-section__eyebrow" data-reveal>Latest</p>
+      <h2 class="home-section__heading" data-reveal>Recent writing.</h2>
+      <div class="home-editorial-list" data-reveal>
+        {
+          recentPosts.length > 0 ? (
+            <ul>
+              {recentPosts.slice(0, config.posts.perIndex).map(post => (
+                <Card variant="h3" {...post} />
+              ))}
+            </ul>
+          ) : (
+            <p class="text-muted-foreground py-5">
+              The next published research note will appear here.
+            </p>
+          )
+        }
+      </div>
+    </section>
+
+    <section class="home-section border-border border-t">
+      <p class="home-section__eyebrow" data-reveal>Research system</p>
+      <h2 class="home-section__heading" data-reveal>
+        Four connected areas of work.
+      </h2>
+      <p class="home-section__lead" data-reveal>
+        The site is organized around mechanistic modelling, scientific machine
+        learning, reproducible computation, and the notes that connect them.
+      </p>
+
+      <div class="home-topics-grid">
+        {
+          researchTopics.map((topic, index) => (
+            <section
+              class="home-topic-panel glass-surface-thin"
+              data-reveal
+              style={`--reveal-delay: ${index * 70}ms`}
+            >
+              <span class="home-topic-panel__index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3>{topic.title}</h3>
+              <p>{topic.description}</p>
             </section>
           ))
         }
       </div>
+
       <a
-        class="text-link mt-4 inline-block underline underline-offset-4"
+        class="text-link mt-7 inline-block underline underline-offset-4"
         href={getRelativeLocaleUrl(locale, "research")}
+        data-reveal
       >
         View the research map
       </a>
