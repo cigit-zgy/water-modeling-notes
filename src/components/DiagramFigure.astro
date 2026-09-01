@@ -44,11 +44,7 @@ const svg = sourceSvg.replace(
     margin-block: 2rem;
   }
 
-  .diagram-figure--compact {
-    max-width: 47.5rem;
-    margin-inline: auto;
-  }
-
+  .diagram-figure--compact,
   .diagram-figure--wide {
     max-width: 47.5rem;
     margin-inline: auto;
@@ -80,6 +76,11 @@ const svg = sourceSvg.replace(
     font-family: var(--font-ui) !important;
   }
 
+  .diagram-inline :global(.mono),
+  .diagram-inline :global(.mono text),
+  .diagram-inline :global(.mono tspan),
+  .diagram-inline :global(.mono span),
+  .diagram-inline :global(.mono p),
   .diagram-inline :global(.diagram-mono),
   .diagram-inline :global(.diagram-mono text),
   .diagram-inline :global(.diagram-mono tspan),
