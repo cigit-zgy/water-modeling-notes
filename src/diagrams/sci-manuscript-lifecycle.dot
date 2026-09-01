@@ -1,13 +1,15 @@
 digraph ManuscriptLifecycle {
   graph [
     rankdir=TB,
-    bgcolor="transparent",
-    pad=0.22,
-    nodesep=0.36,
-    ranksep=0.52,
+    bgcolor="#111113",
+    pad=0.28,
+    nodesep=0.34,
+    ranksep=0.46,
     splines=polyline,
     outputorder=edgesfirst,
-    fontname="LXGW WenKai Screen"
+    fontname="Noto Sans CJK SC",
+    fontsize=12,
+    labelloc=t
   ];
 
   node [
@@ -16,43 +18,69 @@ digraph ManuscriptLifecycle {
     fillcolor="#1C1C1E",
     color="#636366",
     fontcolor="#F5F5F7",
-    fontname="LXGW WenKai Screen",
-    fontsize=12,
-    penwidth=1.25,
-    margin="0.18,0.11"
+    fontname="Noto Sans CJK SC",
+    fontsize=11.5,
+    penwidth=1.2,
+    margin="0.20,0.12"
   ];
 
   edge [
     color="#8E8E93",
     fontcolor="#AEAEB2",
-    fontname="LXGW WenKai Screen",
-    fontsize=10,
-    penwidth=1.15,
+    fontname="Noto Sans CJK SC",
+    fontsize=9.5,
+    penwidth=1.1,
     arrowsize=0.72
   ];
 
-  project [label="已有科研项目", fillcolor="#242426"];
-  doctor [label="doctor\n环境检查", color="#64D2FF", penwidth=1.7];
-  r00 [label="init\ninitial_submission / r00", color="#0A84FF", penwidth=1.8];
-  edit0 [label="显式编辑 manuscript"];
-  build [label="build\nclean manuscript", color="#64D2FF", penwidth=1.7];
-  task [label="当前任务", shape=diamond, style="filled", fillcolor="#242426", color="#BF5AF2", penwidth=1.6, margin="0.12,0.06"];
-  first [label="submission package"];
-  revision [label="revision\nrevision_01 / r01", color="#0A84FF", penwidth=1.8];
-  edit1 [label="显式修改\n正文 + responses", color="#BF5AF2", penwidth=1.55];
-  submit [label="submission", color="#0A84FF", penwidth=1.8];
-  bundle [label="clean + marked + response letter + package", color="#30D158", penwidth=1.65];
-  again [label="还有下一轮审稿？", shape=diamond, style="filled", fillcolor="#242426", color="#BF5AF2", penwidth=1.6, margin="0.12,0.06"];
-  final [label="Final handoff", fillcolor="#242426"];
-  archive [label="rollback\n00_archive", color="#FF9F0A", penwidth=1.5];
+  subgraph cluster_initial {
+    label="Initial submission";
+    color="#3A3A3C";
+    fontcolor="#AEAEB2";
+    fontname="Noto Sans CJK SC";
+    fontsize=10.5;
+    style="rounded,dashed";
+    penwidth=1;
+    margin=18;
 
-  { rank=same; revision; archive; }
+    project [label="已有科研项目", fillcolor="#242426"];
+    doctor [label="doctor\n环境检查", color="#64D2FF", penwidth=1.7];
+    r00 [label="init\ninitial_submission / r00", color="#0A84FF", penwidth=1.8];
+    edit0 [label="显式编辑 manuscript"];
+    build [label="build\nclean manuscript", color="#64D2FF", penwidth=1.7];
+    initial_pkg [label="initial submission package", fillcolor="#242426"];
 
-  project -> doctor -> r00 -> edit0 -> build -> task;
-  task -> first [label="初次投稿"];
-  task -> revision [label="收到审稿意见"];
-  revision -> edit1 -> submit -> bundle -> again;
-  again -> revision [label="是", constraint=false, color="#0A84FF", fontcolor="#64D2FF"];
-  again -> final [label="否"];
-  revision -> archive [style=dashed, color="#FF9F0A", fontcolor="#FFB340", constraint=false];
+    project -> doctor -> r00 -> edit0 -> build -> initial_pkg;
+  }
+
+  reviews [label="收到审稿意见", fillcolor="#242426", color="#BF5AF2", penwidth=1.55];
+
+  subgraph cluster_revision {
+    label="Revision cycle";
+    color="#3A3A3C";
+    fontcolor="#AEAEB2";
+    fontname="Noto Sans CJK SC";
+    fontsize=10.5;
+    style="rounded,dashed";
+    penwidth=1;
+    margin=18;
+
+    revision [label="revision\nrevision_01 / r01", color="#0A84FF", penwidth=1.8];
+    edit1 [label="显式修改\n正文 + responses", color="#BF5AF2", penwidth=1.55];
+    submit [label="submission", color="#0A84FF", penwidth=1.8];
+    bundle [label="clean + marked + response letter + package", color="#30D158", penwidth=1.65];
+    again [label="还有下一轮审稿？", shape=diamond, style="filled", fillcolor="#242426", color="#BF5AF2", penwidth=1.6, margin="0.14,0.07"];
+    next [label="创建相邻下一轮 revision\n重复同一返修流程", color="#0A84FF", penwidth=1.55];
+    final [label="Final handoff", fillcolor="#242426"];
+    archive [label="rollback\n00_archive", color="#FF9F0A", penwidth=1.5];
+
+    { rank=same; revision; archive; }
+
+    revision -> edit1 -> submit -> bundle -> again;
+    again -> next [label="是", color="#0A84FF", fontcolor="#64D2FF"];
+    again -> final [label="否"];
+  }
+
+  initial_pkg -> reviews -> revision;
+  revision -> archive [style=dashed, color="#FF9F0A", fontcolor="#FFB340", label="未编辑的最新 revision", constraint=false];
 }
