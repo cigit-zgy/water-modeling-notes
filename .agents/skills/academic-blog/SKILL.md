@@ -33,7 +33,7 @@ Treat the blog as an academic technical publication, not a marketing site.
 - Use consistent terminology; do not vary scientific or technical terms merely for stylistic variety.
 - Prefer direct, compact Chinese. Remove repetition before adding explanation.
 - Tables and figures must add information, not decoration. Every substantive table requires a caption; every figure requires a meaningful caption and alt text.
-- Flowcharts should be authored with Mermaid when appropriate, but published pages show only the rendered diagram, never Mermaid source.
+- Use Graphviz/DOT for graph-structured workflow, dependency, state-transition, and architecture diagrams when appropriate. Published pages show only the rendered SVG, never DOT source.
 - For Chinese technical prose, also consult Fenng's `Tech-Doc-Style-Chinese` as a secondary writing reference: https://github.com/Fenng/Tech-Doc-Style-Chinese . Its priorities—fact fidelity, terminology consistency, controlled technical Chinese, and preservation of machine-readable content—are subordinate to this project's academic conventions and the user's current instructions.
 
 ## Architecture contract
@@ -101,19 +101,21 @@ The site uses an Apple-inspired Liquid Glass design language. Content remains pr
 - Tables use a clearly visible but low-contrast odd/even zebra pattern defined in `typography.css`.
 - `AcademicCallout` labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are stronger than metadata; callout bodies remain regular weight.
 - Article lead text and block quotations use quiet semantic surfaces; they do not need Liquid Glass.
-- Figures, Mermaid SVGs, tables, and code blocks never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
+- Figures, Graphviz SVGs, tables, and code blocks never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
 - Fenced code and inline code both use Dracula. Shiki remains `dracula` in both reading themes unless explicitly redesigned later.
 
-## Mermaid contract
+## Graphviz contract
 
-Mermaid diagrams are publication artifacts, not a reader-facing debugging surface.
+Graphviz diagrams are publication artifacts. They are authored as DOT and rendered to static SVG before publication.
 
-- Author workflow/process diagrams in Mermaid source with conservative `flowchart` syntax.
-- Diagram presentation follows the current Apple semantic UI tokens rather than the retired site-wide Dracula palette.
-- Do not use Kroki, mermaid.ink, or another remote server renderer as a runtime dependency.
-- The browser renderer must remain version-pinned; never use an unpinned `latest` URL.
-- If Mermaid cannot load or parse, readers receive a quiet structural fallback. Never publish Mermaid source, parser stack traces, `Syntax error in text`, or refresh-to-retry messages.
+- Keep DOT sources under `src/diagrams/` and rendered SVGs under `public/figures/` using matching descriptive basenames.
+- Use Graphviz `dot` for directed workflow/state/dependency diagrams unless another Graphviz engine is explicitly justified.
+- Render locally with `dot -Tsvg <source.dot> -o <figure.svg>` and inspect the resulting geometry before committing.
+- Published pages load only the committed local SVG. Do not use browser-side Graphviz/WASM, remote renderers, graph CDNs, or runtime parsing for article figures.
+- Use `LXGW WenKai Screen` for Chinese labels and restrained semantic Apple colours. Keep graph backgrounds transparent unless an opaque background is required for meaning.
+- Provide meaningful HTML `alt` text and a figure caption; DOT source is not exposed to readers.
 - Diagrams remain inside the reading column at desktop and mobile widths.
+- If a DOT change affects a published figure, regenerate the SVG in the same commit. Source/render mismatch is a release failure.
 
 ## Deployment contract
 
@@ -144,7 +146,8 @@ Before presenting a preview or production result, check at minimum:
 - tables have captions and visible low-contrast zebra rows in both themes;
 - headings rely on hierarchy, not decorative rainbow colouring;
 - fenced and inline code use Dracula;
-- Mermaid never exposes runtime errors to readers and uses semantic site tokens;
+- no published article depends on Mermaid, a remote graph renderer, or browser-side diagram parsing;
+- every Graphviz source used by a published post has a regenerated local SVG with matching content;
 - header avatar renders from the local asset;
 - reading-progress control works on desktop and mobile;
 - navigation, title wrapping, table/code overflow, figures, focus visibility, press feedback, reduced motion, reduced transparency, and high contrast remain sound.
