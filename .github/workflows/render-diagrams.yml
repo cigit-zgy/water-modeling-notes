@@ -73,7 +73,7 @@ jobs:
 
       - name: Commit rendered diagrams
         run: |
-          if git diff --quiet -- public/figures; then
+          if [ -z "$(git status --porcelain -- public/figures)" ]; then
             exit 0
           fi
           git config user.name "github-actions[bot]"
