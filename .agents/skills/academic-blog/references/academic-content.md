@@ -43,6 +43,6 @@ Define notation and units before interpretation. Use KaTeX syntax for equations 
 
 Every substantive table requires a short, informative caption. Wrap potentially wide tables with `ResponsiveTable`, using the global zebra-row presentation rather than article-local table CSS.
 
-Every figure requires meaningful alt text and a caption. Use Mermaid for workflow/process diagrams when appropriate, but publish only the rendered diagram; never include an expandable `Mermaid source` section in the article.
+Every figure requires meaningful alt text and a caption. Use Graphviz/DOT for workflow, dependency, state-transition, or architecture diagrams when graph structure is the natural representation. Keep the DOT source in `src/diagrams/` and publish only a locally rendered SVG under `public/figures/`; do not expose DOT source inside the article.
 
 Use `AcademicCallout` only for a real note, definition, method, or caution. Avoid decorative figures, fake values, placeholder citations, and references that were not consulted.
