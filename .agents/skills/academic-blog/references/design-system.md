@@ -29,7 +29,7 @@ A valid glass surface combines four optical layers:
 3. top-edge specular highlight plus a hairline rim;
 4. soft outer depth shadow.
 
-Refraction/lensing is optional and should be reserved for at most one or two hero moments. The current blog does not require refraction for the baseline design.
+Refraction/lensing is optional and should be reserved for at most one or two hero moments.
 
 Material roles:
 
@@ -78,15 +78,7 @@ Do not add `refinements.css`, `overrides.css`, or article-local shared UI patche
 
 ## Navigation and floating chrome
 
-The site header is a floating regular-material surface with:
-
-- translucency;
-- `blur(20px) saturate(180%)`;
-- a subtle vertical specular gradient;
-- top-edge highlight;
-- hairline inner/outer rim;
-- soft shadow;
-- rounded continuous-looking geometry.
+The site header is a regular-material surface with translucency, blur+saturation, specular highlight, hairline rims, soft shadow, and rounded continuous geometry. It remains in normal document flow unless the user explicitly requests sticky behavior.
 
 Desktop TOC, mobile TOC, search controls, tags, and the reading-progress/back-to-top button use thin or regular materials according to hierarchy.
 
@@ -120,14 +112,14 @@ This distinction is intentional: Liquid Glass elevates navigation/control hierar
 
 Inline and fenced code remain Dracula-dark. This preserves syntax semantics and avoids mixing site material transparency with code token contrast.
 
-## Figures and Mermaid
+## Figures and Graphviz
 
-- Figures require alt text and captions.
-- Mermaid is preferred for workflow diagrams; readers see only rendered diagrams.
-- Mermaid uses neutral Apple-like surfaces and the semantic primary interaction accent rather than the retired site-wide Dracula palette.
-- Presentation remains centralized in `MermaidDiagram.astro` rather than article source.
-- Do not use remote server-side renderers such as Kroki or mermaid.ink as runtime dependencies.
-- Keep diagrams within the reading column at all viewport widths.
+- Figures require meaningful alt text and captions.
+- Graphviz/DOT is the preferred graph language for workflow, dependency, state-transition, and architecture diagrams.
+- DOT sources live under `src/diagrams/`; rendered SVGs live under `public/figures/`.
+- Render diagrams locally with Graphviz (`dot -Tsvg`) before committing. Published pages load the static SVG only: no browser graph parser, CDN renderer, or remote rendering service.
+- Diagram styling should use the current Apple semantic surface/accent relationships and `LXGW WenKai Screen` for Chinese labels.
+- Keep rendered SVGs within the reading column at all viewport widths.
 
 ## Motion and interaction
 
@@ -155,4 +147,4 @@ Every reusable glass recipe must support:
 
 ## Responsive validation
 
-Check representative widths around 1440, 1024, 768, and 390 px. Verify header wrapping, mobile menu, TOC, equations, tables/code overflow, figures, search, footer, progress control, focus visibility, light/dark modes, reduced motion, reduced transparency, and high contrast.
+Check representative widths around 1440, 1024, 768, and 390 px. Verify header wrapping, mobile menu, TOC, equations, tables/code overflow, Graphviz figures, search, footer, progress control, focus visibility, light/dark modes, reduced motion, reduced transparency, and high contrast.
