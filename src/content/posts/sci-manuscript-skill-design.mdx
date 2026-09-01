@@ -12,7 +12,6 @@ description: 一个面向 LaTeX 科研稿件的可复现生命周期工作流：
 
 import AcademicCallout from '@/components/AcademicCallout.astro';
 import ResponsiveTable from '@/components/ResponsiveTable.astro';
-import MermaidDiagram from '@/components/MermaidDiagram.astro';
 
 LaTeX 已经很好地解决了科研论文的排版问题，但它并没有替研究者管理“论文如何演化”。一篇稿件从初稿进入投稿、返修、再次投稿直至最终归档后，研究者需要同时维护 clean manuscript、marked manuscript、审稿回复、参考文献、作者信息、投稿附件以及不同轮次的源文件。引入 LLM/Agent 后，问题还会进一步扩大：Agent 可以读写文件，但“能访问”并不等于“被授权修改科研内容”。
 
@@ -121,37 +120,19 @@ existing-project/
 
 一篇稿件从 `r00` 开始。初稿可以构建 clean manuscript 和 initial submission package；收到审稿意见后，`revision` 只允许创建紧邻当前版本的下一轮。新 revision 继承上一轮科研内容，同时建立新的 response workspace。
 
-<MermaidDiagram
-  code={`flowchart TD
-A["已有科研项目"] --> B["doctor：环境检查"]
-B --> C["init：initial_submission / r00"]
-C --> D["显式编辑 manuscript"]
-D --> E["build：clean manuscript"]
-E --> F{"当前任务"}
-F -->|初次投稿| G["submission package"]
-F -->|收到审稿意见| H["revision：revision_01 / r01"]
-H --> I["显式修改：正文 + responses"]
-I --> J["submission"]
-J --> K["clean + marked + response letter + package"]
-K --> L{"还有下一轮审稿？"}
-L -->|是| H
-L -->|否| M["Final handoff"]
-H -.-> N["rollback：00_archive"]
-classDef neutral fill:#2a3448,stroke:#a8b0c5,color:#f8f8f2,stroke-width:1.5px
-classDef purple fill:#2a3448,stroke:#a978e7,color:#f8f8f2,stroke-width:2px
-classDef magenta fill:#2a3448,stroke:#df5aa4,color:#f8f8f2,stroke-width:2px
-classDef amber fill:#2a3448,stroke:#e8b858,color:#f8f8f2,stroke-width:2px
-classDef green fill:#2a3448,stroke:#64bd75,color:#f8f8f2,stroke-width:2px
-classDef cyan fill:#2a3448,stroke:#55bddc,color:#f8f8f2,stroke-width:2px
-class A,D,G,M,N neutral
-class C,H purple
-class I,J magenta
-class F,L amber
-class K green
-class B,E cyan`}
->
-  <strong>Figure 1.</strong> `sci-manuscript-skill` 的稿件生命周期。正常路径保持相邻 revision；rollback 只作用于尚未被编辑的最新 revision。
-</MermaidDiagram>
+<figure>
+  <img
+    src="/figures/sci-manuscript-lifecycle.svg"
+    alt="sci-manuscript-skill 从已有科研项目、环境检查、r00、返修、投稿到最终 handoff 的稿件生命周期流程图"
+    width="457"
+    height="943"
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption>
+    <strong>Figure 1.</strong> `sci-manuscript-skill` 的稿件生命周期。图由 Graphviz/DOT 静态渲染；正常路径保持相邻 revision，rollback 只作用于尚未被编辑的最新 revision。
+  </figcaption>
+</figure>
 
 版本关系本身保持简单：
 
