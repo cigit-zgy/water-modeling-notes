@@ -23,12 +23,21 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "11.3.0"
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: "24"
+          cache: "pnpm"
 
-      - name: Install diagram tools
+      - name: Install project dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Install diagram tools and exact blog fonts
         env:
           PUPPETEER_SKIP_DOWNLOAD: "true"
         run: |
@@ -37,8 +46,32 @@ jobs:
             -o /tmp/plantuml.jar \
             https://github.com/plantuml/plantuml/releases/download/v1.2026.6/plantuml-1.2026.6.jar
           echo "89948f14c93756c7a3fb7b69078ff37e8489fd79dd430c582b931e2f65358690  /tmp/plantuml.jar" | sha256sum -c -
+
           sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          sudo apt-get install -y -qq woff2 >/dev/null
+
+          mkdir -p /tmp/blog-fonts "$HOME/.local/share/fonts/blog"
+
+          cp src/assets/fonts/latin-modern-sans/latin-modern-sans-regular.woff2 /tmp/blog-fonts/LatinModernSans-Regular.woff2
+          cp src/assets/fonts/latin-modern-sans/latin-modern-sans-bold.woff2 /tmp/blog-fonts/LatinModernSans-Bold.woff2
+          woff2_decompress /tmp/blog-fonts/LatinModernSans-Regular.woff2
+          woff2_decompress /tmp/blog-fonts/LatinModernSans-Bold.woff2
+          cp /tmp/blog-fonts/LatinModernSans-Regular.ttf "$HOME/.local/share/fonts/blog/"
+          cp /tmp/blog-fonts/LatinModernSans-Bold.ttf "$HOME/.local/share/fonts/blog/"
+
+          cp node_modules/@fontsource/maple-mono/files/maple-mono-latin-400-normal.woff2 /tmp/blog-fonts/MapleMono-Regular.woff2
+          woff2_decompress /tmp/blog-fonts/MapleMono-Regular.woff2
+          cp /tmp/blog-fonts/MapleMono-Regular.ttf "$HOME/.local/share/fonts/blog/"
+
+          curl -fsSL --retry 3 \
+            -o "$HOME/.local/share/fonts/blog/LXGWWenKaiScreen.ttf" \
+            https://github.com/lxgw/LxgwWenKai-Screen/releases/download/v1.522/LXGWWenKaiScreen.ttf
+          echo "cd1a6fa39c4ea42fd8f4e289945789b0e510cf7016435640f8893cdad9b220f3  $HOME/.local/share/fonts/blog/LXGWWenKaiScreen.ttf" | sha256sum -c -
+
+          fc-cache -f
+          fc-match "Latin Modern Sans"
+          fc-match "LXGW WenKai Screen"
+          fc-match "Maple Mono"
 
       - name: Render Mermaid
         run: |
@@ -70,6 +103,8 @@ jobs:
           grep -q '<svg' public/figures/sci-manuscript-operation.svg
           ! grep -qi 'syntax error' public/figures/sci-manuscript-lifecycle-mermaid.svg
           ! grep -qi 'syntax error' public/figures/sci-manuscript-operation.svg
+          grep -q 'Latin Modern Sans' public/figures/sci-manuscript-lifecycle-mermaid.svg
+          grep -q 'Latin Modern Sans' public/figures/sci-manuscript-operation.svg
 
       - name: Commit rendered diagrams
         run: |
