@@ -4,19 +4,26 @@ flowchart TB
     A["已有科研项目"] --> B["doctor<br/>环境检查"] --> C["init<br/>initial_submission / r00"] --> D["build<br/>clean manuscript"]
   end
 
-  D --> E{"当前任务"}
-  E -->|"初次投稿"| F["submission package"]
-  E -->|"收到审稿意见"| G["revision<br/>revision_01 / r01"]
+  E{"当前任务"}
+  F["submission package"]
 
   subgraph REVISION["Revision cycle"]
     direction LR
-    G --> H["显式修改<br/>正文 + responses"] --> I["submission"] --> J["clean + marked<br/>response + package"]
+    G["revision<br/>revision_01 / r01"] --> H["显式修改<br/>正文 + responses"] --> I["submission"] --> J["clean + marked<br/>response + package"]
   end
 
-  J --> K{"还有下一轮审稿？"}
-  K -->|"是"| L["创建相邻下一轮 revision"] --> G
-  K -->|"否"| M["Final handoff"]
-  G -. "rollback" .-> N["00_archive"]
+  K{"还有下一轮审稿？"}
+  L["创建相邻下一轮 revision"]
+  M["Final handoff"]
+  N["00_archive"]
+
+  INITIAL --> E
+  E -->|"初次投稿"| F
+  E -->|"收到审稿意见"| REVISION
+  REVISION --> K
+  K -->|"是"| L --> REVISION
+  K -->|"否"| M
+  REVISION -. "rollback" .-> N
 
   classDef base fill:#1C1C1E,stroke:#636366,color:#F5F5F7,stroke-width:1.2px;
   classDef primary fill:#1C1C1E,stroke:#0A84FF,color:#F5F5F7,stroke-width:1.7px;
