@@ -112,14 +112,17 @@ This distinction is intentional: Liquid Glass elevates navigation/control hierar
 
 Inline and fenced code remain Dracula-dark. This preserves syntax semantics and avoids mixing site material transparency with code token contrast.
 
-## Figures and Graphviz
+## Figures and diagrams
 
 - Figures require meaningful alt text and captions.
-- Graphviz/DOT is the preferred graph language for workflow, dependency, state-transition, and architecture diagrams.
-- DOT sources live under `src/diagrams/`; rendered SVGs live under `public/figures/`.
-- Render diagrams locally with Graphviz (`dot -Tsvg`) before committing. Published pages load the static SVG only: no browser graph parser, CDN renderer, or remote rendering service.
-- Diagram styling should use the current Apple semantic surface/accent relationships and `LXGW WenKai Screen` for Chinese labels.
-- Keep rendered SVGs within the reading column at all viewport widths.
+- Mermaid is the default for ordinary workflows, process diagrams, and compact architecture overviews.
+- PlantUML is used for sequence, component, class, and other UML-style diagrams.
+- Diagram sources live under `src/diagrams/`; generated SVGs live under `public/figures/`.
+- Shared Mermaid geometry/theme is defined in `src/diagrams/mermaid.config.json`; shared PlantUML presentation is defined in `src/diagrams/plantuml-theme.puml`.
+- Target a visible publication width around 680–760 px. Reorganize an overlong or overly wide diagram before increasing the canvas.
+- Published pages load static local SVGs only. Browser-side parsers, diagram CDNs, and remote rendering services are not part of the reading path.
+- Diagram styling follows the Apple semantic dark palette while remaining flatter and quieter than Liquid Glass controls.
+- Keep generated SVGs within the reading column at all viewport widths.
 
 ## Motion and interaction
 
@@ -147,4 +150,4 @@ Every reusable glass recipe must support:
 
 ## Responsive validation
 
-Check representative widths around 1440, 1024, 768, and 390 px. Verify header wrapping, mobile menu, TOC, equations, tables/code overflow, Graphviz figures, search, footer, progress control, focus visibility, light/dark modes, reduced motion, reduced transparency, and high contrast.
+Check representative widths around 1440, 1024, 768, and 390 px. Verify header wrapping, mobile menu, TOC, equations, tables/code overflow, Mermaid and PlantUML figures, search, footer, progress control, focus visibility, light/dark modes, reduced motion, reduced transparency, and high contrast.
