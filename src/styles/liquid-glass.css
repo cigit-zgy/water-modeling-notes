@@ -1,0 +1,396 @@
+/*
+ * Liquid Glass surface system for the public site.
+ * Visual direction informed by shuding/liquid-glass (MIT), adapted as
+ * framework-free CSS so the Astro site keeps its current content/runtime.
+ */
+
+:root {
+  --glass-blur: 24px;
+  --glass-saturate: 150%;
+  --glass-radius: 1.45rem;
+  --glass-radius-lg: 2rem;
+  --glass-surface: color-mix(
+    in srgb,
+    var(--background-secondary) 62%,
+    transparent
+  );
+  --glass-surface-strong: color-mix(
+    in srgb,
+    var(--background-elevated) 78%,
+    transparent
+  );
+  --glass-border: color-mix(in srgb, var(--text-primary) 14%, transparent);
+  --glass-border-strong: color-mix(
+    in srgb,
+    var(--text-primary) 24%,
+    transparent
+  );
+  --glass-highlight: color-mix(in srgb, #ffffff 34%, transparent);
+  --glass-shadow:
+    0 1px 0 color-mix(in srgb, #ffffff 10%, transparent) inset,
+    0 18px 48px color-mix(in srgb, #000000 30%, transparent);
+  --glass-shadow-hover:
+    0 1px 0 color-mix(in srgb, #ffffff 16%, transparent) inset,
+    0 24px 64px color-mix(in srgb, #000000 38%, transparent);
+}
+
+[data-theme="light"] {
+  --glass-surface: color-mix(in srgb, #ffffff 66%, transparent);
+  --glass-surface-strong: color-mix(in srgb, #ffffff 82%, transparent);
+  --glass-border: color-mix(in srgb, #ffffff 78%, var(--border-subtle));
+  --glass-border-strong: color-mix(in srgb, #ffffff 88%, var(--border-subtle));
+  --glass-highlight: color-mix(in srgb, #ffffff 78%, transparent);
+  --glass-shadow:
+    0 1px 0 color-mix(in srgb, #ffffff 88%, transparent) inset,
+    0 18px 42px color-mix(in srgb, #2f2750 14%, transparent);
+  --glass-shadow-hover:
+    0 1px 0 color-mix(in srgb, #ffffff 96%, transparent) inset,
+    0 24px 56px color-mix(in srgb, #2f2750 18%, transparent);
+}
+
+html {
+  background: var(--background-primary);
+}
+
+body {
+  background-color: var(--background-primary);
+  background-image:
+    radial-gradient(
+      circle at 8% 4%,
+      color-mix(in srgb, var(--accent-purple) 22%, transparent) 0,
+      transparent 33rem
+    ),
+    radial-gradient(
+      circle at 92% 14%,
+      color-mix(in srgb, var(--accent-cyan) 16%, transparent) 0,
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 74% 78%,
+      color-mix(in srgb, var(--accent-magenta) 12%, transparent) 0,
+      transparent 30rem
+    ),
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--background-primary) 90%, var(--accent-purple)),
+      var(--background-primary) 42%,
+      color-mix(in srgb, var(--background-primary) 94%, var(--accent-cyan))
+    );
+  background-attachment: fixed;
+}
+
+/* Shared glass surface primitive. */
+.glass-surface,
+body > header > div,
+.content-layout,
+#main-content.app-layout > section,
+footer > div {
+  position: relative;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass-surface);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+.glass-surface::after,
+body > header > div::after,
+.content-layout::after,
+#main-content.app-layout > section::after,
+footer > div::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      135deg,
+      var(--glass-highlight),
+      transparent 22%,
+      transparent 76%,
+      color-mix(in srgb, var(--accent-cyan) 8%, transparent)
+    );
+  content: "";
+  pointer-events: none;
+  opacity: 0.34;
+}
+
+.glass-surface > *,
+body > header > div > *,
+.content-layout > *,
+#main-content.app-layout > section > *,
+footer > div > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Floating navigation behaves like a restrained macOS/iOS glass toolbar. */
+body > header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-top: 0.8rem;
+}
+
+body > header > div {
+  min-height: 4.25rem;
+  border-radius: var(--glass-radius);
+  padding-inline: 0.9rem;
+  border-bottom-width: 1px !important;
+  background: var(--glass-surface-strong);
+}
+
+body > header > div::before {
+  position: absolute;
+  top: 0;
+  right: 12%;
+  left: 12%;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--glass-highlight),
+    transparent
+  );
+  content: "";
+  pointer-events: none;
+}
+
+#menu-items > li > a,
+#menu-items > li > button,
+#theme-btn,
+#menu-btn {
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+#menu-items > li > a:hover,
+#menu-items > li > a:focus-visible,
+#theme-btn:hover,
+#theme-btn:focus-visible,
+#menu-btn:hover,
+#menu-btn:focus-visible {
+  border-color: var(--glass-border);
+  background: color-mix(in srgb, var(--glass-surface-strong) 82%, transparent);
+  box-shadow: 0 1px 0 var(--glass-highlight) inset;
+}
+
+.active-nav {
+  border-color: color-mix(
+    in srgb,
+    var(--accent-purple) 42%,
+    var(--glass-border)
+  ) !important;
+  background: color-mix(
+    in srgb,
+    var(--accent-purple) 12%,
+    var(--glass-surface-strong)
+  ) !important;
+  text-decoration: none;
+}
+
+.site-avatar {
+  box-shadow:
+    0 0 0 1px var(--glass-border-strong),
+    0 0 22px color-mix(in srgb, var(--accent-cyan) 20%, transparent);
+}
+
+/* Home page: four floating glass planes with one stronger hero surface. */
+#main-content.app-layout {
+  display: grid;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  padding-bottom: 2rem;
+}
+
+#main-content.app-layout > section {
+  overflow: hidden;
+  border-radius: var(--glass-radius-lg);
+  padding-inline: clamp(1.25rem, 3vw, 2.5rem);
+  transition:
+    border-color 220ms ease,
+    box-shadow 260ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#main-content.app-layout > section:first-child {
+  background:
+    radial-gradient(
+      circle at 78% 8%,
+      color-mix(in srgb, var(--accent-cyan) 13%, transparent),
+      transparent 24rem
+    ),
+    radial-gradient(
+      circle at 8% 110%,
+      color-mix(in srgb, var(--accent-purple) 18%, transparent),
+      transparent 25rem
+    ),
+    var(--glass-surface-strong);
+}
+
+#main-content.app-layout > section:hover {
+  border-color: var(--glass-border-strong) !important;
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Writing rows become small optical tiles while remaining text-first. */
+.writing-card {
+  margin-block: 0.65rem;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 1.15rem;
+  padding: 1rem 1.15rem !important;
+  background: color-mix(in srgb, var(--glass-surface) 76%, transparent);
+  box-shadow: 0 1px 0 color-mix(in srgb, #ffffff 8%, transparent) inset;
+  transition:
+    border-color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 260ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.writing-card:first-child,
+.writing-card:last-child {
+  border-width: 1px !important;
+}
+
+.writing-card:hover,
+.writing-card:focus-within {
+  border-color: color-mix(
+    in srgb,
+    var(--accent-cyan) 40%,
+    var(--glass-border)
+  ) !important;
+  background: color-mix(in srgb, var(--glass-surface-strong) 88%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, #ffffff 16%, transparent) inset,
+    0 14px 34px color-mix(in srgb, #000000 18%, transparent);
+  transform: translateY(-2px);
+}
+
+.writing-card::before {
+  left: 0 !important;
+  border-radius: 999px;
+}
+
+/* Research topics read as four panes within the larger glass surface. */
+.research-spectrum {
+  gap: 0.8rem !important;
+}
+
+.research-spectrum > section {
+  overflow: hidden;
+  min-height: 8.8rem;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 1.2rem;
+  padding: 1.15rem 3rem 1.15rem 1.15rem !important;
+  background: color-mix(in srgb, var(--glass-surface) 72%, transparent);
+  transition:
+    border-color 220ms ease,
+    background-color 220ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.research-spectrum > section::before {
+  top: 0 !important;
+  left: 1.15rem !important;
+}
+
+.research-spectrum > section:hover,
+.research-spectrum > section:focus-within {
+  border-color: color-mix(
+    in srgb,
+    var(--topic-accent) 52%,
+    var(--glass-border)
+  ) !important;
+  background: color-mix(in srgb, var(--glass-surface-strong) 82%, transparent);
+  transform: translateY(-2px);
+}
+
+/* Secondary pages use one calm reading surface; code remains opaque/high-contrast. */
+.content-layout {
+  width: min(calc(100% - 2rem), 52rem);
+  margin-top: 1.4rem;
+  margin-bottom: 1.5rem;
+  border-radius: var(--glass-radius-lg);
+  padding: clamp(1.25rem, 3vw, 2.35rem) !important;
+  background: var(--glass-surface-strong);
+}
+
+.prose pre,
+.prose .astro-code,
+pre.astro-code,
+figure pre {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+footer {
+  padding-bottom: 1rem;
+}
+
+footer > div {
+  margin-top: 0.75rem;
+  border-radius: var(--glass-radius);
+  padding-inline: 1rem;
+  background: color-mix(in srgb, var(--glass-surface) 72%, transparent);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent-purple) 68%, transparent);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-surface,
+  body > header > div,
+  .content-layout,
+  #main-content.app-layout > section,
+  footer > div {
+    background: var(--background-secondary);
+  }
+}
+
+@media (max-width: 639px) {
+  body > header {
+    padding-top: 0.45rem;
+  }
+
+  body > header > div {
+    border-radius: 1.1rem;
+  }
+
+  #menu-items:not(.hidden) {
+    margin-top: 3rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 1.15rem;
+    padding: 0.7rem;
+    background: var(--glass-surface-strong);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  }
+
+  #main-content.app-layout {
+    gap: 0.75rem;
+    padding-top: 0.8rem;
+  }
+
+  #main-content.app-layout > section {
+    border-radius: 1.4rem;
+  }
+
+  .content-layout {
+    width: calc(100% - 1rem);
+    margin-top: 0.75rem;
+    border-radius: 1.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #main-content.app-layout > section,
+  .writing-card,
+  .research-spectrum > section {
+    transform: none !important;
+  }
+}
