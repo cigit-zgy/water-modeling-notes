@@ -1,0 +1,40 @@
+name: Format liquid glass CSS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "11.3.0"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec prettier src/styles/liquid-glass.css --write
+      - name: Commit formatted CSS
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/styles/liquid-glass.css
+          if git diff --cached --quiet; then
+            echo "CSS is already formatted."
+          else
+            git commit -m "style: format liquid glass css [skip ci]"
+            git push origin main
+          fi
