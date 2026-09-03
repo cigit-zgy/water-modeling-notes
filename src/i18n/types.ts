@@ -4,6 +4,7 @@ export interface UIStrings {
     posts: string;
     writing: string;
     research: string;
+    paperReview: string;
     publications: string;
     tags: string;
     about: string;

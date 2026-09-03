@@ -1,0 +1,94 @@
+---
+import type { MarkdownHeading } from "astro";
+import PostLayout from "./PostLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import ArticleToc from "@/components/ArticleToc.astro";
+import config from "@/config";
+
+type Props = {
+  title: string;
+  description: string;
+  pubDatetime: Date;
+  modDatetime?: Date | null;
+  headings: MarkdownHeading[];
+  label: string;
+  backHref: string;
+  backLabel: string;
+};
+
+const {
+  title,
+  description,
+  pubDatetime,
+  modDatetime,
+  headings,
+  label,
+  backHref,
+  backLabel,
+} = Astro.props;
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const dateFormatter = new Intl.DateTimeFormat(locale, {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: config.site.timezone,
+});
+---
+
+<PostLayout
+  title={`${title} | ${config.site.title}`}
+  {description}
+  {pubDatetime}
+  {modDatetime}
+>
+  <Header />
+
+  <main id="main-content" class="reading-layout mt-8" data-pagefind-body>
+    <a
+      href={backHref}
+      class="text-link focus-outline inline-flex min-h-10 items-center text-sm font-medium"
+    >
+      ← {backLabel}
+    </a>
+
+    <header class="border-border mx-auto mt-5 max-w-[46.5rem] border-b pb-8 xl:mx-0">
+      <p class="text-accent mb-3 text-xs font-semibold tracking-[0.08em] uppercase">
+        {label}
+      </p>
+      <h1 class="font-reading text-3xl leading-tight font-semibold tracking-[-0.035em] sm:text-5xl">
+        {title}
+      </h1>
+      <p class="font-reading text-muted-foreground mt-5 text-lg leading-relaxed">
+        {description}
+      </p>
+      <div class="text-muted-foreground mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        <span>
+          Published <time datetime={pubDatetime.toISOString()}>{dateFormatter.format(pubDatetime)}</time>
+        </span>
+        {
+          modDatetime && modDatetime > pubDatetime && (
+            <span>
+              Updated <time datetime={modDatetime.toISOString()}>{dateFormatter.format(modDatetime)}</time>
+            </span>
+          )
+        }
+      </div>
+    </header>
+
+    <ArticleToc {headings} mode="mobile" />
+
+    <div class="mt-10 xl:grid xl:grid-cols-[minmax(0,46.5rem)_13rem] xl:items-start xl:gap-14">
+      <article
+        id="article"
+        class="app-prose prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg) mx-auto max-w-[46.5rem] min-w-0 xl:mx-0 xl:max-w-none"
+      >
+        <slot />
+      </article>
+      <ArticleToc {headings} mode="desktop" />
+    </div>
+  </main>
+
+  <Footer />
+</PostLayout>

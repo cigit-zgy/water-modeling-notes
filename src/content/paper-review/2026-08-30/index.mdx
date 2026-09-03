@@ -1,0 +1,298 @@
+---
+pubDatetime: 2026-08-30T15:30:00.000+08:00
+title: "Paper Review — 2026-08-30：动力系统、混合建模与 Scientific AI"
+description: "首期 Paper Review：从水处理与相邻学科筛选 10 篇高水平论文，重点关注能够迁移到动力学建模、Hybrid ODE、实验设计和 scientific agents 的方法。"
+issue: "2026-08-30"
+reviewStage: "abstract"
+---
+
+import AcademicCallout from '@/components/AcademicCallout.astro';
+import ResponsiveTable from '@/components/ResponsiveTable.astro';
+import MermaidDiagram from '@/components/MermaidDiagram.astro';
+
+<AcademicCallout kind="method">
+  本期处于 **Abstract review** 阶段。论文事实性介绍只依据出版商元数据与摘要；即使部分网页可以阅读全文，本期也不使用正文细节扩写。全文由用户后续统一补充，再建立独立的 full-text review。
+</AcademicCallout>
+
+## 本期概览
+
+首期最终保留 **10 篇论文**。其中 7 篇来自化学工程、动力系统、Scientific ML、实验优化与 Agent 等相邻领域，3 篇直接属于水处理或过程环境工程。这个比例是有意设计的：高水平研究的主要方法增量往往首先出现在相邻专业，Paper Review 的任务是识别这些方法，再判断它们是否能够改变污水处理动力学模型的构建、辨识、解释和操作方式。
+
+本期最清晰的共同趋势有四条。第一，hybrid modelling 正从“把 ML 接到机理模型旁边”转向**明确规定学习模块能够改变什么**：HyDIM 让数据模块函数化 kinetic parameters，PG-RN 把 RTD 结构直接嵌入网络。第二，data-driven dynamical systems 开始追问学习的理论边界和 system-level analysis，重点从 trajectory prediction 扩展到 convergence、stability、bifurcation 和 nonlinear model reduction。第三，Scientific AI 正在把预测连接到实验或运行决策，GOLLuM、Flex-Cat 和 DISoptimizer 都体现了 prediction → uncertainty/optimization → next action 的闭环。第四，Agent 研究开始关注架构约束与科学模型状态，单纯增加 Agent 数量已经不足以构成方法优势。
+
+常规检索窗口设置为最近 7 天，不足时依次扩展至 30 天和 90 天。本期作为启动期，额外纳入 2026 年 5 月的 Nature Chemical Engineering 知识图谱论文，用于建立“structured scientific models + agents”这一长期方法基线；后续不常规使用这一回溯例外。
+
+**本期 Top 3：**
+
+1. **A knowledge graph framework for digital twins of chemical processes**：最值得借鉴的是将物理模型作为可寻址、可组装、可校准的知识对象，并由 functional agents 操作。
+2. **A Hybrid Data-Driven Intensified Mechanistic Modeling Framework...**：与污水处理 Hybrid ODE 距离最近，可直接比较“parameter functionalization”与其他 hybrid coupling 方式的科学含义。
+3. **Large language models as uncertainty-calibrated optimizers for experimental discovery**：把 LLM representation 与 Gaussian-process uncertainty 联合训练，为实验设计、参数辨识和结构搜索提供新的入口。
+
+<ResponsiveTable caption="Table 1. 2026-08-30 入选论文。A-score 是摘要阶段初筛分数；F-score 待全文 review 后给出。" variant="striped-minimal">
+
+| # | Paper | Venue | Date | Category | A-score | F-score |
+| :-- | :-- | :-- | :-- | :-- | --: | --: |
+| 01 | A knowledge graph framework for digital twins of chemical processes | Nature Chemical Engineering | 2026-05-14 | Structured models / Agents | 95 | — |
+| 02 | A Hybrid Data-Driven Intensified Mechanistic Modeling Framework for Accurate and Reliable Wastewater Treatment Process Simulation and Control | Environmental Science & Technology | 2026-06-01 | Hybrid wastewater modelling | 94 | — |
+| 03 | Large language models as uncertainty-calibrated optimizers for experimental discovery | Nature Machine Intelligence | 2026-08-28 | LLM / Bayesian optimization | 93 | — |
+| 04 | Adversarial dynamical systems characterize when data-driven learning succeeds or fails | Nature Communications | 2026-07-14 | Dynamical systems / Trustworthy ML | 92 | — |
+| 05 | Enabling local neural operators to perform equation-free system-level analysis | Nature Machine Intelligence | 2026-07-15 | Neural operator / System analysis | 91 | — |
+| 06 | Data-driven reduced modeling of neural dynamics | Nature Communications | 2026-07-28 | Neural ODE / Model reduction | 90 | — |
+| 07 | A Physics-Guided Machine Learning Framework Enabling Interpretable and Transferable Cascade Reactor Modeling: Application to Metal Recovery Process | Environmental Science & Technology | 2026-06-22 | Physics-guided ML / Transfer | 89 | — |
+| 08 | Capable language models can outgrow the benefits of collaboration | Nature Machine Intelligence | 2026-07-24 | Agent architecture | 88 | — |
+| 09 | An autonomous lab for data-driven homogeneous catalysis | Nature Communications | 2026-06-20 | Autonomous experimentation | 87 | — |
+| 10 | A machine learning-driven framework for optimizing disinfection in drinking water treatment | Nature Water | 2026-08-25 | Water / Decision optimization | 84 | — |
+
+</ResponsiveTable>
+
+Water Research、Nature Computational Science、ES&T Letters 等仍属于固定检索池。本期没有为了覆盖期刊而强行加入低于前述候选的论文。
+
+## 本期研究地图
+
+<MermaidDiagram
+  code={`flowchart LR
+A[Structured scientific models] --> B[Knowledge graph + agents]
+C[Hybrid process modelling] --> D[Parameter functionalization]
+C --> E[Physics-guided transfer]
+F[Data-driven dynamics] --> G[Learnability limits]
+F --> H[Stability and bifurcation]
+F --> I[Nonlinear model reduction]
+J[Scientific AI] --> K[LLM + Bayesian optimization]
+J --> L[Agent architecture]
+J --> M[Autonomous experiments]
+N[Water operation] --> O[Prediction-to-decision optimization]
+`}
+  alt="本期十篇论文在结构化科学模型、混合过程建模、数据驱动动力系统、Scientific AI 和水处理运行优化之间的方法关系图"
+>
+  <strong>Figure 1.</strong> 本期论文的方法关系。相邻学科承担方法输入，水与环境论文承担领域约束与可落地性验证。
+</MermaidDiagram>
+
+## 01. A knowledge graph framework for digital twins of chemical processes
+
+<ResponsiveTable caption="Table 2. Zhang et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| Authors | Shuyuan Zhang, Jiyizhe Zhang, Alexei A. Lapkin |
+| Venue | Nature Chemical Engineering |
+| Published | 2026-05-14 |
+| DOI | [10.1038/s44286-026-00392-1](https://doi.org/10.1038/s44286-026-00392-1) |
+| A-score | 95 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+论文针对 digital twin 中数据、领域知识和 predictive models 缺少统一组织方式的问题，提出知识图谱框架，并为 chemical process physical models 建立 ontology；摘要明确说明 autonomous functional agents 可在该框架上进行模型构建和校准。作者通过 bottom-up model assembly、top-down model search 和 model-based reaction optimization 三类 case study 展示框架，并将模型库视为 chemical process knowledge repository。
+
+最值得关注的部分是**物理模型本身成为可寻址、可搜索、可组合和可调用的科学对象**。这一架构可以直接映射到 ASM/ADM 等模型的结构化表示、模型 API 和 agent operation。全文阶段需要重点核查 ontology 粒度、方程/参数/约束如何表示、Agent 实际调用的接口，以及“可扩展”目前有多少实证支持；摘要还不足以判断它对复杂生物动力学、守恒关系和模型版本演化的适应性。
+
+## 02. A Hybrid Data-Driven Intensified Mechanistic Modeling Framework for Accurate and Reliable Wastewater Treatment Process Simulation and Control
+
+<ResponsiveTable caption="Table 3. Xie et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| First author | Wenlang Xie |
+| Venue | Environmental Science & Technology |
+| Published online | 2026-06-01 |
+| DOI | [10.1021/acs.est.6c00540](https://doi.org/10.1021/acs.est.6c00540) |
+| A-score | 94 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+HyDIM 直接处理污水处理机理模型在动态工况下因 static parametrization 导致 fidelity 不足，而纯数据驱动模型又可能产生不稳定预测的问题。其关键设计是 **functionalize kinetic parameters**：数据驱动组件让动力学参数随条件自适应变化，机理核心继续承担过程结构和预测约束。摘要报告，在 sulfide-laden WWT 系统中，sulfide、sulfur、sulfate 的 \(R^2\) 从 0.30、0.09、0.02 提高到 0.66、0.77、0.74；相对数据驱动模型，extreme deviations 降低 78.2%。进一步用于双目标优化后，实现 96% sulfide removal 和 91% sulfur recovery。
+
+这篇论文与 Hybrid ODE 的方法距离非常近。全文最需要核查的是：哪些 kinetic parameters 被函数化、数据模块输入是什么、参数是否具有范围/非负/守恒等约束，以及随时间变化的“parameter”在科学解释上究竟代表真实动力学变化还是经验补偿。只有这些问题明确以后，才能判断该方法提供的是新的 hybrid modelling 原则，还是高性能的动态校正机制。
+
+## 03. Large language models as uncertainty-calibrated optimizers for experimental discovery
+
+<ResponsiveTable caption="Table 4. Ranković et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| Authors | Bojana Ranković, Ryan-Rhys Griffiths, Philippe Schwaller |
+| Venue | Nature Machine Intelligence |
+| Published | 2026-08-28 |
+| DOI | [10.1038/s42256-026-01283-z](https://doi.org/10.1038/s42256-026-01283-z) |
+| A-score | 93 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+GOLLuM 处理实验优化中的一个关键矛盾：Bayesian optimization 有明确的不确定性机制，但常依赖领域特征；LLM 含有丰富科学先验，却缺少高风险决策所需的 calibrated uncertainty。作者用 Gaussian-process Bayesian objective 训练语言模型，使实验结果及其 uncertainty 直接重塑 LLM embedding。摘要报告，该方法从 10 个低性能初始实验开始，在 organic synthesis、materials、process chemistry 和 molecular design 的 23 个任务中平均排名第一，并以超过 40% 更少的实验达到传统 Bayesian optimization 的水平。
+
+对当前研究，真正有价值的部分在 **experimental design / model identification**。它提示可以把实验条件、结构化模型信息和少量结果放入 uncertainty-aware sequential decision loop，用于 batch experiment 设计、参数辨识或 candidate-process discrimination。全文应重点核查性能提升来自 LLM prior、representation adaptation 还是 GP 本身，以及 natural-language representation 对污水工况这种连续动态变量是否仍然有优势。
+
+## 04. Adversarial dynamical systems characterize when data-driven learning succeeds or fails
+
+<ResponsiveTable caption="Table 5. Colbrook et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| Authors | Matthew J. Colbrook, Igor Mezić, Alexei Stepanenko |
+| Venue | Nature Communications |
+| Published | 2026-07-14 |
+| DOI | [10.1038/s41467-026-74220-8](https://doi.org/10.1038/s41467-026-74220-8) |
+| A-score | 92 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+论文提出的问题比“预测精度多高”更基础：什么条件下动力系统能够从数据中被可靠学习，什么条件下学习本身不存在普遍保证。作者以 Koopman operator learning 为核心，一方面构造具有 convergence 和 certification guarantees 的 spectral algorithms，另一方面通过 adversarial dynamical systems 给出 matching impossibility results；摘要强调，当关键条件缺失时，即使数据质量很高，也没有单一极限过程能够保证学习成功。框架还在振子、chaotic fluid flows 和 Arctic sea ice 上验证。
+
+这一研究范式对 system identification、Neural ODE 和 Hybrid ODE 很重要，因为它要求先讨论**可学习性条件与失败边界**，再谈模型容量。全文阶段需要判断理论假设对 noisy、partially observed、controlled 和 non-stationary wastewater systems 的适用程度。Koopman learning 的 impossibility result 不能直接外推为所有数据驱动 ODE 的结论，但它提供了一种值得借鉴的研究设计：同时证明什么时候方法有效，以及什么时候原则上无法保证有效。
+
+## 05. Enabling local neural operators to perform equation-free system-level analysis
+
+<ResponsiveTable caption="Table 6. Fabiani et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| First author | Gianluca Fabiani |
+| Venue | Nature Machine Intelligence |
+| Published | 2026-07-15 |
+| DOI | [10.1038/s42256-026-01265-1](https://doi.org/10.1038/s42256-026-01265-1) |
+| A-score | 91 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+Neural operators 通常被作为昂贵数值模型的 surrogate，这篇论文进一步要求 learned operator 承担 **system-level numerical analysis**。作者将 local neural operators 与 equation-free 思路和 Krylov-subspace iterative methods 结合，用于 fixed-point、stability 和 bifurcation analysis；摘要还引入 projective integration、Gap-Tooth 和 Patch Dynamics 等 multiscale schemes，并在 Allen–Cahn、Liouville–Bratu–Gelfand 与 FitzHugh–Nagumo PDE benchmark 上演示。
+
+对污水动力学建模，这篇论文提供了一个更高标准：数据驱动模型的科学价值不应只由 trajectory error 衡量，还可以看它能否支持稳态、稳定性、临界转变和 bifurcation 分析。其限制也很明确：论文对象以 spatiotemporal PDE 为主，而 ASM 常见形式是中低维 ODE/DAE 或 compartment models。全文需要判断这种方法在污水系统中是否仍有计算优势，以及哪些 system-level analysis 可以迁移而无需照搬 neural operator 架构。
+
+## 06. Data-driven reduced modeling of neural dynamics
+
+<ResponsiveTable caption="Table 7. Marraffa et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| First author | A. Marraffa |
+| Venue | Nature Communications |
+| Published | 2026-07-28 |
+| DOI | [10.1038/s41467-026-75924-7](https://doi.org/10.1038/s41467-026-75924-7) |
+| A-score | 90 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+作者关注高维 Neural ODE / recurrent neural-network 动力学难以解释的问题，使用 Spectral Submanifolds（SSMs）从数据中识别低维 attracting invariant manifolds，并以这些流形内部的动力学建立显式低维模型。摘要称，SSM reduction 能将高维网络降到低得多的维度，并给出 line attractor、ring attractor 等概念的数学定义，从而把 learned dynamics 转化为更明确的非线性动力系统结构。
+
+它为 Neural ODE 的“解释性”提供了一条与 feature attribution 完全不同的路径：训练后直接分析 learned vector field 的 invariant structures。对 wastewater Neural ODE，可以进一步研究 learned compensation 是否形成慢流形、不同工况是否对应不同吸引结构，以及数据驱动子系统能否降阶为更明确的多项式动力学。全文阶段必须检查 SSM 的存在条件、fixed-point/eigenspace 假设以及对非自治、强迫和切换工况的适用性。
+
+## 07. A Physics-Guided Machine Learning Framework Enabling Interpretable and Transferable Cascade Reactor Modeling
+
+<ResponsiveTable caption="Table 8. Li et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| First author | Yan Li |
+| Venue | Environmental Science & Technology |
+| Published online | 2026-06-22 |
+| DOI | [10.1021/acs.est.6c01670](https://doi.org/10.1021/acs.est.6c01670) |
+| A-score | 89 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+论文面向 cascade reactors 在 first-principles modelling 过于复杂、纯数据驱动方法又受 data scarcity 和跨 reactor configuration transferability 限制的问题，提出 physics-guided reactor network（PG-RN）。核心做法是把 residence time distribution（RTD）理论结构性地嵌入机器学习模型，并进一步设计由物理知识指导的 differentiated transfer learning。摘要报告，该方法在数据充足时与常用 baseline 相当，在少数据条件下表现更好，同时得到与理论一致的可解释 RTD profile；在真实电池金属回收实验数据上，相对 nontransfer baseline 提升 22%。
+
+它值得借鉴的重点是**把可迁移的物理结构与需要学习的局部动力学分开**。这一思想可能用于不同 WWTP reactor configurations、不同水厂或不同 SRT/flow regime 之间的模型迁移。全文应重点检查 RTD 进入网络的具体位置、transfer 时冻结与更新哪些模块、实验数据量，以及所谓 interpretability 是否真正约束了 model behaviour。
+
+## 08. Capable language models can outgrow the benefits of collaboration
+
+<ResponsiveTable caption="Table 9. Kim et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| First author | Yubin Kim |
+| Venue | Nature Machine Intelligence |
+| Published | 2026-07-24 |
+| DOI | [10.1038/s42256-026-01268-y](https://doi.org/10.1038/s42256-026-01268-y) |
+| A-score | 88 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+这项工作直接检验“什么时候多 Agent 值得”这一架构问题。作者固定 task prompts、tools 和 compute budgets，只改变 coordination structure 与 model capability，在 260 种配置、6 个 benchmark、5 种架构和 3 个 LLM family 上做 controlled experiment。摘要报告 single-agent baseline performance 是协作是否获益的最稳健预测量；其 capability-saturation threshold 在 SWE-bench Verified 与 Terminal-Bench 的验证配置中以 94% 准确率判断多 Agent 协作带来提升还是下降，拟合模型还能在 87% held-out configurations 中选择最佳架构。
+
+对 scientific agent 项目，这篇论文的直接价值是：**multi-agent 不能作为默认高级架构**。模型解析、验证、执行和文献抽取都应先建立强 single-agent baseline，再证明并行探索、任务分解或独立验证的收益高于 coordination tax。全文阶段需要核查这些 benchmark 与 scientific workflows 的距离，以及长时程状态、工具副作用和 scientific verification 是否会改变其结论。
+
+## 09. An autonomous lab for data-driven homogeneous catalysis
+
+<ResponsiveTable caption="Table 10. Bennett et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| First author | J. A. Bennett |
+| Venue | Nature Communications |
+| Published | 2026-06-20 |
+| DOI | [10.1038/s41467-026-74425-x](https://doi.org/10.1038/s41467-026-74425-x) |
+| A-score | 87 / 100 — Must Read |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+Flex-Cat 把自动化实验平台与 hierarchical、plate-constrained Bayesian optimization 组成闭环，同时处理 ligand identity 等离散变量与 process conditions 等连续变量。摘要报告三轮 multi-objective optimization 共完成 680 次实验，turnover frequency 提高超过 2.5 倍，并扩展可达到的 regioselectivity 范围；候选条件随后被迁移到 20 mL reactor 进行放大验证。其问题设定尤其强调现实实验设备带来的 plate-level global constraints，因此 decision policy 必须显式处理硬件耦合。
+
+对污水动力学研究，最值得借鉴的是“实验—模型—决策—再实验”的闭环，而非催化体系本身。Batch experiments、parameter calibration 和 structure discrimination 可以被重新组织成主动实验设计问题。全文阶段应重点核查 acquisition strategy、失败实验如何处理、hardware digital twin 的职责，以及它是否真正优化“信息增益/可辨识性”，还是主要寻找高性能 operating point。
+
+## 10. A machine learning-driven framework for optimizing disinfection in drinking water treatment
+
+<ResponsiveTable caption="Table 11. Wang et al. 的摘要阶段基本信息。" variant="striped-minimal">
+
+| Item | Information |
+| :-- | :-- |
+| First author | Pin Wang |
+| Venue | Nature Water |
+| Published | 2026-08-25 |
+| DOI | [10.1038/s44221-026-00702-0](https://doi.org/10.1038/s44221-026-00702-0) |
+| A-score | 84 / 100 — Recommended |
+| Full-text review | Pending |
+
+</ResponsiveTable>
+
+DISoptimizer 处理 drinking-water disinfection 中 microbial safety 与 disinfection by-products 之间的运行权衡。机器学习模型预测 24 h 后的 residual chlorine 和四种 trihalomethanes（THM\(_4\)），随后通过带用户偏好权重的目标函数选择 chlorine dose。摘要报告，相对 empirical fixed-dosing strategies，该框架在维持 residual chlorine margin 的同时使 THM\(_4\) formation 降低 5–35%，并进行了 computational simulations 与 external validation。
+
+其方法创新不如前几篇基础，但研究设计值得水处理 ML 借鉴：工作目标从“预测一个水质指标”推进到**prediction-to-decision**。对于 WWTP，可对应 aeration、carbon addition、chemical dosing 或 set-point optimization。全文阶段应重点检查 external validation 的严格程度、不同水质分布下的 robustness、权重参数的决策含义，以及预测误差如何传播到最终 dosing decision。
+
+## 跨论文方法观察
+
+<ResponsiveTable caption="Table 12. 本期最值得持续追踪的方法线及潜在迁移方向。" variant="striped-minimal">
+
+| 方法线 | 代表论文 | 对当前研究可能产生的变化 |
+| :-- | :-- | :-- |
+| Structured model state + agents | 01 | 把 ASM/ADM 等模型变成可检索、组装、校准和调用的科学对象 |
+| Constrained hybrid modelling | 02, 07 | 明确 ML 可以改变的参数/结构，并提高跨工况、跨反应器迁移能力 |
+| Learnability + dynamical analysis | 04, 05, 06 | 从预测误差扩展到可学习性、稳定性、bifurcation、invariant manifolds |
+| Scientific decision loops | 03, 09, 10 | 将 uncertainty、实验设计和运行决策直接接到模型输出之后 |
+| Agent architecture discipline | 08 | 用 controlled baseline 决定 single-agent 与 multi-agent，而非默认堆叠 Agent |
+
+</ResponsiveTable>
+
+本期最值得持续追踪的总问题是：**learned model 能否被科学地分析和操作。** 如果一个 ML 模型只能降低 RMSE，其方法增量有限；如果它能够保留机理边界、支持结构化模型操作、提供 uncertainty、进入实验决策、进行 stability/bifurcation analysis，或者明确给出无法可靠学习的条件，那么它开始接近真正能够改变科学建模方式的方法。
+
+## 全文补充状态
+
+当前 10 篇均为 `Abstract`。全文到位后按固定编号建立：
+
+```text
+src/content/paper-review/2026-08-30/papers/
+├── 01-zhang-knowledge-graph-digital-twin.mdx
+├── 02-xie-hydim-hybrid-wastewater.mdx
+├── 03-rankovic-llm-bayesian-optimization.mdx
+├── 04-colbrook-adversarial-dynamical-systems.mdx
+├── 05-fabiani-neural-operator-system-analysis.mdx
+├── 06-marraffa-neural-ode-model-reduction.mdx
+├── 07-li-physics-guided-reactor-network.mdx
+├── 08-kim-agent-collaboration.mdx
+├── 09-bennett-autonomous-catalysis-lab.mdx
+└── 10-wang-disinfection-optimizer.mdx
+```
+
+PDF 不进入公开博客仓库。A-score 保留作为本期初筛记录；全文 review 后新增 F-score，并由本页链接到对应子文件。
+
+---
+
+**Evidence note.** 本期检索与初评日期为 2026-08-30。事实性论文内容来自出版商元数据和摘要；“与当前研究的关系”及“全文需要核查的问题”属于 Paper Review 的方法迁移判断。
