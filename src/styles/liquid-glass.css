@@ -89,7 +89,8 @@ footer > div {
   border: 1px solid var(--glass-border) !important;
   background: var(--glass-surface);
   box-shadow: var(--glass-shadow);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur))
+    saturate(var(--glass-saturate));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
 }
 
@@ -102,14 +103,13 @@ footer > div::after {
   inset: 0;
   z-index: 0;
   border-radius: inherit;
-  background:
-    linear-gradient(
-      135deg,
-      var(--glass-highlight),
-      transparent 22%,
-      transparent 76%,
-      color-mix(in srgb, var(--accent-cyan) 8%, transparent)
-    );
+  background: linear-gradient(
+    135deg,
+    var(--glass-highlight),
+    transparent 22%,
+    transparent 76%,
+    color-mix(in srgb, var(--accent-cyan) 8%, transparent)
+  );
   content: "";
   pointer-events: none;
   opacity: 0.34;
@@ -341,7 +341,9 @@ footer > div {
   background: color-mix(in srgb, var(--accent-purple) 68%, transparent);
 }
 
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
   .glass-surface,
   body > header > div,
   .content-layout,
@@ -367,7 +369,8 @@ footer > div {
     padding: 0.7rem;
     background: var(--glass-surface-strong);
     box-shadow: var(--glass-shadow);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur))
+      saturate(var(--glass-saturate));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   }
 
