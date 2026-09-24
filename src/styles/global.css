@@ -201,7 +201,7 @@
   background: color-mix(in srgb, var(--background-primary) 72%, transparent);
 }
 
-/* Apple-homepage-inspired editorial rhythm. */
+/* Editorial rhythm for the academic homepage. */
 .home-hero {
   position: relative;
   display: grid;
