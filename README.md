@@ -1,6 +1,6 @@
 # cigit-zgy
 
-cigit-zgy is a static academic research and technical-writing site for wastewater process modelling, scientific machine learning, and computational methods. It is built on AstroPaper with an Academic Dracula at Night design system and a small set of academic extensions.
+cigit-zgy is a static academic research and technical-writing site for wastewater process modelling, scientific machine learning, and computational methods. It is built on AstroPaper with a project-owned solid academic publishing system.
 
 ## Stack
 
@@ -8,9 +8,47 @@ cigit-zgy is a static academic research and technical-writing site for wastewate
 - Markdown and MDX content collections
 - KaTeX via `remark-math` and `rehype-katex`
 - Pagefind search, RSS, sitemap, and AstroPaper SEO/accessibility infrastructure
-- Static output suitable for GitHub and zero-config Vercel deployment
+- Static output suitable for GitHub and Vercel
 
 The site uses pnpm only. Node.js 22.12 or newer is required.
+
+## Visual system
+
+The public site uses two opaque, solid themes:
+
+- Dark: Dracula At Night
+- Light: Claude-inspired warm editorial palette
+
+Gradients, aurora backgrounds, backdrop blur, and Liquid Glass are excluded from published UI. Depth comes from solid surfaces, borders, spacing, typography, and restrained shadows.
+
+Typography is shared across prose and diagrams:
+
+- Chinese: LXGW WenKai Screen
+- Latin reading/UI: Latin Modern Sans
+- code and identifiers: Maple Mono
+- mathematics: KaTeX
+
+Code remains on a Dracula editor surface in both site themes. Compact code-oriented callouts may use restrained Snazzy cyan, pink, yellow, and green accents.
+
+## Writing contract
+
+Create descriptive Markdown or MDX files in `src/content/posts/`. Do not prefix filenames with dates; filenames become stable `/writing/<slug>/` URLs. Use `draft: true` until a note is ready.
+
+The default article grammar favors structured expression:
+
+- tables for comparisons, variables, parameters, units, assumptions, and command matrices;
+- bullet lists for three or more parallel points;
+- numbered lists for ordered procedures and protocols;
+- project-owned callouts for definitions, notes, descriptions, methods, important constraints, cautions, warnings, examples, and compact code emphasis;
+- KaTeX for genuine mathematical relationships;
+- charts for quantitative comparisons, trends, distributions, and relationships;
+- fenced code for commands, configuration, and machine-readable content.
+
+Mermaid and PlantUML are not default writing primitives. Use them only when a requested diagram or UML interaction carries information that tables, lists, equations, code, or quantitative charts cannot express as clearly.
+
+For MDX callouts, import `AcademicCallout` from `@/components/AcademicCallout.astro`. Wrap potentially wide academic tables with `ResponsiveTable`. Every substantive table and figure requires a caption.
+
+Detailed rules live in `.agents/skills/academic-blog/SKILL.md` and its references.
 
 ## Local use
 
@@ -21,17 +59,7 @@ pnpm dev
 
 Open `http://localhost:4321`. The first visit defaults to dark mode; the header toggle stores the reader's explicit choice in `localStorage`.
 
-## Writing
-
-Create a descriptive `.md` or `.mdx` file in `src/content/posts/`. Do not prefix filenames with dates; the filename becomes the stable `/writing/<slug>/` URL. Follow the schema and topic taxonomy in `src/content.config.ts`. Use `draft: true` until a note is ready; production builds exclude drafts from routes, listings, RSS, sitemap, and Pagefind.
-
-Images can be placed under `public/figures/` and referenced as `/figures/name.svg`, or imported from `src/assets/` when Astro image optimization is useful. Always provide meaningful alt text and place article images inside semantic `figure` and `figcaption` elements.
-
-Write inline mathematics as `$x(t)$` and display mathematics between `$$` delimiters. For MDX callouts, import `AcademicCallout` from `@/components/AcademicCallout.astro`. Wrap wide academic tables with `ResponsiveTable`.
-
-`src/content/posts/academic-format-demo.mdx` is an internal draft covering equations, code, tables, figures, footnotes, references, and callouts. It is available during local development and intentionally absent from production output.
-
-## Validation and preview
+## Validation
 
 ```bash
 pnpm astro check
@@ -45,7 +73,7 @@ pnpm preview
 
 ## GitHub and Vercel
 
-Commit the repository to GitHub, then import it into Vercel. Use the detected pnpm install command and the existing `pnpm build` script; no Vercel adapter, `vercel.json`, SSR mode, or serverless function is required. Before the first deployment, confirm `site.url` in `astro-paper.config.ts` matches the final Vercel or custom-domain URL.
+The site uses static Astro output. No Vercel adapter, SSR mode, or serverless function is required for the current architecture.
 
 ## Upstream and license
 
