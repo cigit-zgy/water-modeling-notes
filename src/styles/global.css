@@ -67,7 +67,6 @@
       color 180ms ease;
   }
 
-
   a,
   button,
   #main-content {
@@ -212,7 +211,6 @@
   text-align: center;
 }
 
-
 .home-hero__eyebrow,
 .home-section__eyebrow {
   color: var(--accent-link);
@@ -313,7 +311,6 @@
   border-radius: clamp(1.35rem, 3vw, 2rem);
   overflow: hidden;
 }
-
 
 .home-featured-panel:hover {
   transform: translateY(-4px) scale(1.002);
