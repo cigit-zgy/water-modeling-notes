@@ -61,6 +61,7 @@ Callouts belong to this project's theme. Do not copy Quarto's default appearance
 - code uses a Dracula code surface with restrained Snazzy cyan/pink/yellow/green accents.
 - Callout body remains regular weight; the label is stronger and smaller.
 - Avoid nesting callouts.
+- Callout colours must come from `theme.css` semantic tokens; article content must not hardcode per-card colours.
 
 ## Visual contract
 
