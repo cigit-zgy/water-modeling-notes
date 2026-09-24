@@ -1,155 +1,132 @@
 ---
 name: academic-blog
-description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, the Apple Liquid Glass visual system, and diagram-as-code publishing. Use when adding or changing site pages, design, academic components, or content patterns in this repository.
+description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, solid dual-theme presentation, structured technical writing, callouts, tables, equations, code, and data charts.
 ---
 
 # Academic blog maintenance
 
-Keep changes compatible with the existing AstroPaper structure. Preserve the static-first architecture, content collections, Pagefind, RSS, sitemap, accessibility, and Astro view transitions. Extend an existing layer/component before creating a new abstraction.
+Keep changes compatible with the existing AstroPaper static architecture. Preserve content collections, Pagefind, RSS, sitemap, accessibility, Astro view transitions, and stable article URLs.
 
-Before changing visual presentation, read [references/design-system.md](references/design-system.md) and [references/apple-design-references.md](references/apple-design-references.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). For diagrams, also read `src/diagrams/README.md`. Read all relevant references when a task changes both article structure and UI.
+Before visual work, read references/design-system.md. Before writing or restructuring articles, read references/academic-content.md.
 
-## Design reference hierarchy
+## Writing contract
 
-For Apple-like Web UI, apply sources in this order:
+Treat the site as an academic technical publication.
 
-1. the user's current instruction;
-2. this project's `SKILL.md` and design-system reference;
-3. Apple Human Interface Guidelines and Apple Liquid Glass documentation;
-4. Emil Kowalski's `skills/apple-design` for interaction, material, motion, and typography judgment;
-5. `bowen31337/apple-design` for concrete Web implementation patterns.
+- Preserve facts, scope, uncertainty, terminology, code, paths, commands, identifiers, units, equations, and citations.
+- Use concise SCI-like logic when appropriate: problem → motivation → objective → method/architecture → evidence/validation → limitations → conclusion.
+- Prefer structured expression when information is enumerable or comparable.
+- Three or more parallel items should normally become a bullet list or table.
+- Ordered procedures, protocols, lifecycle stages, and reproducible operations should normally become numbered lists.
+- Multi-object comparisons, parameters, variables, units, assumptions, command matrices, and validation layers should normally become tables.
+- Definitions, constraints, caveats, examples, important conclusions, and implementation notes should use semantic callouts when a callout improves scanning.
+- Use prose for reasoning, causal explanation, interpretation, transitions, and argument. Do not turn every paragraph into a card.
+- Use KaTeX for genuine mathematical relationships. Define symbols and units before interpretation.
+- Use charts for quantitative comparison, trends, distributions, and relationships when data justify a graphic.
+- Do not add decorative flowcharts. Mermaid and PlantUML are outside the default article path; use them only when the user explicitly requests a diagram or when a UML interaction is itself the subject.
+- Avoid “不是……而是……” contrast constructions. Prefer direct declarative phrasing.
+- Avoid promotional claims, fake values, placeholder citations, unsupported academic facts, and decorative figures.
 
-Do not vendor third-party skill text into this repository. Paraphrase principles, preserve source links, and review upstream licensing before copying implementation code. The exact sources and project adaptation are recorded in `references/apple-design-references.md`.
+## Structured block selection
 
-## Global writing contract
+| Information | Default form |
+| --- | --- |
+| Comparison across objects or methods | Table |
+| Variables, parameters, units, assumptions | Table |
+| Three or more parallel points | Bullet list |
+| Ordered workflow or protocol | Numbered list |
+| Formal definition | Definition callout |
+| Core constraint or conclusion | Important callout |
+| Additional context | Note or Description callout |
+| Practical guidance | Tip or Method callout |
+| Risk / scope boundary | Caution or Warning callout |
+| Minimal worked illustration | Example callout |
+| Command/configuration emphasis | Code callout or fenced code |
+| Mathematical relation | KaTeX equation |
+| Quantitative trend/comparison/distribution | Data chart |
 
-Treat the blog as an academic technical publication, not a marketing site.
+## Callout contract
 
-- Use the logic of a concise SCI paper where appropriate: define the problem, establish motivation, state the design objective, explain the method/architecture, provide evidence or validation, delimit limitations, and conclude.
-- Write with research-level precision, restraint, and logical continuity. Avoid slogans, exaggerated claims, promotional adjectives, and feature-list prose without an argument.
-- One paragraph should carry one primary point. Each section must have a clear role in the article's argument.
-- Preserve facts, conditions, uncertainty, scope, limitations, terminology, code, paths, commands, identifiers, and citations exactly unless a verified source supports a change.
-- Do not infer academic facts, results, publication details, affiliations, capabilities, or causal conclusions.
-- Use consistent terminology; do not vary scientific or technical terms merely for stylistic variety.
-- Prefer direct, compact Chinese. Remove repetition before adding explanation.
-- Tables and figures must add information, not decoration. Every substantive table requires a caption; every figure requires a meaningful caption and alt text.
-- For Chinese technical prose, also consult Fenng's `Tech-Doc-Style-Chinese` as a secondary writing reference: https://github.com/Fenng/Tech-Doc-Style-Chinese . Its priorities—fact fidelity, terminology consistency, controlled technical Chinese, and preservation of machine-readable content—are subordinate to this project's academic conventions and the user's current instructions.
+AcademicCallout supports exactly these kinds:
 
-## Architecture contract
+note, tip, description, definition, method, important, caution, warning, example, code.
 
-Keep the project small by removing only confirmed dead or duplicate code; do not strip AstroPaper features merely because they are currently disabled in configuration.
+Callouts belong to this project's theme. Do not copy Quarto's default appearance. Quarto is only a semantic reference for the callout concept.
 
-Shared styling has five explicit owners:
+- No gradients.
+- Solid background only.
+- One semantic accent per card.
+- Dark cards derive from Dracula At Night.
+- Light cards derive from the Claude-inspired warm palette.
+- code uses a Dracula code surface with restrained Snazzy cyan/pink/yellow/green accents.
+- Callout body remains regular weight; the label is stronger and smaller.
+- Avoid nesting callouts.
 
-1. `src/styles/fonts.css`: font-face definitions only.
-2. `src/styles/theme.css`: semantic colour, material, shadow, and font-family tokens.
-3. `src/styles/liquid-glass.css`: reusable Liquid Glass material recipes and accessibility fallbacks.
-4. `src/styles/typography.css`: article typography, headings, tables, code, quotations, figures, and callouts.
-5. `src/styles/global.css`: layout utilities, global interaction, transitions, navigation, identity, home-page accents, and component placement.
+## Visual contract
 
-Rules:
+The site has two solid themes.
 
-- Do not create `refinements.css`, `overrides.css`, or article-local CSS for shared UI.
-- `liquid-glass.css` is a first-class material layer, not a patch layer. Do not duplicate its blur/specular/rim/shadow recipe in arbitrary components.
-- Do not duplicate the same visual rule in a component and a shared stylesheet. Components provide semantics and structure; the owning stylesheet provides shared presentation.
-- Do not represent the header avatar twice.
-- Remove experiment assets, placeholder content, obsolete configuration files, and test-only posts once they are no longer used.
-- Preserve upstream optional capabilities unless their removal is an explicit project decision.
-- Add runtime dependencies only for an observed requirement and update the lockfile in the same validated change.
+- Dark: Dracula At Night.
+- Light: Claude-inspired warm editorial palette.
+- Backgrounds must be solid colours.
+- Gradients are prohibited: no linear, radial, conic, mesh, aurora, gradient text, gradient borders, or SVG gradients in published UI.
+- Do not reintroduce Liquid Glass, backdrop blur, transparent glass layers, lensing, or specular gradient effects.
+- Use borders, spacing, typography, restrained shadows, and solid surface hierarchy for depth.
+- Chinese glyphs use LXGW WenKai Screen.
+- Latin reading/UI text uses Latin Modern Sans.
+- Code uses Maple Mono; Chinese fallback remains LXGW WenKai Screen.
+- KaTeX owns mathematical typography.
+- Long-form text is regular weight 400.
+- Heading hierarchy uses size, weight, line-height, tracking, and spacing rather than per-level decorative colours.
+- Code blocks keep the Dracula syntax surface in both site themes.
 
-## Global visual contract
+## Style architecture
 
-The site uses an Apple-inspired Liquid Glass design language. Content remains primary; glass is reserved for navigation, floating controls, search, TOC, compact controls, and selected high-hierarchy surfaces.
+Shared styles have five owners:
 
-- Do not use Dracula At Night as the site UI palette. Dracula is retained only for fenced and inline code because it is a code-syntax surface, not site chrome.
-- Shared components consume semantic variables from `src/styles/theme.css`; avoid scattered hex values.
-- Glass must include translucency, blur plus saturation, a top-edge specular highlight, a hairline rim, and soft depth. Blur alone is not Liquid Glass.
-- Never stack two translucent glass surfaces directly on top of each other.
-- Use regular material for nav/toolbars, thin material for compact controls, thick material only for menus/sheets or rare high-hierarchy surfaces.
-- Use Liquid Glass sparingly. Article prose, tables, figures, equations, and code blocks prioritize readability over translucency.
-- Chinese glyphs use `LXGW WenKai Screen` everywhere. Latin reading/UI text uses Latin Modern Sans; code uses Maple Mono; KaTeX keeps its mathematical font stack.
-- Long-form body text is non-serif and regular weight (`400`). Bold/semibold is reserved for headings, labels, table headers, and semantic emphasis.
-- Heading hierarchy is established through size, optical tracking, spacing, and weight. Do not assign decorative colours by heading level.
-- Use a restrained adaptive light field behind floating glass so material transparency remains perceptible without competing with article content.
-- The uploaded Ghibli-style avatar remains the site identity image directly left of `cigit-zgy`.
-- The circular reading-progress/back-to-top control remains available on both desktop and mobile and uses a glass control surface.
+1. fonts.css: font-face definitions.
+2. theme.css: semantic colour, surface, callout, code, shadow, and font tokens.
+3. surfaces.css: reusable solid surface recipes.
+4. typography.css: article typography, tables, equations, code, quotes, figures, and callouts.
+5. global.css: layout, navigation, interaction, identity, homepage, and component placement.
 
-## Interaction and motion contract
+Do not add catch-all override stylesheets or article-local shared UI patches.
 
-- Give press feedback immediately; compact controls may use a subtle scale response on `:active`.
-- Keep navigation and reversible transitions spatially consistent.
-- Use CSS transitions for simple hover/focus/press states; do not add Motion, GSAP, or another motion dependency unless a real gesture requires interruptible spring behavior.
-- Avoid animation that delays access to academic content.
-- Prefer `transform` and `opacity` for animated properties.
-- Honor `prefers-reduced-motion` and keep the reduced-motion experience fully functional.
+## Tables, equations, charts, and figures
 
-## Liquid Glass accessibility contract
+- Every substantive table has a caption.
+- Tables use solid zebra rows and a solid header surface.
+- Equations must be semantically necessary; do not use formulas as decoration.
+- Charts require actual or explicitly labeled illustrative data and should use the current semantic palette with solid backgrounds.
+- Prefer bar/line/scatter charts over process diagrams when the information is quantitative.
+- Figures need alt text and captions.
+- Article content, tables, equations, charts, code, and callouts must remain within the reading layout or use an explicitly justified wide layout.
 
-- Include both `backdrop-filter` and `-webkit-backdrop-filter`.
-- Provide a solid or near-solid fallback when `backdrop-filter` is unsupported.
-- `prefers-reduced-transparency: reduce` removes glass blur and uses an opaque semantic surface.
-- `prefers-contrast: more` adds an unambiguous edge/border.
-- Body text must maintain at least 4.5:1 effective contrast through glass.
-- Touch targets remain at least 44 px.
-- Use `focus-visible` on every interactive control.
-- Animate primarily `transform` and `opacity`; avoid layout-property animation.
+## Interaction and accessibility
 
-## Tables, callouts, figures, and code
-
-- Every substantive academic table has a caption above it. Captions are slightly larger than ordinary metadata.
-- Tables use a clearly visible but low-contrast odd/even zebra pattern defined in `typography.css`.
-- `AcademicCallout` labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are stronger than metadata; callout bodies remain regular weight.
-- Article lead text and block quotations use quiet semantic surfaces; they do not need Liquid Glass.
-- Figures, diagram SVGs, tables, and code blocks never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
-- Fenced code and inline code both use Dracula. Shiki remains `dracula` in both reading themes unless explicitly redesigned later.
-
-## Diagram contract
-
-The blog supports exactly two diagram-as-code formats for authored diagrams: Mermaid and PlantUML.
-
-- Use Mermaid for ordinary workflows, architecture overviews, state-like flows, and compact directed process diagrams.
-- Use PlantUML for sequence, component, class, and UML-style interaction diagrams where explicit participants and message order matter.
-- Keep every diagram source in `src/diagrams/`; do not scatter diagram source inside article MDX.
-- Shared Mermaid styling lives in `src/diagrams/mermaid.config.json`; shared PlantUML styling lives in `src/diagrams/plantuml-theme.puml`.
-- Prefer compact diagrams. Keep labels short, avoid decorative subgraphs, and use a target publication width around 680–760 px. Large diagrams should be reorganized before increasing width.
-- Published pages load pre-rendered local SVG only. Readers must not execute Mermaid, PlantUML, Java, WASM, Graphviz, or a remote diagram renderer.
-- Diagram rendering is performed by the repository workflow in `.github/workflows/render-diagrams.yml` with pinned Mermaid CLI and PlantUML versions.
-- A source change and its generated SVG are one logical artifact. Do not merge a diagram-source change unless the renderer has regenerated the corresponding SVG successfully.
-- Mermaid and PlantUML diagrams use the current Apple/Liquid Glass dark semantic palette: near-black background, neutral elevated nodes, system blue/cyan interaction edges, restrained purple for decisions/groups, and green/orange only for semantic outcomes or rollback paths.
-- Every diagram used in an article has meaningful alt text and a figure caption. The caption may name the source format when useful, but readers never see diagram source by default.
+- Motion is sparse and functional.
+- Use transform/opacity for transitions.
+- Respect prefers-reduced-motion.
+- Touch targets are at least 44 px.
+- Use visible focus-visible states.
+- Maintain at least 4.5:1 effective contrast for body text.
+- Do not depend on colour alone to communicate meaning.
 
 ## Deployment contract
 
-Preserve static output, stable `/writing/<slug>/` URLs, and production exclusion of drafts.
-
-Vercel deployments consume account resources. For non-trivial UI/content changes:
-
-1. consolidate changes on a preview branch;
-2. validate the preview build and affected surfaces;
-3. provide a Preview URL for user review;
-4. update `main` only after approval or explicit direct-publication instruction;
-5. verify production once.
-
-Avoid repeated production pushes for visual iteration.
+For non-trivial changes, validate lint, formatting, Astro check/build, affected routes, and the final deployment. When the user explicitly requests direct publication, a validated tree may be promoted directly to main.
 
 ## Validation checklist
 
-Before presenting a preview or production result, check at minimum:
+Before presenting a result, verify:
 
-- Astro/type build succeeds with no new errors;
-- lint and formatting checks pass;
-- affected routes exist;
-- no temporary or placeholder files remain;
-- the five-layer CSS ownership model is respected;
-- Liquid Glass has specular, rim, blur+saturation, shadow, and accessibility fallbacks;
-- body text is regular weight and non-serif;
-- Chinese glyphs use LXGW WenKai Screen, including TOC/navigation content;
-- tables have captions and visible low-contrast zebra rows in both themes;
-- headings rely on hierarchy, not decorative rainbow colouring;
-- fenced and inline code use Dracula;
-- every Mermaid/PlantUML source used by a published post has a regenerated local SVG;
-- no published article depends on browser-side diagram parsing or a remote renderer;
-- diagram width remains within the reading column at desktop and mobile widths;
-- header avatar renders from the local asset;
-- reading-progress control works on desktop and mobile;
-- navigation, title wrapping, table/code overflow, figures, focus visibility, press feedback, reduced motion, reduced transparency, and high contrast remain sound.
+- no linear-gradient, radial-gradient, conic-gradient, or SVG gradient is used by published UI;
+- dark mode uses Dracula At Night tokens;
+- light mode uses the Claude-inspired warm palette;
+- callouts use project-owned solid semantic cards;
+- body and callout typography match the site font contract;
+- tables, lists, equations, code, and charts follow the structured-writing rules;
+- no decorative Mermaid/PlantUML flowchart is published by default;
+- header, TOC, search, tags, progress control, tables, code, callouts, equations, focus states, and mobile overflow remain sound;
+- lint, formatting, and Astro build pass;
+- no temporary/demo page or unused generated diagram artifact remains.

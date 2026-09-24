@@ -2,7 +2,7 @@
 @import "lxgw-wenkai-screen-web/lxgwwenkaiscreen/result.css";
 @import "./fonts.css";
 @import "./theme.css";
-@import "./liquid-glass.css";
+@import "./surfaces.css";
 @import "./typography.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -67,17 +67,6 @@
       color 180ms ease;
   }
 
-  body::before {
-    position: fixed;
-    z-index: -2;
-    inset: 0;
-    background:
-      radial-gradient(circle at 12% 8%, var(--aurora-a), transparent 30rem),
-      radial-gradient(circle at 88% 14%, var(--aurora-b), transparent 30rem),
-      radial-gradient(circle at 52% 82%, var(--aurora-c), transparent 36rem);
-    content: "";
-    pointer-events: none;
-  }
 
   a,
   button,
@@ -143,12 +132,9 @@
 }
 
 @utility active-nav {
-  background: color-mix(in srgb, var(--accent-primary) 18%, transparent);
+  background: var(--nav-active-background);
   color: var(--text-primary);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
-    inset 0 0 0 0.75px
-      color-mix(in srgb, var(--accent-primary) 34%, transparent);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
 }
 
 .site-header {
@@ -189,11 +175,11 @@
   color: var(--text-primary);
 }
 
-.toc-glass {
+.toc-panel {
   border-radius: 1.1rem;
 }
 
-.toc-glass a {
+.toc-panel a {
   border-radius: 0.65rem;
   transition:
     background-color 150ms ease,
@@ -201,8 +187,8 @@
     transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.toc-glass a:hover,
-.toc-glass a:focus-visible {
+.toc-panel a:hover,
+.toc-panel a:focus-visible {
   background: color-mix(in srgb, var(--text-primary) 8%, transparent);
   color: var(--text-primary);
   transform: translateX(2px);
@@ -226,28 +212,6 @@
   text-align: center;
 }
 
-.home-hero::before {
-  position: absolute;
-  z-index: -1;
-  width: min(78vw, 58rem);
-  height: min(62vw, 38rem);
-  border-radius: 50%;
-  background:
-    radial-gradient(
-      circle at 38% 36%,
-      color-mix(in srgb, var(--accent-primary) 28%, transparent),
-      transparent 48%
-    ),
-    radial-gradient(
-      circle at 65% 52%,
-      color-mix(in srgb, var(--accent-purple) 20%, transparent),
-      transparent 52%
-    );
-  filter: blur(18px);
-  content: "";
-  opacity: 0.75;
-  pointer-events: none;
-}
 
 .home-hero__eyebrow,
 .home-section__eyebrow {
@@ -305,14 +269,10 @@
 }
 
 .home-secondary-action {
-  background: color-mix(in srgb, var(--material-thin-tint) 88%, transparent);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-muted);
   color: var(--accent-link);
-  -webkit-backdrop-filter: blur(18px) saturate(190%);
-  backdrop-filter: blur(18px) saturate(190%);
-  box-shadow:
-    inset 0 1px 0 var(--glass-specular-soft),
-    inset 0 0 0 0.5px var(--glass-inner-rim),
-    0 0 0 0.5px var(--glass-outer-rim);
+  box-shadow: none;
 }
 
 .home-primary-action:hover,
@@ -354,31 +314,10 @@
   overflow: hidden;
 }
 
-.home-featured-panel::after {
-  position: absolute;
-  z-index: -1;
-  right: -10%;
-  bottom: -30%;
-  width: 55%;
-  height: 70%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--accent-purple) 24%, transparent),
-    transparent 68%
-  );
-  content: "";
-  filter: blur(16px);
-  pointer-events: none;
-}
 
 .home-featured-panel:hover {
   transform: translateY(-4px) scale(1.002);
-  box-shadow:
-    inset 0 1px 0 var(--glass-specular),
-    inset 0 0 0 0.75px var(--glass-inner-rim),
-    0 0 0 0.75px var(--glass-outer-rim),
-    var(--shadow-glass-strong);
+  box-shadow: var(--shadow-card-strong);
 }
 
 .home-editorial-list {
@@ -400,11 +339,7 @@
 .home-topic-panel:hover,
 .home-topic-panel:focus-within {
   transform: translateY(-4px) scale(1.005);
-  box-shadow:
-    inset 0 1px 0 var(--glass-specular),
-    inset 0 0 0 0.65px var(--glass-inner-rim),
-    0 0 0 0.65px var(--glass-outer-rim),
-    var(--shadow-glass);
+  box-shadow: var(--shadow-card);
 }
 
 .home-topic-panel:active {
@@ -463,11 +398,7 @@
 
 .writing-card:hover,
 .writing-card:focus-within {
-  background: color-mix(
-    in srgb,
-    var(--material-ultrathin-tint) 88%,
-    transparent
-  );
+  background: var(--surface-hover);
   transform: translateY(-2px);
 }
 
@@ -499,14 +430,8 @@
 input[type="search"] {
   border-color: var(--border-subtle);
   border-radius: 1rem;
-  background: var(--material-regular-tint);
-  -webkit-backdrop-filter: blur(26px) saturate(205%);
-  backdrop-filter: blur(26px) saturate(205%);
-  box-shadow:
-    inset 0 1px 0 var(--glass-specular),
-    inset 0 0 0 0.75px var(--glass-inner-rim),
-    0 0 0 0.75px var(--glass-outer-rim),
-    var(--shadow-glass-soft);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-card);
 }
 
 :target {

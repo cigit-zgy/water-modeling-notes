@@ -83,7 +83,7 @@ const researchTopics = [
         reproducible.
       </p>
 
-      <div class="home-featured-panel glass-surface" data-reveal>
+      <div class="home-featured-panel surface-panel" data-reveal>
         {
           featuredPosts.length > 0 ? (
             <ul>
@@ -142,7 +142,7 @@ const researchTopics = [
         {
           researchTopics.map((topic, index) => (
             <section
-              class="home-topic-panel glass-surface-thin"
+              class="home-topic-panel surface-panel-muted"
               data-reveal
               style={`--reveal-delay: ${index * 70}ms`}
             >

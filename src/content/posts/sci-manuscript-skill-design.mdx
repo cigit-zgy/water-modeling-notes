@@ -15,7 +15,7 @@ import ResponsiveTable from '@/components/ResponsiveTable.astro';
 
 LaTeX 已经很好地解决了科研论文的排版问题，但它并没有替研究者管理“论文如何演化”。一篇稿件从初稿进入投稿、返修、再次投稿直至最终归档后，研究者需要同时维护 clean manuscript、marked manuscript、审稿回复、参考文献、作者信息、投稿附件以及不同轮次的源文件。引入 LLM/Agent 后，问题还会进一步扩大：Agent 可以读写文件，但“能访问”并不等于“被授权修改科研内容”。
 
-[`sci-manuscript-skill`](https://github.com/cigit-zgy/sci-manuscript-skill) 是我围绕这一问题设计的一套 LaTeX 科研稿件生命周期工作流。它并不尝试自动写完论文，而是把原本依赖个人记忆和文件习惯的操作，转换为**有状态、有边界、可检查、可恢复的科研工程流程**。
+[`sci-manuscript-skill`](https://github.com/cigit-zgy/sci-manuscript-skill) 是我围绕这一问题设计的一套 LaTeX 科研稿件生命周期工作流。它的目标是把原本依赖个人记忆和文件习惯的操作，转换为**有状态、有边界、可检查、可恢复的科研工程流程**。
 
 <AcademicCallout kind="definition">
   本文所说的**稿件生命周期工程（manuscript lifecycle engineering）**，是指对稿件初始化、编译、版本演化、审稿回复、差异追踪、参考文献同步、回滚、重编号和投稿打包等操作建立明确的状态、规则与产物契约。它管理稿件的工程状态，不替代科学判断。
@@ -40,13 +40,15 @@ LaTeX 已经很好地解决了科研论文的排版问题，但它并没有替�
 
 </ResponsiveTable>
 
-因此，这个项目首先解决的不是“如何让 Agent 更会写”，而是两个更基础的问题：**稿件当前处于什么状态，以及谁有权改变什么。**
+因此，这个项目优先解决两个更基础的问题：**稿件当前处于什么状态，以及谁有权改变什么。**
 
 ## 设计原则：内容控制与工程自动化分离
 
-整个系统最重要的一条规则是：生命周期命令不构成正文修改授权。`build`、`revision`、`rollback`、`reindex`、`sync-bib` 和 `submission` 都属于工程操作；reviewer comment 本身也不等于编辑许可。
+<AcademicCallout kind="important">
+  生命周期命令不构成正文修改授权。`build`、`revision`、`rollback`、`reindex`、`sync-bib` 和 `submission` 都属于工程操作；reviewer comment 本身也不等于编辑许可。
+</AcademicCallout>
 
-研究者拥有论文中的科学论证、正文、图表、回复内容和 cover letter。程序负责状态检查、合法版本创建、编译、差异计算、位置定位和正式产物组织。换句话说，系统优先自动化**确定性较高且可验证的机械操作**，而不是替代研究者做科学判断。
+研究者拥有论文中的科学论证、正文、图表、回复内容和 cover letter。程序负责状态检查、合法版本创建、编译、差异计算、位置定位和正式产物组织。系统优先自动化**确定性较高且可验证的机械操作**。科学判断仍由研究者负责。
 
 ### 六个核心约束
 
@@ -120,19 +122,13 @@ existing-project/
 
 一篇稿件从 `r00` 开始。初稿可以构建 clean manuscript 和 initial submission package；收到审稿意见后，`revision` 只允许创建紧邻当前版本的下一轮。新 revision 继承上一轮科研内容，同时建立新的 response workspace。
 
-<figure>
-  <img
-    src="/figures/sci-manuscript-lifecycle.svg"
-    alt="sci-manuscript-skill 从已有科研项目、环境检查、r00、返修、投稿到最终 handoff 的稿件生命周期流程图"
-    width="457"
-    height="943"
-    loading="lazy"
-    decoding="async"
-  />
-  <figcaption>
-    <strong>Figure 1.</strong> `sci-manuscript-skill` 的稿件生命周期。图由 Graphviz/DOT 静态渲染；正常路径保持相邻 revision，rollback 只作用于尚未被编辑的最新 revision。
-  </figcaption>
-</figure>
+生命周期可以压缩为四个阶段：
+
+1. **初始化**：运行环境检查并创建 `initial_submission / r00`。
+2. **编辑与构建**：研究者显式维护 `manuscript.tex`，程序生成 clean manuscript。
+3. **返修与投稿**：收到审稿意见后创建唯一相邻 revision，完成经确认的正文修改、responses 与 submission package。
+4. **继续或交付**：存在下一轮审稿时继续创建相邻 revision；没有下一轮时进入 final handoff。未编辑的最新 revision 才允许安全 rollback。
+
 
 版本关系本身保持简单：
 
@@ -174,14 +170,14 @@ reviewer comment 还可以区分为 `manuscript_revised` 和 `response_only`。�
 
 ## 为什么 rollback 和 reindex 必须保守
 
-版本管理中风险最高的动作不是创建文件，而是删除和重编号，因为它们可能直接影响已经形成的科研源文件。
+版本管理中风险最高的动作集中在删除和重编号，因为它们可能直接影响已经形成的科研源文件。
 
 `revision_creation.yaml` 会记录受保护用户源文件的摘要。`rollback` 只有在最新 revision 的摘要没有变化时才允许自动归档；一旦研究者已经修改过该轮源文件，程序会拒绝自动 rollback。
 
 `reindex` 的约束更严格：先将受影响 revision 复制到 `00_archive/`，再准备新的编号布局，检查科学源文件摘要，最后执行目录替换。核心原则是：
 
 <AcademicCallout kind="method">
-  **编号整齐的价值低于科研源文件的完整性。** 如果无法证明重编号不会改变或丢失研究者内容，程序应当停止，而不是“尽量完成”。
+  **编号整齐的价值低于科研源文件的完整性。** 如果无法证明重编号不会改变或丢失研究者内容，程序应当停止，避免为了完成操作而牺牲源文件完整性。
 </AcademicCallout>
 
 Git 仍然负责通用版本控制；这个 Skill 只对论文生命周期中高风险、可形式化的动作施加更窄的约束。
@@ -311,7 +307,7 @@ sci-manuscript sync-bib \
 
 在 Agent 环境中，这种明确性尤其重要。Agent 适合承担编译、状态检查、版本创建、差异定位和打包等机械工作；研究者继续保留对正文、回复和科学判断的控制权。
 
-因此，这套 Skill 的核心价值不是“自动写论文”，而是把原本依赖个人记忆和习惯的操作转换为**有边界、可检查、可恢复、可复现的科研工程流程**。如果后续继续扩展，我仍会优先维护这一原则：在增加自动化之前，先定义状态、所有权、失败条件和恢复路径。
+这套 Skill 的核心价值在于把原本依赖个人记忆和习惯的操作转换为**有边界、可检查、可恢复、可复现的科研工程流程**。如果后续继续扩展，我仍会优先维护这一原则：在增加自动化之前，先定义状态、所有权、失败条件和恢复路径。
 
 ## Reference
 

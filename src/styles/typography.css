@@ -33,14 +33,9 @@
     padding: 1rem 1.1rem;
     border: 1px solid var(--border-subtle);
     border-radius: 1rem;
-    background: color-mix(
-      in srgb,
-      var(--background-secondary) 84%,
-      transparent
-    );
+    background: var(--surface-muted);
     color: var(--text-secondary);
     font-weight: 400;
-    box-shadow: inset 0 1px 0 var(--glass-specular-soft);
   }
 
   .app-prose {
@@ -160,14 +155,9 @@
     blockquote {
       padding: 0.95rem 1.05rem;
       border: 1px solid var(--border-subtle);
-      border-inline-start: 4px solid
-        color-mix(in srgb, var(--accent-primary) 72%, transparent);
+      border-inline-start: 4px solid var(--accent-info);
       border-radius: 0.85rem;
-      background: color-mix(
-        in srgb,
-        var(--background-secondary) 88%,
-        transparent
-      );
+      background: var(--surface-muted);
       color: var(--text-secondary);
       font-style: normal;
       opacity: 1;
@@ -297,46 +287,85 @@
     }
 
     .academic-callout {
+      --callout-accent: var(--accent-info);
+      --callout-background: var(--callout-note-bg);
+      --callout-body-color: var(--text-secondary);
       margin-block: 1.8rem;
       padding: 1rem 1.08rem 0.95rem;
       border: 1px solid var(--border-subtle);
-      border-radius: 1rem;
-      background: color-mix(
-        in srgb,
-        var(--callout-accent) 7%,
-        var(--background-secondary)
-      );
-      box-shadow: inset 0 1px 0 var(--glass-specular-soft);
+      border-inline-start: 4px solid var(--callout-accent);
+      border-radius: 0.85rem;
+      background: var(--callout-background);
+      color: var(--callout-body-color);
+      box-shadow: var(--shadow-card);
     }
 
     .academic-callout[data-kind="note"] {
       --callout-accent: var(--accent-info);
+      --callout-background: var(--callout-note-bg);
+    }
+
+    .academic-callout[data-kind="tip"],
+    .academic-callout[data-kind="method"] {
+      --callout-accent: var(--accent-success);
+      --callout-background: var(--callout-method-bg);
+    }
+
+    .academic-callout[data-kind="description"] {
+      --callout-accent: var(--callout-description-accent);
+      --callout-background: var(--callout-description-bg);
     }
 
     .academic-callout[data-kind="definition"] {
       --callout-accent: var(--accent-purple);
+      --callout-background: var(--callout-definition-bg);
     }
 
-    .academic-callout[data-kind="method"] {
-      --callout-accent: var(--accent-success);
+    .academic-callout[data-kind="important"] {
+      --callout-accent: var(--accent-magenta);
+      --callout-background: var(--callout-important-bg);
     }
 
     .academic-callout[data-kind="caution"] {
       --callout-accent: var(--accent-warning);
+      --callout-background: var(--callout-caution-bg);
+    }
+
+    .academic-callout[data-kind="warning"] {
+      --callout-accent: var(--accent-danger);
+      --callout-background: var(--callout-warning-bg);
+    }
+
+    .academic-callout[data-kind="example"] {
+      --callout-accent: var(--callout-example-accent);
+      --callout-background: var(--callout-example-bg);
+    }
+
+    .academic-callout[data-kind="code"] {
+      --callout-accent: var(--code-accent-cyan);
+      --callout-background: var(--callout-code-bg);
+      --callout-body-color: var(--code-text);
+      border-color: var(--code-border);
     }
 
     .academic-callout__label {
-      margin: 0 0 0.45rem;
+      margin: 0 0 0.48rem;
       color: var(--callout-accent);
       font-family: var(--font-ui);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 700;
       letter-spacing: 0.055em;
       text-transform: uppercase;
     }
 
     .academic-callout__body {
+      color: var(--callout-body-color);
       font-weight: 400;
+    }
+
+    .academic-callout[data-kind="code"] .academic-callout__body {
+      font-family: var(--font-mono);
+      font-size: 0.94em;
     }
 
     .academic-callout__body > :first-child {
@@ -372,20 +401,20 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    background: color-mix(in srgb, var(--accent-success) 14%, transparent);
+    background: var(--code-diff-add-bg);
   }
 
   .astro-code .line.diff.remove {
     position: relative;
     display: inline-block;
     width: 100%;
-    background: color-mix(in srgb, var(--accent-danger) 14%, transparent);
+    background: var(--code-diff-remove-bg);
   }
 
   .astro-code .line.highlighted {
     display: inline-block;
     width: 100%;
-    background: color-mix(in srgb, var(--accent-primary) 14%, transparent);
+    background: var(--code-highlight-bg);
   }
 
   .astro-code .highlighted-word {
