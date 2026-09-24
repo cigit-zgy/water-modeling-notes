@@ -78,6 +78,17 @@ const isActive = (path: string) => {
       >
         <li class="col-span-2 sm:col-span-1">
           <a
+            href="/paper-review/"
+            class:list={[
+              "block min-h-11 px-3 py-2.5 text-center text-sm font-medium sm:min-h-10 sm:py-2",
+              { "active-nav": isActive("/paper-review") },
+            ]}
+          >
+            论文评述
+          </a>
+        </li>
+        <li class="col-span-2 sm:col-span-1">
+          <a
             href={getRelativeLocaleUrl(locale, "writing")}
             class:list={[
               "block min-h-11 px-3 py-2.5 text-center text-sm font-medium sm:min-h-10 sm:py-2",

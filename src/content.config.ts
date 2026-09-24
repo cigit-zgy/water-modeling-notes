@@ -42,4 +42,37 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { posts, pages };
+export const PAPER_REVIEW_PATH = "src/content/paper-review";
+
+const paperReviewIssues = defineCollection({
+  loader: glob({ pattern: "*/index.mdx", base: `./${PAPER_REVIEW_PATH}` }),
+  schema: z.object({
+    pubDatetime: z.date(),
+    modDatetime: z.date().optional().nullable(),
+    title: z.string(),
+    description: z.string(),
+    issue: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    reviewStage: z.enum(["abstract", "mixed", "full"]).default("abstract"),
+    draft: z.boolean().optional(),
+  }),
+});
+
+const paperReviews = defineCollection({
+  loader: glob({ pattern: "*/papers/*.mdx", base: `./${PAPER_REVIEW_PATH}` }),
+  schema: z.object({
+    pubDatetime: z.date(),
+    modDatetime: z.date().optional().nullable(),
+    title: z.string(),
+    description: z.string(),
+    issue: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    paperNumber: z.number().int().min(1).max(99),
+    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    firstAuthor: z.string(),
+    reviewStage: z.literal("full-text").default("full-text"),
+    aScore: z.number().min(0).max(100).optional(),
+    fScore: z.number().min(0).max(100).optional(),
+    draft: z.boolean().optional(),
+  }),
+});
+
+export const collections = { posts, pages, paperReviewIssues, paperReviews };

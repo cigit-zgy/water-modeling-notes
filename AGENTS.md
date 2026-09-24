@@ -9,7 +9,7 @@
 - Use `LXGW WenKai Screen` as the only CJK family. Long-form body text remains sans-serif and regular weight.
 - Maintain keyboard navigation, visible focus, reduced-motion support, semantic HTML, sufficient contrast, and complete responsive behaviour.
 - Never invent affiliations, publications, results, metrics, citations, or other academic facts. Mark missing verified information with `TODO`.
-- New writing belongs in `src/content/posts/`; drafts must not enter production routes, listings, RSS, sitemap, or Pagefind.
+- New general writing belongs in `src/content/posts/`; paper reviews follow `PAPER_REVIEW.md` under `src/content/paper-review/`; drafts must not enter production routes, listings, RSS, sitemap, or Pagefind.
 - Remove only confirmed dead/duplicate code during cleanup; preserve disabled upstream AstroPaper capabilities unless their removal is an explicit project decision.
 - Run `pnpm astro check`, `pnpm lint`, `pnpm format:check`, and `pnpm build` before declaring work complete. Visually check affected pages at desktop and mobile widths.
 

@@ -1,0 +1,490 @@
+paper:
+  title: Reimagining research papers as interactive and reliable AI agents
+  authors:
+  - Jiacheng Miao
+  - Joe R. Davis
+  - Yaohui Zhang
+  - Jonathan K. Pritchard
+  - James Zou
+  year: 2026
+  journal: Nature
+  doi: 10.1038/s41586-026-11044-y
+source:
+  pdf: source/paper.pdf
+  extracted_markdown: extracted/paper.md
+review:
+  status: reviewed
+  generated_at: '2026-09-24T19:04:37+08:00'
+  full_text_read: true
+  inventory_checked: true
+  coverage:
+  - 'Original PDF physical pages 1–18: main text 1–9, Methods and availability 10–13, Extended Data 14–15,
+    Reporting Summary 16–18.'
+  - All four main figures, both extended figures and reporting information used were visually checked. No numbered
+    main-text tables.
+  - 'External Supplementary Note/Figures/Tables absent: not read, no full supplementary coverage claimed.'
+  blog_contract_commit: e0251db18838324e329943502d20b40555b8e9e2
+  uncertainties:
+  - source_location: PDF p14, Extended Data Figure 1
+    issue: 右栏续句被作为D面板图片脚注输出，早于左栏图注标题。
+    blocks_blog: true
+    resolved_by: A01
+  - source_location: PDF p6, Figure 3
+    issue: Human researcher results标签被挂到顶部a面板；Markdown顺序因此误导。
+    blocks_blog: true
+    resolved_by: A02
+  - source_location: PDF p16, Reporting Table 1
+    issue: Statistics表的勾选在HTML单元格全部丢失。
+    blocks_blog: true
+    resolved_by: A03
+  - source_location: PDF p1, Document
+    issue: '原提取为Published online: xx xx xxxx。'
+    blocks_blog: true
+    resolved_by: A04
+  - source_location: PDF p17, Document
+    issue: 学科选择框未进入文本；Data列表若干URL相邻黏连。
+    blocks_blog: true
+    resolved_by: A05
+  - source_location: Separate Supplementary Information not supplied
+    issue: Omit independent claims about ablation magnitudes, prompt robustness, all additional datasets and
+      all loci. Main text summaries are labelled author-reported.
+    blocks_blog: false
+  - source_location: PDF p5,p11,p18
+    issue: Scanpy Results/reporting form say four primary plus seven additional; Methods describes three PBMC
+      plus four other datasets. Preserve this source inconsistency; do not reconstruct an unprovided per-dataset
+      mapping.
+    blocks_blog: false
+inventory:
+- id: Figure 1
+  scope: main
+  source_location: Original PDF physical p3
+  panels:
+  - a
+  - b
+- id: Figure 2
+  scope: main
+  source_location: Original PDF physical p4
+  panels:
+  - a
+  - b
+  - c
+  - d
+- id: Figure 3
+  scope: main
+  source_location: Original PDF physical p6
+  panels:
+  - a
+  - b
+  - c
+- id: Figure 4
+  scope: main
+  source_location: Original PDF physical p8
+  panels:
+  - a
+  - b
+- id: Extended Data Figure 1
+  scope: supplementary
+  source_location: Original PDF physical p14
+  panels:
+  - a
+  - b
+  - c
+  - d
+- id: Extended Data Figure 2
+  scope: supplementary
+  source_location: Original PDF physical p15
+  panels:
+  - a
+  - b
+- id: Reporting Table 1
+  scope: supplementary
+  source_location: Original PDF physical p16
+  panels: []
+- id: Reporting Table 2
+  scope: supplementary
+  source_location: Original PDF physical p17–18
+  panels: []
+figures:
+- id: Figure 1
+  scope: main
+  core_argument: true
+  source_location: Original PDF physical p3
+  role: 方法体系与生成流程示意
+  question: 如何把论文及代码转成可被智能体调用的方法？
+  what_is_shown: 工具、资源、提示三类MCP内容与环境/提取/测试智能体流程。
+  variables_axes_groups: 流程节点及箭头，无统计坐标；a为使用结构，b为构建过程。
+  comparison: 论文/代码的静态提供与经验证的工具服务形成概念对照，非对照实验。
+  main_observation: 环境配置、工具提取、迭代测试与服务组装被分解为不同职责。
+  authors_interpretation: 降低论文方法复用门槛并提高可复现性。
+  evidence_strength: 体系说明充分；效果须由后续基准支持。
+  limitations: 示意流程不证明任意仓库都能转换；测试参照原代码时可能继承源方法错误。
+  supported_claim:
+  - C01
+  blog_role: used
+  publication:
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
+  panels:
+  - id: a
+    role: 工具、静态资源、流程提示连接对话智能体
+    relationship: 解释最终接口组成
+  - id: b
+    role: 环境与方法提取后进入测试修正并部署
+    relationship: 解释a中服务如何生成
+- id: Figure 2
+  scope: main
+  core_argument: true
+  source_location: Original PDF physical p4
+  role: 准确率、查询效率与开放推理示例
+  question: 固定工具是否改善执行，是否也足以支持因果解释？
+  what_is_shown: a工具接口；b教程/新问题准确率；c时长箱线图；d规划-行动-观察及SORT1解释。
+  variables_axes_groups: b纵轴通过比例百分数，方法三组；c纵轴秒，15查询×5次=75运行/方法/任务类；d基因表达及调控预测。
+  comparison: Paper2Agent、Claude加仓库、Biomni；教程与新查询并列。
+  main_observation: 教程98.7%与新查询100%的均值高于比较方法；c查询用时较短。d将SORT1列为候选。
+  authors_interpretation: 预构建MCP提高可靠性和效率，并支持重新评估原研究解释。
+  evidence_strength: 有限预定义任务的执行证据较强；d为机制推理案例。
+  limitations: b误差条为5次运行的标准误；75次不是75个不同问题。开放题82.7%在正文，不在b两组柱状图。SORT1并未由本图确定因果；其他候选同有强eQTL证据。
+  supported_claim:
+  - C02
+  blog_role: used
+  publication:
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
+  panels:
+  - id: a
+    role: AlphaGenome接口与使用示例
+    relationship: 为b/c的受测工具提供结构背景
+  - id: b
+    role: 两类任务三组准确率及5次运行点
+    relationship: 量化执行一致性
+  - id: c
+    role: 同类任务查询时长分布
+    relationship: 与b共同衡量代价/效果，非构建耗时
+  - id: d
+    role: 迭代执行及SORT1解释
+    relationship: 展示比数值问答更开放的使用，不能由b准确率担保其因果正确
+- id: Figure 3
+  scope: main
+  core_argument: true
+  source_location: Original PDF physical p6
+  role: 单细胞流程编码与人机输出对照
+  question: 怎样避免工具调用顺序错误，并复现既定分析？
+  what_is_shown: a封装质控/聚类；b流程提示；c左右高变基因、UMAP、标记点图。
+  variables_axes_groups: 高变基因图为平均表达-离散度；UMAP1/2，颜色分别表示Leiden群或批次；点图大小/颜色表示表达比例/平均表达。
+  comparison: 左侧智能体与右侧研究者按匹配参数处理相同数据；无新聚类算法对照。
+  main_observation: 成对面板呈现相近的高变基因、嵌入及标记表达结构；右标签由A02核正。
+  authors_interpretation: 流程提示支持自动化、可复现的预处理和聚类。
+  evidence_strength: 工作流复现的案例证据；正文另报告细胞/基因计数及标记结果。
+  limitations: 原PDF图像未数值化重验；图c不是所有11数据集的逐一误差审计；UMAP视觉重合不能直接量化标签准确率。
+  supported_claim:
+  - C03
+  blog_role: used
+  publication:
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
+  panels:
+  - id: a
+    role: 质控和聚类工具的封装
+    relationship: 工具层
+  - id: b
+    role: 编码先后依赖并执行的流程提示
+    relationship: 连接a工具与c结果
+  - id: c
+    role: 智能体与人工结果按上下三类输出配对
+    relationship: 复现证据，标签依A02而非错误caption绑定
+- id: Figure 4
+  scope: main
+  core_argument: true
+  source_location: Original PDF physical p8
+  role: 跨论文扰动数据与模型预测整合
+  question: GPR137能否获得超出序列模型排序的支持？
+  what_is_shown: a三类论文智能体与人工选择；b两基因×三状态的扰动相关。
+  variables_axes_groups: 横轴rs887314 CRE扰动log2FC，纵轴基因敲低log2FC；每点为下游基因；行GPR137/BAD，列Rest/Stim8hr/Stim48hr。
+  comparison: GPR137与BAD在相同状态下比较；Rest与刺激状态比较。
+  main_observation: GPR137刺激8/48小时Spearmanρ约0.61/0.63，静息0.29且不显著；BAD三状态均不显著。
+  authors_interpretation: 支持GPR137为可能因果基因，作用依赖激活状态。
+  evidence_strength: 已有实验数据为模型排序增加独立支持；非新湿实验的因果确认。
+  limitations: 每状态n为20/21/19个下游基因，非独立患者；正文精确ρ为0.613/0.630；虚线为去异常值后的线性拟合，不等同于Spearman检验。其余候选的补图未提供；单一位点不能证明一般发现能力。
+  supported_claim:
+  - C04
+  blog_role: used
+  publication:
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
+  panels:
+  - id: a
+    role: 预测与扰动证据串联，明确human in the loop
+    relationship: 解释b分析来源与人工决策
+  - id: b
+    role: 六个散点面板及相关/P值
+    relationship: 对a候选解释提供条件性支持
+- id: Extended Data Figure 1
+  scope: supplementary
+  core_argument: true
+  source_location: Original PDF physical p14
+  role: TISSUE复用及空间预测区间示例
+  question: 带不确定性的方法是否可以作为可调用工具？
+  what_is_shown: A构建服务，B输入输出问答，C Acta2区间宽度空间图，D数据检索。
+  variables_axes_groups: C空间点及宽度色标，左右为智能体/研究者；无新总体覆盖率曲线。
+  comparison: 同一数据同一参考流程下与人工结果对照。
+  main_observation: C左右空间模式相近，D可按资源定义请求数据；caption依A01恢复。
+  authors_interpretation: TISSUE工具与结构化数据资源可辅助不确定性分析并复现示例。
+  evidence_strength: 工具/资源接口与案例复现；不足以单独验证不确定性校准。
+  limitations: 缺少Supplementary Note中更完整测试；本次未运行TISSUE，图像相似不保证所有数值一致。
+  supported_claim:
+  - C05
+  blog_role: used
+  publication:
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
+  panels:
+  - id: a
+    role: 区间校准与多重插补工具接口
+    relationship: 整体服务结构
+  - id: b
+    role: 方法输入输出问答
+    relationship: 说明使用契约
+  - id: c
+    role: Acta2区间宽度空间图的人机对照
+    relationship: 有限复现证据
+  - id: d
+    role: 资源检索、物种筛选与下载
+    relationship: 展示数据可访问性，与c的统计有效性不同
+- id: Extended Data Figure 2
+  scope: supplementary
+  core_argument: true
+  source_location: Original PDF physical p15
+  role: 方法与数据智能体组合形成假说
+  question: 能否跨论文提出并执行可检验的问题？
+  what_is_shown: A方法/数据服务与研究计划；B ADHD候选变异筛选及MPHOSPH9表达/剪接预测。
+  variables_axes_groups: 候选209变异；散点横轴剪接效应原始分数，纵轴RNA表达效应原始分数；轨道为基因组位置和预测信号。
+  comparison: rs1626703与同位点其他候选；参考/替代等位基因轨道；未提供干预实验证实。
+  main_observation: 示例从209候选中突出rs1626703，并提出可能影响MPHOSPH9的机制。
+  authors_interpretation: 跨方法和数据论文生成候选机制假说。
+  evidence_strength: 研究流程与计算假说示例。
+  limitations: 图注明确仍需实验验证；不是已发现ADHD因果机制。全部39个位点结果所依赖补充表缺失，不外推整体成功率。
+  supported_claim:
+  - C06
+  blog_role: used
+  publication:
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
+  panels:
+  - id: a
+    role: 方法论文与数据论文经MCP连接研究计划
+    relationship: 提供组合结构
+  - id: b
+    role: 人工选问题后执行预测并形成假说
+    relationship: 展示a的一个应用，不等于自主科学结论
+tables:
+- id: Reporting Table 1
+  scope: supplementary
+  core_argument: true
+  source_location: Original PDF physical p16
+  role: 统计报告声明核验，编号为本review内部定位
+  question: 提取丢失的勾选能否恢复，是否足以担保统计严谨性？
+  what_is_shown: Reporting Summary的Statistics十项复选声明。
+  variables_axes_groups: 列为n/a和Confirmed；行是不同统计报告要求。
+  comparison: 按原PDF十项原位对照提取中全空单元格。
+  main_observation: A03核验第1/3/6/7项Confirmed，其余n/a。
+  authors_interpretation: 作者声明相关报告要求已满足或不适用。
+  evidence_strength: 报告透明度证据，非独立有效性证明。
+  limitations: 无原文编号；复选状态与实际实验合理性是不同问题；本文不重做原始统计分析。
+  supported_claim:
+  - C07
+  blog_role: used
+  publication:
+    mode: discussion_only
+    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in
+      words only.
+  panels: []
+- id: Reporting Table 2
+  scope: supplementary
+  core_argument: true
+  source_location: Original PDF physical p17–18
+  role: 研究设计、重复与盲法声明，编号为review内部定位
+  question: 报告的重复次数和评分方式限定了什么推断？
+  what_is_shown: 样本量选取依据、无数据剔除、重复、随机化及盲法说明。
+  variables_axes_groups: 按软件评估而非生物效应功效计算选数据；若干基准5次，Scanpy 11数据集各1次，单智能体消融3次，确定性POP-TOOLS每任务1次。
+  comparison: 不同任务的重复设计不相同，不能通用称为五次重复。
+  main_observation: 专家独立评分，但系统身份可由输出和轨迹辨认，未正式盲法；分歧协商解决。
+  authors_interpretation: 公开软件验证的设计与可复现性声明。
+  evidence_strength: 可读且明确的研究设计披露，有助约束基准解释。
+  limitations: 非盲法可能带来评分偏差，不能据此认定偏差实际发生。Methods数据数量写法与正文/表单不完全一致；不擅自补出每组数据清单。
+  supported_claim:
+  - C08
+  blog_role: used
+  publication:
+    mode: discussion_only
+    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in
+      words only.
+  panels: []
+claims:
+- id: C01
+  author_claim: 论文及代码可变成工具、资源和流程提示的MCP服务。
+  source_section: Overview / Methods
+  source_page: 2
+  figure:
+  - Figure 1
+  evidence_text: MCP tools are executable functions that encapsulate a paper’s methodological contributions.
+  interpretation: 接口封装与验证环节使方法进入可执行工作流。
+  critical_assessment: 不是从PDF自动恢复一切科学方法；依赖代码、数据和环境。
+- id: C02
+  author_claim: AlphaGenome封装在受测查询上提高正确率和效率。
+  source_section: AlphaGenome agent for genomics
+  source_page: 3
+  figure:
+  - Figure 2
+  evidence_text: 98.7 ± 1.3% accuracy on 15 tutorialderived queries and 100.0 ± 0.0% accuracy on 15 novel queries
+  interpretation: 预定义工具减少每次临时生成代码的不确定性。
+  critical_assessment: 所引误差为标准误，有限查询族性能不等于一般推理或因果发现正确率。
+- id: C03
+  author_claim: Scanpy智能体复现匹配参数下的人工流程输出。
+  source_section: Figure 3 / Scanpy agent for single-cell analysis
+  source_page: 6
+  figure:
+  - Figure 3
+  evidence_text: 原PDF观察：Figure 3c左列为Scanpy agent results，右列为Human researcher results；该标签不属于a面板。左右按高变基因、UMAP和细胞类型标记基因点图成对排列，b面板说明按顺序调用工具的提示流程。
+  interpretation: 图c的正确左右对应支持复现解释，a/b解释接口与顺序。
+  critical_assessment: 这是PDF可视观察的转述而非作者原句；不由截图推导额外统计指标。
+  evidence_adjudication: A02
+- id: C04
+  author_claim: 跨论文整合支持激活状态下GPR137候选优先级。
+  source_section: Paper agents collaborate for discovery
+  source_page: 7
+  figure:
+  - Figure 4
+  evidence_text: Spearman correlation = 0.630, P = 4.71 × 10<sup>−3</sup> at Stim48hr
+  interpretation: 已有扰动数据与计算排序相互支持。
+  critical_assessment: 支持候选优先级而非终局因果确认；人工从十项策略中选择分析路径。
+- id: C05
+  author_claim: TISSUE服务支持示例复现与数据访问。
+  source_section: Extended Data Figure 1
+  source_page: 14
+  figure:
+  - Extended Data Figure 1
+  evidence_text: 原PDF观察：图注从左栏标题读起；C面板的Reproducibility须接右栏confirmed by matching human researcher results。D面板说明结构化资源支持标准化数据访问和自动下载。C面板左右分别是TISSUE
+    agent和Human researchers的Acta2预测区间宽度空间图，颜色对应区间宽度。
+  interpretation: 图注的C/D内容按源PDF分开解释。
+  critical_assessment: 可视对照不支持新数据上的校准保证；未见补充说明。
+  evidence_adjudication: A01
+- id: C06
+  author_claim: ADHD组合分析产生待验证机制假说。
+  source_section: Extended Data Figure 2
+  source_page: 15
+  figure:
+  - Extended Data Figure 2
+  evidence_text: generating a candidate mechanistic hypothesis for ADHD risk that remains to be validated experimentally.
+  interpretation: 作者明确将计算结果定位为候选机制。
+  critical_assessment: 未获取补充表，不评价全部位点的召回率或新颖性。
+- id: C07
+  author_claim: 报告表声明部分统计项目已报告。
+  source_section: Reporting Summary / Statistics
+  source_page: 16
+  figure:
+  - Reporting Table 1
+  evidence_text: 原PDF观察：Statistics十项从上到下，Confirmed为第1、3、6、7项；n/a为第2、4、5、8、9、10项。Confirmed分别对应样本量、统计检验、统计参数、零假设检验统计量和P值等的报告要求；这是作者的报告声明。
+  interpretation: 源PDF恢复复选含义。
+  critical_assessment: 不得把Confirmed视为独立审计；此excerpt是review者观察转述。
+  evidence_adjudication: A03
+- id: C08
+  author_claim: 专家评分未对系统身份正式盲法。
+  source_section: Reporting Summary / Blinding
+  source_page: 18
+  figure:
+  - Reporting Table 2
+  evidence_text: formal blinding to system identity was not feasible because the response formats and execution
+    traces could reveal the evaluated system.
+  interpretation: 独立评分与盲法是两个不同维度。
+  critical_assessment: 这构成潜在评分偏差边界，但不能据此量化或断言偏差。
+- id: C09
+  author_claim: 规模测试中74/100篇计算生物学论文成功生成服务。
+  source_section: Large-scale evaluation
+  source_page: 5
+  figure: []
+  evidence_text: Among the 100 computational biology papers, 74 were successfully agentified, yielding 599
+    proposed tools, of which 593 passed automated validation.
+  interpretation: 成功率表明可行性也显示代码/数据/环境边界。
+  critical_assessment: 74篇成功子集上的问答正确率不能当成所有100篇的端到端成功率；补充细节未提供。
+- id: C10
+  author_claim: 工具验证使用数值/图像容差与失败淘汰。
+  source_section: Methods / test verifier–improver
+  source_page: 10
+  figure: []
+  evidence_text: with a 3% tolerance for floating-point values
+  interpretation: 参照教程输出约束生成代码的运行偏差。
+  critical_assessment: 规定数值容差与感知哈希不等于各学科科学误差保证；每函数最多六轮尝试也不能修复源理论。
+adjudications:
+- id: A01
+  status: verified
+  source_page: 14
+  source_object: Extended Data Figure 1
+  raw_file: extracted/middle_json.json
+  raw_sha256: 839f59c574fec9d22e82ee63b23a52afb680e1518e146d506aa9c6a1dbd18621
+  pdf_sha256: 6727ef9ca72cfffb1e032a2f07c7b9a4a2b235154bdd779b135c3518433677bf
+  raw_locator: pages[13].blocks[12:14]; paper.md lines 429,431
+  raw_observation: 右栏续句被作为D面板图片脚注输出，早于左栏图注标题。
+  pdf_observation: 原PDF观察：图注从左栏标题读起；C面板的Reproducibility须接右栏confirmed by matching human researcher results。D面板说明结构化资源支持标准化数据访问和自动下载。C面板左右分别是TISSUE
+    agent和Human researchers的Acta2预测区间宽度空间图，颜色对应区间宽度。
+  interpretation: 按原PDF恢复语义顺序；相似空间图支持示例结果复现，不证明总体校准覆盖率。
+  limitation: 仅目视核验，未重跑TISSUE；不将截图相似性提升为逐数值恒等或新数据上的校准保证。
+  verified_by: Codex primary; original PDF visual inspection, 2026-09-24
+- id: A02
+  status: verified
+  source_page: 6
+  source_object: Figure 3
+  raw_file: extracted/middle_json.json
+  raw_sha256: 839f59c574fec9d22e82ee63b23a52afb680e1518e146d506aa9c6a1dbd18621
+  pdf_sha256: 6727ef9ca72cfffb1e032a2f07c7b9a4a2b235154bdd779b135c3518433677bf
+  raw_locator: pages[5].blocks[1].content[0]; caption bbox y=0.573; image body y=0.059–0.288
+  raw_observation: Human researcher results标签被挂到顶部a面板；Markdown顺序因此误导。
+  pdf_observation: 原PDF观察：Figure 3c左列为Scanpy agent results，右列为Human researcher results；该标签不属于a面板。左右按高变基因、UMAP和细胞类型标记基因点图成对排列，b面板说明按顺序调用工具的提示流程。
+  interpretation: a是工具结构，b是流程提示，c才是人机输出对照。配对视图与正文所述匹配参数下的复现一致。
+  limitation: UMAP相似不证明所有细胞的标签完全相同；基因名称过小不逐项转录；正文/Methods关于数据集数量须保留层次。
+  verified_by: Codex primary; original PDF visual inspection, 2026-09-24
+- id: A03
+  status: verified
+  source_page: 16
+  source_object: Reporting Table 1
+  raw_file: extracted/middle_json.json
+  raw_sha256: 839f59c574fec9d22e82ee63b23a52afb680e1518e146d506aa9c6a1dbd18621
+  pdf_sha256: 6727ef9ca72cfffb1e032a2f07c7b9a4a2b235154bdd779b135c3518433677bf
+  raw_locator: pages[15].blocks[7].content[0].content
+  raw_observation: Statistics表的勾选在HTML单元格全部丢失。
+  pdf_observation: 原PDF观察：Statistics十项从上到下，Confirmed为第1、3、6、7项；n/a为第2、4、5、8、9、10项。Confirmed分别对应样本量、统计检验、统计参数、零假设检验统计量和P值等的报告要求；这是作者的报告声明。
+  interpretation: 恢复勾选位置，不把作者声明当作独立统计审计。表格中n/a不等同于已证明方法不适用。
+  limitation: 本编号为review内部定位；原文无编号Table 1。检验有效性仍须回到具体实验，不因勾选而获保证。
+  verified_by: Codex primary; original PDF visual inspection, 2026-09-24
+- id: A04
+  status: verified
+  source_page: 1
+  source_object: Document
+  raw_file: extracted/middle_json.json
+  raw_sha256: 839f59c574fec9d22e82ee63b23a52afb680e1518e146d506aa9c6a1dbd18621
+  pdf_sha256: 6727ef9ca72cfffb1e032a2f07c7b9a4a2b235154bdd779b135c3518433677bf
+  raw_locator: pages[0].blocks[7]
+  raw_observation: '原提取为Published online: xx xx xxxx。'
+  pdf_observation: 'Published online: 16 September 2026'
+  interpretation: 以原PDF可见日期为准；与上一轮核对的publisher metadata一致。
+  limitation: 仅书目信息纠偏，不改变科学结果。
+  verified_by: Codex primary; original PDF visual inspection, 2026-09-24
+- id: A05
+  status: verified
+  source_page: 17
+  source_object: Document
+  raw_file: extracted/middle_json.json
+  raw_sha256: 839f59c574fec9d22e82ee63b23a52afb680e1518e146d506aa9c6a1dbd18621
+  pdf_sha256: 6727ef9ca72cfffb1e032a2f07c7b9a4a2b235154bdd779b135c3518433677bf
+  raw_locator: pages[16] Field-specific reporting
+  raw_observation: 学科选择框未进入文本；Data列表若干URL相邻黏连。
+  pdf_observation: 原PDF观察：Field-specific reporting勾选Life sciences；Behavioural & social sciences和Ecological,
+    evolutionary & environmental sciences未勾选。Data列表各来源按原页换行分隔。
+  interpretation: 论文被作者归入生命科学报告范畴；不采用黏连URL或把未勾选状态解释为其他领域验证失败。
+  limitation: 博客不逐条复现URL，不据这组复选框得出科学质量结论。
+  verified_by: Codex primary; original PDF visual inspection, 2026-09-24
