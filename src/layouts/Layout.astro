@@ -102,7 +102,7 @@ const rssHref = getRelativeLocaleUrl(
     <script>
       import "@/scripts/theme";
 
-      function initAppleReveals() {
+      function initEditorialReveals() {
         const root = document.documentElement;
         const items = Array.from(
           document.querySelectorAll<HTMLElement>("[data-reveal]")
@@ -141,8 +141,8 @@ const rssHref = getRelativeLocaleUrl(
         });
       }
 
-      initAppleReveals();
-      document.addEventListener("astro:page-load", initAppleReveals);
+      initEditorialReveals();
+      document.addEventListener("astro:page-load", initEditorialReveals);
     </script>
   </body>
 </html>
