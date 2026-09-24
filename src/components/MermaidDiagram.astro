@@ -2,9 +2,14 @@
 type Props = {
   code: string;
   alt?: string;
+  maxWidth?: number;
 };
 
-const { code, alt = "sci-manuscript-skill 稿件生命周期流程图" } = Astro.props;
+const {
+  code,
+  maxWidth,
+  alt = "sci-manuscript-skill 稿件生命周期流程图",
+} = Astro.props;
 
 /*
  * Diagram presentation is centralized here. Older article drafts may contain
@@ -21,7 +26,13 @@ const safeCode = code
   .trim();
 ---
 
-<figure class="mermaid-figure" data-pagefind-ignore>
+<figure
+  class="mermaid-figure"
+  style={maxWidth
+    ? `max-width: min(100%, ${maxWidth}px); margin-inline: auto;`
+    : undefined}
+  data-pagefind-ignore
+>
   <div
     class="mermaid-shell"
     data-mermaid-shell
@@ -31,17 +42,7 @@ const safeCode = code
   >
     <div class="mermaid-output" aria-hidden="true"></div>
     <div class="mermaid-fallback" aria-hidden="true">
-      <span>科研项目</span>
-      <i>→</i>
-      <span>环境检查</span>
-      <i>→</i>
-      <span>r00</span>
-      <i>→</i>
-      <span>revision</span>
-      <i>→</i>
-      <span>submission</span>
-      <i>→</i>
-      <span>handoff</span>
+      <span>{alt}</span>
     </div>
   </div>
   <figcaption><slot /></figcaption>

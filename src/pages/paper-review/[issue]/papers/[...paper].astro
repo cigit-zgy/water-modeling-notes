@@ -1,0 +1,38 @@
+---
+import { postFilter } from "@/utils/postFilter";
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import PaperReviewLayout from "@/layouts/PaperReviewLayout.astro";
+
+export async function getStaticPaths() {
+  const issues = await getCollection("paperReviewIssues", postFilter);
+  const visibleIssues = new Set(issues.map(issue => issue.data.issue));
+  const papers = await getCollection(
+    "paperReviews",
+    ({ data }) => postFilter({ data }) && visibleIssues.has(data.issue)
+  );
+  return papers.map(paper => ({
+    params: { issue: paper.data.issue, paper: paper.data.slug },
+    props: { paper },
+  }));
+}
+
+type Props = {
+  paper: CollectionEntry<"paperReviews">;
+};
+
+const { paper }: Props = Astro.props;
+const { Content, headings } = await render(paper);
+---
+
+<PaperReviewLayout
+  title={paper.data.title}
+  description={paper.data.description}
+  pubDatetime={paper.data.pubDatetime}
+  modDatetime={paper.data.modDatetime}
+  {headings}
+  label={`全文评述 · 第 ${paper.data.paperNumber} 篇`}
+  backHref={`/paper-review/${paper.data.issue}/`}
+  backLabel={`论文评述 — ${paper.data.issue}`}
+>
+  <Content />
+</PaperReviewLayout>

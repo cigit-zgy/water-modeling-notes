@@ -1,0 +1,67 @@
+---
+import { postFilter } from "@/utils/postFilter";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+const issues = (await getCollection("paperReviewIssues", postFilter)).sort(
+  (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
+);
+
+const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: config.site.timezone,
+});
+---
+
+<Layout
+  title={`论文评述 | ${config.site.title}`}
+  description="面向污水处理建模、科学机器学习与科学智能体的论文评述。"
+>
+  <Header />
+  <Main
+    pageTitle="论文评述"
+    pageDesc="从研究问题、方法和图表证据出发，评估科学结论及其迁移边界。"
+  >
+    <div lang="zh-CN" class="mt-10">
+      {
+        issues.map(issue => (
+          <article class="border-border border-t py-7">
+            <div class="flex flex-wrap items-baseline justify-between gap-3">
+              <h2 class="text-xl font-semibold tracking-[-0.015em]">
+                <a
+                  class="text-link focus-outline"
+                  href={`/paper-review/${issue.data.issue}/`}
+                >
+                  {issue.data.title}
+                </a>
+              </h2>
+              <time
+                class="text-muted-foreground text-sm"
+                datetime={issue.data.pubDatetime.toISOString()}
+              >
+                {dateFormatter.format(issue.data.pubDatetime)}
+              </time>
+            </div>
+            <p class="text-muted-foreground mt-3 max-w-3xl leading-relaxed">
+              {issue.data.description}
+            </p>
+            <p class="text-muted-foreground mt-3 text-xs tracking-[0.05em] uppercase">
+              {
+                { abstract: "摘要初评", mixed: "分阶段评述", full: "全文评述" }[
+                  issue.data.reviewStage
+                ]
+              }
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </Main>
+  <Footer />
+</Layout>
