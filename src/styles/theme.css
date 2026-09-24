@@ -27,53 +27,53 @@
 
 /*
  * Solid academic publishing palette.
- * Dark = Dracula At Night.
+ * Dark = Claude Code-inspired warm dark palette.
  * Light = Claude-inspired warm editorial palette.
  * Gradients are prohibited across site chrome, article surfaces, callouts, and charts.
  */
 :root,
 [data-theme="dark"] {
-  --background-primary: #191a21;
-  --background-secondary: #21222c;
-  --background-elevated: #282a36;
-  --text-primary: #f8f8f2;
-  --text-secondary: #d7d7e0;
-  --text-muted: #a7aac1;
-  --border-subtle: #44475a;
-  --accent-primary: #bd93f9;
-  --accent-link: #8be9fd;
-  --accent-purple: #bd93f9;
-  --accent-magenta: #ff79c6;
-  --accent-amber: #ffb86c;
-  --accent-green: #50fa7b;
-  --accent-cyan: #8be9fd;
-  --accent-teal: #8be9fd;
-  --accent-info: #8be9fd;
-  --accent-success: #50fa7b;
-  --accent-warning: #ffb86c;
-  --accent-danger: #ff5555;
-  --surface-muted: #21222c;
-  --surface-panel: #282a36;
-  --surface-strong: #343746;
-  --surface-hover: #2d2f3a;
-  --nav-active-background: #343746;
-  --shadow-card: 0 10px 28px rgba(0, 0, 0, 0.22);
-  --shadow-card-strong: 0 16px 36px rgba(0, 0, 0, 0.3);
-  --table-header-background: #282a36;
-  --table-row-odd: #21222c;
-  --table-row-even: #252732;
-  --table-row-hover: #2d2f3a;
-  --callout-note-bg: #1f2d35;
-  --callout-description-bg: #252735;
-  --callout-definition-bg: #2b2540;
-  --callout-method-bg: #203329;
-  --callout-important-bg: #372638;
-  --callout-caution-bg: #372d24;
-  --callout-warning-bg: #372426;
-  --callout-example-bg: #303025;
+  --background-primary: #141413;
+  --background-secondary: #1b1a18;
+  --background-elevated: #24221e;
+  --text-primary: #faf9f5;
+  --text-secondary: #d8d4cb;
+  --text-muted: #b0aea5;
+  --border-subtle: #3b3832;
+  --accent-primary: #d97757;
+  --accent-link: #6a9bcc;
+  --accent-purple: #9a83ad;
+  --accent-magenta: #bd7486;
+  --accent-amber: #c58a4a;
+  --accent-green: #788c5d;
+  --accent-cyan: #82aebd;
+  --accent-teal: #769c92;
+  --accent-info: #6a9bcc;
+  --accent-success: #788c5d;
+  --accent-warning: #c58a4a;
+  --accent-danger: #c9675a;
+  --surface-muted: #1b1a18;
+  --surface-panel: #24221e;
+  --surface-strong: #302d27;
+  --surface-hover: #2a2823;
+  --nav-active-background: #302d27;
+  --shadow-card: 0 10px 28px rgba(0, 0, 0, 0.24);
+  --shadow-card-strong: 0 16px 36px rgba(0, 0, 0, 0.34);
+  --table-header-background: #2b2924;
+  --table-row-odd: #1b1a18;
+  --table-row-even: #211f1c;
+  --table-row-hover: #2a2823;
+  --callout-note-bg: #1b252e;
+  --callout-description-bg: #211f1c;
+  --callout-definition-bg: #27222b;
+  --callout-method-bg: #20271f;
+  --callout-important-bg: #2d221f;
+  --callout-caution-bg: #2d261e;
+  --callout-warning-bg: #2d201e;
+  --callout-example-bg: #29271f;
   --callout-code-bg: #282a36;
-  --callout-description-accent: #6272a4;
-  --callout-example-accent: #f1fa8c;
+  --callout-description-accent: #b0aea5;
+  --callout-example-accent: #c58a4a;
   --code-background: #282a36;
   --code-border: #44475a;
   --code-text: #f8f8f2;
@@ -85,11 +85,11 @@
   --code-diff-add-bg: #20362b;
   --code-diff-remove-bg: #3a2429;
   --code-highlight-bg: #302a43;
-  --selection-background: #44475a;
+  --selection-background: #3a302c;
   --background: var(--background-primary);
   --foreground: var(--text-primary);
   --accent: var(--accent-primary);
-  --accent-foreground: #191a21;
+  --accent-foreground: #141413;
   --muted: var(--background-elevated);
   --muted-foreground: var(--text-muted);
   --border: var(--border-subtle);

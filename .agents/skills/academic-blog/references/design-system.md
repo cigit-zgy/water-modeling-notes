@@ -6,22 +6,23 @@ The site is a technical publication with high information density, clear hierarc
 
 ## Theme pair
 
-### Dark — Dracula At Night
+### Dark — Claude Code-inspired warm dark
 
 Canonical relationships:
 
-- page: #191A21
-- secondary surface: #21222C
-- elevated/code surface: #282A36
-- border: #44475A
-- text: #F8F8F2
-- muted text: #A7AAC1
-- purple: #BD93F9
-- pink: #FF79C6
-- cyan: #8BE9FD
-- green: #50FA7B
-- orange: #FFB86C
-- red: #FF5555
+- page: #141413
+- secondary surface: #1B1A18
+- elevated surface: #24221E
+- border: #3B3832
+- text: #FAF9F5
+- muted text: #B0AEA5
+- primary terracotta: #D97757
+- blue/info/link: #6A9BCC
+- green/success: #788C5D
+- amber/warning: #C58A4A
+- red/danger: #C9675A
+
+The dark and light themes now share one Claude-derived colour family. The dark variant is a project-owned adaptation for long-form reading; code remains an independent Dracula editor surface.
 
 ### Light — Claude-inspired editorial
 
@@ -80,15 +81,15 @@ Callouts are project-owned cards. Quarto supplies semantic inspiration only.
 
 | Kind | Dark accent | Light role | Purpose |
 | --- | --- | --- | --- |
-| Note | cyan | blue | contextual note |
-| Tip | green | green | practical guidance |
-| Description | muted blue | neutral | object/system description |
-| Definition | purple | purple | strict definition |
-| Method | green | green | method/procedure |
-| Important | pink | terracotta/pink | core constraint/conclusion |
-| Caution | orange | warm orange | scope/risk |
-| Warning | red | red | failure or strong warning |
-| Example | yellow | ochre | worked illustration |
+| Note | Claude blue | blue | contextual note |
+| Tip | Claude green | green | practical guidance |
+| Description | mid gray | neutral | object/system description |
+| Definition | muted plum | purple | strict definition |
+| Method | Claude green | green | method/procedure |
+| Important | terracotta | terracotta/pink | core constraint/conclusion |
+| Caution | warm amber | warm orange | scope/risk |
+| Warning | muted red | red | failure or strong warning |
+| Example | ochre | ochre | worked illustration |
 | Code | Snazzy cyan on Dracula surface | same dark code surface | command/config emphasis |
 
 Every callout uses one accent, a solid background, a visible border, and regular-weight body text. No gradients and no nested callouts.

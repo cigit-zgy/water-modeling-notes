@@ -56,7 +56,7 @@ Callouts belong to this project's theme. Do not copy Quarto's default appearance
 - No gradients.
 - Solid background only.
 - One semantic accent per card.
-- Dark cards derive from Dracula At Night.
+- Dark cards derive from the Claude Code-inspired warm dark palette.
 - Light cards derive from the Claude-inspired warm palette.
 - code uses a Dracula code surface with restrained Snazzy cyan/pink/yellow/green accents.
 - Callout body remains regular weight; the label is stronger and smaller.
@@ -67,7 +67,7 @@ Callouts belong to this project's theme. Do not copy Quarto's default appearance
 
 The site has two solid themes.
 
-- Dark: Dracula At Night.
+- Dark: Claude Code-inspired warm dark palette.
 - Light: Claude-inspired warm editorial palette.
 - Backgrounds must be solid colours.
 - Gradients are prohibited: no linear, radial, conic, mesh, aurora, gradient text, gradient borders, or SVG gradients in published UI.
@@ -122,7 +122,7 @@ For non-trivial changes, validate lint, formatting, Astro check/build, affected 
 Before presenting a result, verify:
 
 - no linear-gradient, radial-gradient, conic-gradient, or SVG gradient is used by published UI;
-- dark mode uses Dracula At Night tokens;
+- dark mode uses the Claude Code-inspired warm dark tokens;
 - light mode uses the Claude-inspired warm palette;
 - callouts use project-owned solid semantic cards;
 - body and callout typography match the site font contract;

@@ -3,10 +3,10 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://cigit-zgy.vercel.app/",
-    title: "cigit-zgy",
+    title: "CIGIT-ZGY",
     description:
       "Wastewater process modelling, scientific machine learning, and computational methods.",
-    author: "cigit-zgy",
+    author: "CIGIT-ZGY",
     ogImage: "cigit-zgy-og.jpg",
     lang: "en",
     timezone: "Asia/Shanghai",

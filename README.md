@@ -1,6 +1,6 @@
-# cigit-zgy
+# CIGIT-ZGY
 
-cigit-zgy is a static academic research and technical-writing site for wastewater process modelling, scientific machine learning, and computational methods. It is built on AstroPaper with a project-owned solid academic publishing system.
+CIGIT-ZGY is a static academic research and technical-writing site for wastewater process modelling, scientific machine learning, and computational methods. It is built on AstroPaper with a project-owned solid academic publishing system.
 
 ## Stack
 
@@ -16,7 +16,7 @@ The site uses pnpm only. Node.js 22.12 or newer is required.
 
 The public site uses two opaque, solid themes:
 
-- Dark: Dracula At Night
+- Dark: Claude Code-inspired warm dark palette
 - Light: Claude-inspired warm editorial palette
 
 Gradients, aurora backgrounds, backdrop blur, and Liquid Glass are excluded from published UI. Depth comes from solid surfaces, borders, spacing, typography, and restrained shadows.
