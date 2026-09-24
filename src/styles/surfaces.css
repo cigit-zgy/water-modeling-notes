@@ -1,0 +1,33 @@
+@layer components {
+  .surface-panel,
+  .surface-panel-muted,
+  .surface-panel-strong {
+    position: relative;
+    border: 1px solid var(--border-subtle);
+    background-image: none;
+    background-clip: padding-box;
+  }
+
+  .surface-panel {
+    background-color: var(--surface-panel);
+    box-shadow: var(--shadow-card);
+  }
+
+  .surface-panel-muted {
+    background-color: var(--surface-muted);
+    box-shadow: none;
+  }
+
+  .surface-panel-strong {
+    background-color: var(--surface-strong);
+    box-shadow: var(--shadow-card-strong);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .surface-panel,
+  .surface-panel-muted,
+  .surface-panel-strong {
+    border-color: var(--text-primary);
+  }
+}

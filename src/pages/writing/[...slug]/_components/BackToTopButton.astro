@@ -11,16 +11,36 @@ const t = useTranslations(Astro.currentLocale);
 >
   <button
     data-button="back-to-top"
-    class="group bg-background relative grid size-14 place-items-center rounded-full shadow-xl"
+    class="surface-panel group relative grid size-14 place-items-center rounded-full"
     title={t.post.backToTop}
     aria-label={t.post.backToTop}
   >
+    <svg
+      class="absolute inset-0 size-14 -rotate-90"
+      viewBox="0 0 56 56"
+      aria-hidden="true"
+    >
+      <circle
+        cx="28"
+        cy="28"
+        r="25"
+        fill="none"
+        stroke="var(--border-subtle)"
+        stroke-width="2"></circle>
+      <circle
+        id="progress-indicator"
+        cx="28"
+        cy="28"
+        r="25"
+        fill="none"
+        stroke="var(--accent-primary)"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-dasharray="157.08"
+        stroke-dashoffset="157.08"></circle>
+    </svg>
     <span
-      id="progress-indicator"
-      class="absolute inset-0 block rounded-full bg-transparent"
-      aria-hidden="true"></span>
-    <span
-      class="bg-background absolute inset-[3px] rounded-full"
+      class="bg-background absolute inset-[4px] rounded-full"
       aria-hidden="true"></span>
     <IconArrowNarrowUp class="relative z-10 size-5" />
     <span class="sr-only">{t.post.backToTop}</span>
@@ -51,10 +71,9 @@ const t = useTranslations(Astro.currentLocale);
           ? Math.min(100, Math.max(0, (scrollTop / scrollTotal) * 100))
           : 0;
 
-      progressIndicator.style.setProperty(
-        "background-image",
-        `conic-gradient(var(--accent-cyan) 0 ${scrollPercent}%, var(--border-subtle) ${scrollPercent}% 100%)`
-      );
+      const circumference = 157.08;
+      const offset = circumference * (1 - scrollPercent / 100);
+      progressIndicator.style.strokeDashoffset = String(offset);
 
       const isVisible = scrollTotal > 0 && scrollTop / scrollTotal > 0.16;
 

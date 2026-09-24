@@ -13,7 +13,6 @@ description: 从版本状态、修改 provenance、结构化差异到 TeX 原生
 
 import AcademicCallout from '@/components/AcademicCallout.astro';
 import ResponsiveTable from '@/components/ResponsiveTable.astro';
-import MermaidDiagram from '@/components/MermaidDiagram.astro';
 
 LaTeX 擅长解决论文“如何排版”，却没有回答论文“如何演化”。一篇稿件从初稿进入投稿、返修、再次投稿到最终归档，研究者需要同时维护当前正文、历史版本、marked manuscript、审稿回复、参考文献、作者信息和投稿附件。只要其中一类状态仍靠文件名、复制习惯或个人记忆维持，返修轮次增加以后就容易出现版本来源不清、产物过期或修改 provenance 丢失的问题。
 
@@ -106,28 +105,18 @@ project/
 
 一篇稿件从 `initial_submission` 开始，内部记为 `r00`。进入返修后，`revision_01` 的 parent 是 `r00`，`revision_02` 的 parent 是 `revision_01`。这种相邻 ancestry 看起来保守，但它让“当前修改相对于谁”只有一个答案。
 
-<MermaidDiagram
-  code={`flowchart TD
-A[科研项目] --> B[doctor 环境检查]
-B --> C[init initial_submission r00]
-C --> D[编辑并 build clean manuscript]
-D --> E{下一步}
-E -->|首次投稿| F[submission]
-E -->|收到审稿意见| G[revision_01 r01]
-G --> H[正文修改 + responses]
-H --> I[build marked / response / all]
-I --> J{还有下一轮审稿}
-J -->|是| K[revision_02 r02]
-K --> H
-J -->|否| L[final handoff]
-G -.需要撤销.-> M[rollback]
-`}
-  alt="sci-manuscript-skill 从初稿到返修和最终交付的稿件生命周期流程图"
->
-  <strong>Figure 1.</strong> 稿件生命周期始终沿相邻 revision 演化；构建、回复和投稿产物均绑定到明确的当前轮次。
-</MermaidDiagram>
+生命周期可以压缩为六个可检查阶段：
 
-`--round` 可以选择已有历史轮次进行构建，但不会静默改变 active round；不存在的 round 会显式失败。历史轮次在构建前还会检查被冻结的源文件、参考文献、作者信息和 ancestry 状态，避免“今天的共享文件”悄悄改变“昨天的投稿版本”。
+1. **环境检查**：使用 `doctor` 检查 Python、LaTeX 和外部工具链。
+2. **初稿初始化**：`init` 建立 `initial_submission / r00`，研究者显式编辑正文并构建 clean manuscript。
+3. **首次投稿**：当前轮次构建 submission 相关正式产物。
+4. **进入返修**：收到审稿意见后创建唯一相邻的 `revision_01 / r01`；下一轮继续形成 `revision_02 / r02`。
+5. **构建与验证**：正文和 responses 经研究者修改后，按需构建 marked manuscript、response letter 或完整 `all` target。
+6. **继续或结束**：有下一轮审稿时从当前 revision 创建相邻后继；没有下一轮时进入 final handoff。误创建且尚未编辑的最新 revision 才允许 rollback。
+
+<AcademicCallout kind="description">
+  生命周期的核心不变量是**相邻 ancestry**：每一轮 revision 只认直接父版本，因此 marked manuscript、response location 和 provenance 都有唯一比较基准。`--round` 可以选择已有历史轮次进行构建，但不会静默改变 active round；不存在的 round 会显式失败。历史轮次在构建前还会检查被冻结的源文件、参考文献、作者信息和 ancestry 状态。
+</AcademicCallout>
 
 ## 最关键的变化：marked manuscript 不再等于 raw diff
 

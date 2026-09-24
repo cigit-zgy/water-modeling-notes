@@ -26,46 +26,66 @@
 }
 
 /*
- * Dracula At Night is the sole site palette.
- * Reading surfaces use the quieter dark variants; semantic accents use the
- * canonical Dracula colours. Do not add parallel article- or feature-local
- * palettes.
+ * Solid academic publishing palette.
+ * Dark = Dracula At Night.
+ * Light = Claude-inspired warm editorial palette.
+ * Gradients are prohibited across site chrome, article surfaces, callouts, and charts.
  */
 :root,
 [data-theme="dark"] {
   --background-primary: #191a21;
   --background-secondary: #21222c;
-  --background-elevated: #253340;
+  --background-elevated: #282a36;
   --text-primary: #f8f8f2;
-  --text-secondary: color-mix(in srgb, #f8f8f2 84%, #6272a4);
-  --text-muted: color-mix(in srgb, #6272a4 72%, #f8f8f2);
-  --border-subtle: #343746;
-
+  --text-secondary: #d7d7e0;
+  --text-muted: #a7aac1;
+  --border-subtle: #44475a;
   --accent-primary: #bd93f9;
+  --accent-link: #8be9fd;
   --accent-purple: #bd93f9;
   --accent-magenta: #ff79c6;
   --accent-amber: #ffb86c;
   --accent-green: #50fa7b;
   --accent-cyan: #8be9fd;
-  --accent-teal: #50fa7b;
-  --accent-link: #8be9fd;
-
+  --accent-teal: #8be9fd;
   --accent-info: #8be9fd;
   --accent-success: #50fa7b;
   --accent-warning: #ffb86c;
   --accent-danger: #ff5555;
-
-  /* Shiki's Dracula theme uses the standard Dracula code surface. */
+  --surface-muted: #21222c;
+  --surface-panel: #282a36;
+  --surface-strong: #343746;
+  --surface-hover: #2d2f3a;
+  --nav-active-background: #343746;
+  --shadow-card: 0 10px 28px rgba(0, 0, 0, 0.22);
+  --shadow-card-strong: 0 16px 36px rgba(0, 0, 0, 0.3);
+  --table-header-background: #282a36;
+  --table-row-odd: #21222c;
+  --table-row-even: #252732;
+  --table-row-hover: #2d2f3a;
+  --callout-note-bg: #1f2d35;
+  --callout-description-bg: #252735;
+  --callout-definition-bg: #2b2540;
+  --callout-method-bg: #203329;
+  --callout-important-bg: #372638;
+  --callout-caution-bg: #372d24;
+  --callout-warning-bg: #372426;
+  --callout-example-bg: #303025;
+  --callout-code-bg: #282a36;
+  --callout-description-accent: #6272a4;
+  --callout-example-accent: #f1fa8c;
   --code-background: #282a36;
   --code-border: #44475a;
-  --code-inline-foreground: #8be9fd;
-  --selection-background: #574473;
-
-  --table-header-background: #253340;
-  --table-row-odd: #21222c;
-  --table-row-even: color-mix(in srgb, #343746 54%, #21222c);
-  --table-row-hover: color-mix(in srgb, #6272a4 22%, #21222c);
-
+  --code-text: #f8f8f2;
+  --code-inline-foreground: #9aedfe;
+  --code-accent-cyan: #9aedfe;
+  --code-accent-pink: #ff6ac1;
+  --code-accent-yellow: #f3f99d;
+  --code-accent-green: #5af78e;
+  --code-diff-add-bg: #20362b;
+  --code-diff-remove-bg: #3a2429;
+  --code-highlight-bg: #302a43;
+  --selection-background: #44475a;
   --background: var(--background-primary);
   --foreground: var(--text-primary);
   --accent: var(--accent-primary);
@@ -75,51 +95,70 @@
   --border: var(--border-subtle);
 }
 
-/* Light mode is an accessible inverse, not a second decorative palette. */
 [data-theme="light"] {
-  --background-primary: #faf9fc;
-  --background-secondary: #f2f0f6;
-  --background-elevated: #ffffff;
-  --text-primary: #24232b;
-  --text-secondary: #484752;
-  --text-muted: #707383;
-  --border-subtle: #ddd9e5;
-
-  --accent-primary: #6b4bc4;
-  --accent-purple: #6b4bc4;
-  --accent-magenta: #b93882;
-  --accent-amber: #986200;
-  --accent-green: #2d7d42;
-  --accent-cyan: #117d9a;
-  --accent-teal: #2d7d42;
-  --accent-link: #117d9a;
-
-  --accent-info: #117d9a;
-  --accent-success: #2d7d42;
-  --accent-warning: #986200;
-  --accent-danger: #b23a48;
-
+  --background-primary: #faf9f5;
+  --background-secondary: #ffffff;
+  --background-elevated: #f3f0e8;
+  --text-primary: #141413;
+  --text-secondary: #4d4a44;
+  --text-muted: #777269;
+  --border-subtle: #d8d3c8;
+  --accent-primary: #d97757;
+  --accent-link: #6a9bcc;
+  --accent-purple: #80699a;
+  --accent-magenta: #b45f7a;
+  --accent-amber: #a66a33;
+  --accent-green: #4f7a5d;
+  --accent-cyan: #5b8da8;
+  --accent-teal: #5f8d82;
+  --accent-info: #6a9bcc;
+  --accent-success: #4f7a5d;
+  --accent-warning: #a66a33;
+  --accent-danger: #b7554e;
+  --surface-muted: #f3f0e8;
+  --surface-panel: #ffffff;
+  --surface-strong: #ebe6db;
+  --surface-hover: #eeeae1;
+  --nav-active-background: #ebe6db;
+  --shadow-card: 0 8px 24px rgba(56, 50, 42, 0.08);
+  --shadow-card-strong: 0 14px 32px rgba(56, 50, 42, 0.12);
+  --table-header-background: #eee9df;
+  --table-row-odd: #ffffff;
+  --table-row-even: #f7f4ee;
+  --table-row-hover: #eeeae1;
+  --callout-note-bg: #edf3f8;
+  --callout-description-bg: #f3f0e8;
+  --callout-definition-bg: #f2edf7;
+  --callout-method-bg: #eef5ef;
+  --callout-important-bg: #f8edf1;
+  --callout-caution-bg: #f8f0e7;
+  --callout-warning-bg: #f8eceb;
+  --callout-example-bg: #f6f2e4;
+  --callout-code-bg: #282a36;
+  --callout-description-accent: #777269;
+  --callout-example-accent: #8a7b43;
   --code-background: #282a36;
   --code-border: #44475a;
-  --code-inline-foreground: #8be9fd;
-  --selection-background: #ddd2ef;
-
-  --table-header-background: #f0edf5;
-  --table-row-odd: #ffffff;
-  --table-row-even: #f5f3f8;
-  --table-row-hover: #efebf5;
-
+  --code-text: #f8f8f2;
+  --code-inline-foreground: #9aedfe;
+  --code-accent-cyan: #9aedfe;
+  --code-accent-pink: #ff6ac1;
+  --code-accent-yellow: #f3f99d;
+  --code-accent-green: #5af78e;
+  --code-diff-add-bg: #20362b;
+  --code-diff-remove-bg: #3a2429;
+  --code-highlight-bg: #302a43;
+  --selection-background: #e7ded1;
   --background: var(--background-primary);
   --foreground: var(--text-primary);
   --accent: var(--accent-primary);
   --accent-foreground: #ffffff;
-  --muted: var(--background-secondary);
+  --muted: var(--background-elevated);
   --muted-foreground: var(--text-muted);
   --border: var(--border-subtle);
 }
 
 :root {
-  /* LXGW WenKai Screen is the only CJK family across the site. */
   --font-body-cjk: "LXGW WenKai Screen";
   --font-reading-family: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;
   --font-ui: "Latin Modern Sans", "LXGW WenKai Screen", sans-serif;

@@ -1,5 +1,15 @@
 ---
-type Kind = "note" | "definition" | "method" | "caution";
+type Kind =
+  | "note"
+  | "tip"
+  | "description"
+  | "definition"
+  | "method"
+  | "important"
+  | "caution"
+  | "warning"
+  | "example"
+  | "code";
 
 type Props = {
   kind?: Kind;
@@ -9,9 +19,15 @@ type Props = {
 const { kind = "note", label } = Astro.props;
 const labels: Record<Kind, string> = {
   note: "Note",
+  tip: "Tip",
+  description: "Description",
   definition: "Definition",
   method: "Method",
+  important: "Important",
   caution: "Caution",
+  warning: "Warning",
+  example: "Example",
+  code: "Code",
 };
 ---
 

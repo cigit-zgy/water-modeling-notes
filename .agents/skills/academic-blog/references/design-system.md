@@ -1,94 +1,145 @@
-# Dracula At Night design system
+# Solid academic publishing design system
 
-## Palette
+## Intent
 
-The site uses **Dracula At Night only**. Do not combine it with figure-derived palettes or create article-local colour systems.
+The site is a technical publication with high information density, clear hierarchy, and strong scanning support. Depth comes from solid surfaces, borders, typography, spacing, and restrained shadows. The visual system does not use gradients or glass effects.
 
-Dark-mode foundation:
+## Theme pair
 
-| Role | Colour |
-| --- | --- |
-| Deep background | `#0E1419` |
-| Page background | `#191A21` |
-| Secondary surface | `#21222C` |
-| Elevated / diagram surface | `#253340` |
-| Border / quiet surface | `#343746` |
-| Primary text | `#F8F8F2` |
-| Muted / structural | `#6272A4` |
-| Purple | `#BD93F9` |
-| Pink | `#FF79C6` |
-| Cyan | `#8BE9FD` |
-| Green | `#50FA7B` |
-| Orange | `#FFB86C` |
-| Red | `#FF5555` |
+### Dark — Dracula At Night
 
-Light mode is an accessible inverse of the same semantic relationships, not a separate decorative palette. Shared components consume semantic variables from `src/styles/theme.css`; new hex values should not be scattered through pages or MDX.
+Canonical relationships:
 
-## Style architecture
+- page: #191A21
+- secondary surface: #21222C
+- elevated/code surface: #282A36
+- border: #44475A
+- text: #F8F8F2
+- muted text: #A7AAC1
+- purple: #BD93F9
+- pink: #FF79C6
+- cyan: #8BE9FD
+- green: #50FA7B
+- orange: #FFB86C
+- red: #FF5555
 
-The stylesheet architecture is intentionally fixed:
+### Light — Claude-inspired editorial
 
-1. `fonts.css` defines self-hosted Latin and code font faces.
-2. `theme.css` owns colour and font-family tokens.
-3. `typography.css` owns article typography, tables, code, quotations, figures, and callouts.
-4. `global.css` owns layout utilities, navigation/interactions, transitions, and home-page accents.
+Canonical relationships:
 
-Do not add a `refinements.css`, `overrides.css`, article-local shared UI CSS, or another patch layer. If a shared visual rule changes, modify the owning layer.
+- page: #FAF9F5
+- primary surface: #FFFFFF
+- secondary surface: #F3F0E8
+- border: #D8D3C8
+- text: #141413
+- secondary text: #4D4A44
+- primary terracotta: #D97757
+- blue/info/link: #6A9BCC
+
+Secondary semantic colours are project-owned adaptations chosen to preserve contrast and role consistency.
+
+## No-gradient rule
+
+Published UI uses solid backgrounds only.
+
+Prohibited:
+
+- linear gradients
+- radial gradients
+- conic gradients
+- aurora/mesh backgrounds
+- gradient text
+- gradient borders
+- decorative SVG gradients
+- glass/specular gradients
+
+Use a solid surface, border, or shadow when hierarchy is needed.
 
 ## Typography
 
-- `LXGW WenKai Screen` is the only CJK family across the site: body, headings, navigation, metadata, TOC, tables, captions, callouts, and Chinese glyphs inside code.
-- Long-form body text is sans-serif and regular weight (`400`).
-- Latin reading/UI text uses Latin Modern Sans; code uses Maple Mono; KaTeX keeps its mathematical font stack.
-- Bold/semibold is reserved for headings, table headers, labels, and semantic emphasis.
+- Chinese: LXGW WenKai Screen
+- Latin reading/UI: Latin Modern Sans
+- code/identifiers: Maple Mono
+- mathematics: KaTeX font stack
+- body weight: 400
+- headings/labels/table headers: semibold as needed
 
-## Heading hierarchy
+## Surface hierarchy
 
-Heading colour is global and semantic:
+- page background: --background-primary
+- ordinary grouped surface: --surface-muted
+- card/panel: --surface-panel
+- stronger selected surface: --surface-strong
+- hover surface: --surface-hover
 
-- H1: Dracula purple
-- H2: Dracula cyan
-- H3: Dracula pink
-- H4: Dracula green
-- Orange: cautions, captions, and limited secondary emphasis
+Surfaces are opaque solid colours. Shadows remain restrained.
 
-Paragraphs remain neutral.
+## Callout system
+
+Callouts are project-owned cards. Quarto supplies semantic inspiration only.
+
+| Kind | Dark accent | Light role | Purpose |
+| --- | --- | --- | --- |
+| Note | cyan | blue | contextual note |
+| Tip | green | green | practical guidance |
+| Description | muted blue | neutral | object/system description |
+| Definition | purple | purple | strict definition |
+| Method | green | green | method/procedure |
+| Important | pink | terracotta/pink | core constraint/conclusion |
+| Caution | orange | warm orange | scope/risk |
+| Warning | red | red | failure or strong warning |
+| Example | yellow | ochre | worked illustration |
+| Code | Snazzy cyan on Dracula surface | same dark code surface | command/config emphasis |
+
+Every callout uses one accent, a solid background, a visible border, and regular-weight body text. No gradients and no nested callouts.
 
 ## Code
 
-All fenced code and inline code use Dracula. Astro/Shiki is configured with `dracula` for both site themes so syntax meaning does not change when the reading theme changes. Inline code uses the same dark Dracula surface rather than a separate light token.
+Code remains a dark editor-like surface in both site themes.
+
+- base surface: Dracula #282A36
+- border: #44475A
+- text: #F8F8F2
+- compact code-card accents may use Snazzy cyan #9AEDFE, pink #FF6AC1, yellow #F3F99D, and green #5AF78E
+
+Syntax highlighting remains Dracula unless explicitly redesigned later.
+
+## Structured article layout
+
+The reading column remains approximately 46.5rem / 744px.
+
+Prefer:
+
+- tables for comparison and parameterized information;
+- lists for parallel points and ordered procedures;
+- callouts for semantic emphasis;
+- KaTeX for mathematical relations;
+- charts for quantitative information;
+- code blocks for machine-readable content.
+
+Do not add a process diagram merely to repeat prose.
 
 ## Tables
 
-- Every substantive article table requires a caption above the table.
-- Caption text is slightly larger than ordinary metadata but remains subordinate to headings.
-- Table headers use an elevated Dracula surface.
-- Odd and even rows use two visibly distinct, low-contrast dark surfaces. Zebra striping is defined globally in `typography.css`, never by per-table utility classes.
-- Tables may scroll horizontally on narrow screens; the page itself must not overflow.
+- caption above the table;
+- solid header background;
+- solid zebra rows;
+- no colour gradients;
+- narrow screens scroll the table container;
+- use alignment to reflect data type.
 
-## Figures and Mermaid
+## Figures and charts
 
-- Figures use semantic `figure`/`figcaption` and meaningful alt text.
-- Mermaid is preferred for workflow diagrams; readers see the rendered diagram, not Mermaid source.
-- Mermaid presentation is centralized in `MermaidDiagram.astro` and uses only Dracula At Night colours.
-- Do not use remote server-side renderers such as Kroki or mermaid.ink as page dependencies. The current client renderer is version-pinned and has a quiet non-error fallback if the module cannot load.
-- Keep Mermaid syntax conservative. Avoid article-local `classDef` styling; component-level presentation owns colours.
-- SVGs/images must remain inside the reading column at desktop and mobile widths.
+- chart background is solid;
+- chart colours come from theme semantic tokens;
+- no gradient fills;
+- alt text and caption required;
+- prefer quantitative charts over decorative workflow diagrams.
 
-## Lead text, quotations, and callouts
+## Navigation and controls
 
-Article lead/deck text and block quotations use a quiet Dracula surface and a thicker left accent rule. Callout labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are larger/stronger than metadata, while callout body text stays regular weight.
+Header, TOC, tags, search, and back-to-top controls use solid project surfaces. No backdrop blur or glass effect. Press/hover feedback may use colour, border, shadow, opacity, and small transforms.
 
-## Identity and navigation
+## Accessibility
 
-- The uploaded Ghibli-style avatar is the site identity image and appears inside the circular mark directly left of `cigit-zgy`.
-- Render the avatar as a real `<img>` element; do not duplicate it with pseudo-elements.
-- Research-topic vector icons remain sparse and reuse centralized Dracula tokens.
-
-## Reading progress
-
-The circular reading-progress/back-to-top control appears at the lower-right on both desktop and mobile. Its ring uses a Dracula accent and retains an accessible click target.
-
-## Responsive and accessibility checks
-
-Check representative 1440, 1024, 768, and 390 px widths. Verify navigation, title wrapping, TOC, equations, code/table overflow, Mermaid/figures, search, footer, progress control, focus visibility, both themes, and reduced motion. Interactive targets should remain at least 44 px on mobile.
+Maintain visible focus, 44px touch targets, adequate contrast, reduced-motion support, and non-colour cues for semantic states.

@@ -1,111 +1,133 @@
 ---
 name: academic-blog
-description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, and the Dracula At Night visual system. Use when adding or changing site pages, design, academic components, or content patterns in this repository.
+description: Maintain cigit-zgy pages, academic article patterns, Chinese technical writing, solid dual-theme presentation, structured technical writing, callouts, tables, equations, code, and data charts.
 ---
 
 # Academic blog maintenance
 
-Keep changes compatible with the existing AstroPaper structure. Preserve the static-first architecture, content collections, Pagefind, RSS, sitemap, accessibility, and Astro view transitions. Extend an existing layer/component before creating a new abstraction.
+Keep changes compatible with the existing AstroPaper static architecture. Preserve content collections, Pagefind, RSS, sitemap, accessibility, Astro view transitions, and stable article URLs.
 
-Before changing visual presentation, read [references/design-system.md](references/design-system.md). Before adding or restructuring academic content, read [references/academic-content.md](references/academic-content.md). Read both when a task changes an article component or layout.
+Before visual work, read references/design-system.md. Before writing or restructuring articles, read references/academic-content.md.
 
-## Global writing contract
+## Writing contract
 
-Treat the blog as an academic technical publication, not a marketing site.
+Treat the site as an academic technical publication.
 
-- Use the logic of a concise SCI paper where appropriate: define the problem, establish motivation, state the design objective, explain the method/architecture, provide evidence or validation, delimit limitations, and conclude.
-- Write with research-level precision, restraint, and logical continuity. Avoid slogans, exaggerated claims, promotional adjectives, and feature-list prose without an argument.
-- One paragraph should carry one primary point. Each section must have a clear role in the article's argument.
-- Preserve facts, conditions, uncertainty, scope, limitations, terminology, code, paths, commands, identifiers, and citations exactly unless a verified source supports a change.
-- Do not infer academic facts, results, publication details, affiliations, capabilities, or causal conclusions.
-- Use consistent terminology; do not vary scientific or technical terms merely for stylistic variety.
-- Prefer direct, compact Chinese. Remove repetition before adding explanation.
-- Tables and figures must add information, not decoration. Every substantive table requires a caption; every figure requires a meaningful caption and alt text.
-- Flowcharts should be authored with Mermaid when appropriate, but published pages show only the rendered diagram, never Mermaid source.
-- For Chinese technical prose, also consult Fenng's `Tech-Doc-Style-Chinese` as a secondary writing reference: https://github.com/Fenng/Tech-Doc-Style-Chinese . Its priorities—fact fidelity, terminology consistency, controlled technical Chinese, and preservation of machine-readable content—are subordinate to this project's academic conventions and the user's current instructions.
+- Preserve facts, scope, uncertainty, terminology, code, paths, commands, identifiers, units, equations, and citations.
+- Use concise SCI-like logic when appropriate: problem → motivation → objective → method/architecture → evidence/validation → limitations → conclusion.
+- Prefer structured expression when information is enumerable or comparable.
+- Three or more parallel items should normally become a bullet list or table.
+- Ordered procedures, protocols, lifecycle stages, and reproducible operations should normally become numbered lists.
+- Multi-object comparisons, parameters, variables, units, assumptions, command matrices, and validation layers should normally become tables.
+- Definitions, constraints, caveats, examples, important conclusions, and implementation notes should use semantic callouts when a callout improves scanning.
+- Use prose for reasoning, causal explanation, interpretation, transitions, and argument. Do not turn every paragraph into a card.
+- Use KaTeX for genuine mathematical relationships. Define symbols and units before interpretation.
+- Use charts for quantitative comparison, trends, distributions, and relationships when data justify a graphic.
+- Do not add decorative flowcharts. Mermaid and PlantUML are outside the default article path; use them only when the user explicitly requests a diagram or when a UML interaction is itself the subject.
+- Avoid “不是……而是……” contrast constructions. Prefer direct declarative phrasing.
+- Avoid promotional claims, fake values, placeholder citations, unsupported academic facts, and decorative figures.
 
-## Architecture contract
+## Structured block selection
 
-Keep the project small by removing only **confirmed** dead/duplicate code; do not strip AstroPaper features merely because they are currently disabled in configuration.
+| Information | Default form |
+| --- | --- |
+| Comparison across objects or methods | Table |
+| Variables, parameters, units, assumptions | Table |
+| Three or more parallel points | Bullet list |
+| Ordered workflow or protocol | Numbered list |
+| Formal definition | Definition callout |
+| Core constraint or conclusion | Important callout |
+| Additional context | Note or Description callout |
+| Practical guidance | Tip or Method callout |
+| Risk / scope boundary | Caution or Warning callout |
+| Minimal worked illustration | Example callout |
+| Command/configuration emphasis | Code callout or fenced code |
+| Mathematical relation | KaTeX equation |
+| Quantitative trend/comparison/distribution | Data chart |
 
-Shared styling has four owners and no fifth patch layer:
+## Callout contract
 
-1. `src/styles/fonts.css`: font-face definitions only.
-2. `src/styles/theme.css`: colour tokens and font-family tokens only.
-3. `src/styles/typography.css`: article typography, headings, tables, code, quotations, figures, and callouts.
-4. `src/styles/global.css`: layout utilities, global interaction, transitions, navigation, identity, and home-page accents.
+AcademicCallout supports exactly these kinds:
 
-Rules:
+note, tip, description, definition, method, important, caution, warning, example, code.
 
-- Do not create `refinements.css`, `overrides.css`, or article-local CSS for shared UI.
-- Do not duplicate the same visual rule in a component and a global stylesheet. Components provide semantics/structure; the owning stylesheet provides shared presentation.
-- Do not represent the header avatar twice (for example `<img>` plus a pseudo-element).
-- Remove experiment assets, placeholder content, obsolete configuration files, and test-only posts once they are no longer used.
-- Preserve upstream optional capabilities unless their removal is an explicit project decision; this keeps AstroPaper updates tractable.
-- Dependencies are removed only after repository-wide use has been checked and the lockfile can be updated/validated in the same change.
+Callouts belong to this project's theme. Do not copy Quarto's default appearance. Quarto is only a semantic reference for the callout concept.
 
-## Global visual contract
+- No gradients.
+- Solid background only.
+- One semantic accent per card.
+- Dark cards derive from Dracula At Night.
+- Light cards derive from the Claude-inspired warm palette.
+- code uses a Dracula code surface with restrained Snazzy cyan/pink/yellow/green accents.
+- Callout body remains regular weight; the label is stronger and smaller.
+- Avoid nesting callouts.
+- Callout colours must come from `theme.css` semantic tokens; article content must not hardcode per-card colours.
 
-UI and typography rules are global.
+## Visual contract
 
-- The visual system is **Dracula At Night only**. Do not combine it with figure-derived palettes or introduce a parallel scientific accent system.
-- Shared components use semantic variables from `src/styles/theme.css`; avoid scattered hex values. Mermaid's JS theme literals must mirror the canonical Dracula tokens.
-- Chinese glyphs use `LXGW WenKai Screen` everywhere: reading text, headings, navigation, metadata, tables, captions, TOC, callouts, and Chinese glyphs inside code.
-- Long-form body text is non-serif and regular weight (`400`). Bold/semibold is reserved for headings, labels, table headers, and semantic emphasis.
-- Latin reading/UI text uses Latin Modern Sans; code uses Maple Mono; mathematical notation keeps KaTeX's math fonts.
-- Fenced code and inline code both use Dracula. Shiki uses `dracula` for light and dark site themes.
-- Heading hierarchy is global: H1 purple, H2 cyan, H3 pink, H4 green. Orange is reserved for caution/caption/limited secondary emphasis.
-- Every substantive academic table has a caption above it. Captions are slightly larger than ordinary metadata.
-- Tables use a restrained but clearly visible odd/even zebra pattern defined in `typography.css`; do not add competing Tailwind row backgrounds in `ResponsiveTable.astro`.
-- `AcademicCallout` labels such as `NOTE`, `DEFINITION`, `METHOD`, and `CAUTION` are slightly larger and stronger than metadata; callout bodies remain regular weight.
-- Article lead/deck text and block quotations use a quiet Dracula surface with a visibly thicker accent rule on the left.
-- Figures, Mermaid SVGs, tables, and code blocks must never exceed the reading column. Horizontal overflow is allowed only where semantically necessary, mainly tables and code.
-- The uploaded Ghibli-style avatar is the site identity image and must appear as a real image element directly left of `cigit-zgy`.
-- The circular reading-progress/back-to-top control must work on both mobile and desktop.
+The site has two solid themes.
 
-## Mermaid contract
+- Dark: Dracula At Night.
+- Light: Claude-inspired warm editorial palette.
+- Backgrounds must be solid colours.
+- Gradients are prohibited: no linear, radial, conic, mesh, aurora, gradient text, gradient borders, or SVG gradients in published UI.
+- Do not reintroduce Liquid Glass, backdrop blur, transparent glass layers, lensing, or specular gradient effects.
+- Use borders, spacing, typography, restrained shadows, and solid surface hierarchy for depth.
+- Chinese glyphs use LXGW WenKai Screen.
+- Latin reading/UI text uses Latin Modern Sans.
+- Code uses Maple Mono; Chinese fallback remains LXGW WenKai Screen.
+- KaTeX owns mathematical typography.
+- Long-form text is regular weight 400.
+- Heading hierarchy uses size, weight, line-height, tracking, and spacing rather than per-level decorative colours.
+- Code blocks keep the Dracula syntax surface in both site themes.
 
-Mermaid diagrams are publication artifacts, not a reader-facing debugging surface.
+## Style architecture
 
-- Author workflow/process diagrams in Mermaid source with conservative `flowchart` syntax.
-- Keep colours and presentation out of article source when practical; `MermaidDiagram.astro` owns the centralized Dracula theme and strips legacy `classDef`/`class` directives.
-- Do not use Kroki, mermaid.ink, or another remote server renderer as a runtime dependency.
-- The current browser renderer is version-pinned. Never use an unpinned `latest` Mermaid URL.
-- If Mermaid cannot load or parse, readers receive a quiet structural fallback; never publish Mermaid source, parser stack traces, `Syntax error in text`, or “refresh to retry” error messages.
-- If Mermaid is later moved to a local npm/build-time renderer, update `package.json` and `pnpm-lock.yaml` together and validate the production build before removing the fallback.
-- Diagrams must remain inside the reading column at desktop and mobile widths.
+Shared styles have five owners:
+
+1. fonts.css: font-face definitions.
+2. theme.css: semantic colour, surface, callout, code, shadow, and font tokens.
+3. surfaces.css: reusable solid surface recipes.
+4. typography.css: article typography, tables, equations, code, quotes, figures, and callouts.
+5. global.css: layout, navigation, interaction, identity, homepage, and component placement.
+
+Do not add catch-all override stylesheets or article-local shared UI patches.
+
+## Tables, equations, charts, and figures
+
+- Every substantive table has a caption.
+- Tables use solid zebra rows and a solid header surface.
+- Equations must be semantically necessary; do not use formulas as decoration.
+- Charts require actual or explicitly labeled illustrative data and should use the current semantic palette with solid backgrounds.
+- Prefer bar/line/scatter charts over process diagrams when the information is quantitative.
+- Figures need alt text and captions.
+- Article content, tables, equations, charts, code, and callouts must remain within the reading layout or use an explicitly justified wide layout.
+
+## Interaction and accessibility
+
+- Motion is sparse and functional.
+- Use transform/opacity for transitions.
+- Respect prefers-reduced-motion.
+- Touch targets are at least 44 px.
+- Use visible focus-visible states.
+- Maintain at least 4.5:1 effective contrast for body text.
+- Do not depend on colour alone to communicate meaning.
 
 ## Deployment contract
 
-Preserve static output, stable `/writing/<slug>/` URLs, and production exclusion of drafts.
-
-Vercel deployments consume account resources. For non-trivial UI/content changes, normally:
-
-1. consolidate changes on a preview branch;
-2. validate the preview build and affected surfaces;
-3. provide a Preview URL when user review is requested;
-4. update `main` only after approval or when the user explicitly asks for direct publication;
-5. verify the production deployment once.
-
-Avoid repeated production pushes for visual iteration.
+For non-trivial changes, validate lint, formatting, Astro check/build, affected routes, and the final deployment. When the user explicitly requests direct publication, a validated tree may be promoted directly to main.
 
 ## Validation checklist
 
-Before presenting a preview or production result, check at minimum:
+Before presenting a result, verify:
 
-- Astro/type build succeeds with no new errors;
-- lint/format checks pass when CI is available;
-- the affected article route exists;
-- no unused experiment/placeholder file introduced by the current work remains;
-- shared CSS follows the four-layer ownership model and no patch stylesheet is added;
-- tables have captions and visible low-contrast zebra rows in both themes;
-- body text is regular weight and non-serif;
-- callout labels are distinct from callout bodies;
-- fenced and inline code use Dracula;
-- H1–H4 follow the global Dracula hierarchy;
-- Chinese glyphs use LXGW WenKai Screen, including TOC/navigation content;
-- Mermaid does not depend on a remote server renderer and never exposes runtime errors to readers;
-- Mermaid remains within the reading column;
-- header avatar renders from the local asset without a duplicate pseudo-element;
-- reading-progress circle appears on desktop and mobile;
-- navigation, title wrapping, table/code overflow, figures, focus visibility, and reduced-motion behaviour remain sound.
+- no linear-gradient, radial-gradient, conic-gradient, or SVG gradient is used by published UI;
+- dark mode uses Dracula At Night tokens;
+- light mode uses the Claude-inspired warm palette;
+- callouts use project-owned solid semantic cards;
+- body and callout typography match the site font contract;
+- tables, lists, equations, code, and charts follow the structured-writing rules;
+- no decorative Mermaid/PlantUML flowchart is published by default;
+- header, TOC, search, tags, progress control, tables, code, callouts, equations, focus states, and mobile overflow remain sound;
+- lint, formatting, and Astro build pass;
+- no temporary/demo page or unused generated diagram artifact remains.
