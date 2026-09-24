@@ -12,8 +12,10 @@ input-sha256.json. Create source/, extracted/, review/ and output/ in a private
 workspace. Place the PDF at source/paper.pdf and the original 26 extraction files
 under extracted/. Copy manifest.yaml and paper-review.md to review/, and
 blog-draft.mdx to output/blog.mdx. Run the public paper-review Skill validator
-for --stage review and --stage blog. The published article differs from the draft
-only in its draft:false publication flag. No PDF reparse is required. A new parse
+for --stage review and --stage blog. Task04 replaces the blog with a narrative-first revision. The admitted article
+differs from the draft in its publication flag and static-asset URL prefix.
+Copy the six cleared original assets listed in rights-manifest.json from the
+repository public/images/paper-review directory to output/assets/ before checking. No PDF reparse is required. A new parse
 with different bytes is a new input and cannot silently reuse these adjudications.
 
 ## Scientific verification
@@ -32,5 +34,10 @@ review does not constitute final ChatGPT acceptance or an independent execution
 of the authors' scientific code.
 
 The validators verify provenance mechanics and completeness, not scientific
-truth. No original paper image or near-replica is published. The concept flow
-and two factual tables are independently arranged by the reviewer.
+truth. Task03 did not reproduce original figures. Task04 authorizes unchanged originals
+after per-object rights checks: six publisher images are archived separately in
+public/images/paper-review/. Their source URLs, checksums, dimensions, source-PDF
+pages and conditions are in rights-manifest.json. The rewritten blog uses no
+near-replica; its three factual/synthesis tables are reviewer-arranged.
+The historical verification.md describes task03; task04 evidence is appended
+in verification-04.md.

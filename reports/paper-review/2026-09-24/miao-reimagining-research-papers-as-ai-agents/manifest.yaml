@@ -18,8 +18,8 @@ review:
   full_text_read: true
   inventory_checked: true
   coverage:
-  - 'Original PDF physical pages 1–18: main text 1–9, Methods and availability 10–13, Extended Data 14–15, Reporting
-    Summary 16–18.'
+  - 'Original PDF physical pages 1–18: main text 1–9, Methods and availability 10–13, Extended Data 14–15,
+    Reporting Summary 16–18.'
   - All four main figures, both extended figures and reporting information used were visually checked. No numbered
     main-text tables.
   - 'External Supplementary Note/Figures/Tables absent: not read, no full supplementary coverage claimed.'
@@ -46,12 +46,13 @@ review:
     blocks_blog: true
     resolved_by: A05
   - source_location: Separate Supplementary Information not supplied
-    issue: Omit independent claims about ablation magnitudes, prompt robustness, all additional datasets and all
-      loci. Main text summaries are labelled author-reported.
+    issue: Omit independent claims about ablation magnitudes, prompt robustness, all additional datasets and
+      all loci. Main text summaries are labelled author-reported.
     blocks_blog: false
   - source_location: PDF p5,p11,p18
-    issue: Scanpy Results/reporting form say four primary plus seven additional; Methods describes three PBMC plus
-      four other datasets. Preserve this source inconsistency; do not reconstruct an unprovided per-dataset mapping.
+    issue: Scanpy Results/reporting form say four primary plus seven additional; Methods describes three PBMC
+      plus four other datasets. Preserve this source inconsistency; do not reconstruct an unprovided per-dataset
+      mapping.
     blocks_blog: false
 inventory:
 - id: Figure 1
@@ -121,9 +122,9 @@ figures:
   - C01
   blog_role: used
   publication:
-    mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
   panels:
   - id: a
     role: 工具、静态资源、流程提示连接对话智能体
@@ -148,9 +149,9 @@ figures:
   - C02
   blog_role: used
   publication:
-    mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
   panels:
   - id: a
     role: AlphaGenome接口与使用示例
@@ -181,9 +182,9 @@ figures:
   - C03
   blog_role: used
   publication:
-    mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
   panels:
   - id: a
     role: 质控和聚类工具的封装
@@ -211,9 +212,9 @@ figures:
   - C04
   blog_role: used
   publication:
-    mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
   panels:
   - id: a
     role: 预测与扰动证据串联，明确human in the loop
@@ -238,9 +239,9 @@ figures:
   - C05
   blog_role: used
   publication:
-    mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
   panels:
   - id: a
     role: 区间校准与多重插补工具接口
@@ -271,9 +272,9 @@ figures:
   - C06
   blog_role: used
   publication:
-    mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    mode: reproduced
+    reason: Task04 permits unchanged noncommercial reproduction. Original publisher asset, PDF comparison and
+      per-object third-party credit inspection recorded in rights-manifest.json.
   panels:
   - id: a
     role: 方法论文与数据论文经MCP连接研究计划
@@ -300,8 +301,8 @@ tables:
   blog_role: used
   publication:
     mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in
+      words only.
   panels: []
 - id: Reporting Table 2
   scope: supplementary
@@ -321,8 +322,8 @@ tables:
   blog_role: used
   publication:
     mode: discussion_only
-    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in words
-      only.
+    reason: CC BY-NC-ND 4.0; task excludes original images and near replicas. Original objects discussed in
+      words only.
   panels: []
 claims:
 - id: C01
@@ -407,8 +408,8 @@ claims:
   source_section: Large-scale evaluation
   source_page: 5
   figure: []
-  evidence_text: Among the 100 computational biology papers, 74 were successfully agentified, yielding 599 proposed
-    tools, of which 593 passed automated validation.
+  evidence_text: Among the 100 computational biology papers, 74 were successfully agentified, yielding 599
+    proposed tools, of which 593 passed automated validation.
   interpretation: 成功率表明可行性也显示代码/数据/环境边界。
   critical_assessment: 74篇成功子集上的问答正确率不能当成所有100篇的端到端成功率；补充细节未提供。
 - id: C10
@@ -482,8 +483,8 @@ adjudications:
   pdf_sha256: 6727ef9ca72cfffb1e032a2f07c7b9a4a2b235154bdd779b135c3518433677bf
   raw_locator: pages[16] Field-specific reporting
   raw_observation: 学科选择框未进入文本；Data列表若干URL相邻黏连。
-  pdf_observation: 原PDF观察：Field-specific reporting勾选Life sciences；Behavioural & social sciences和Ecological, evolutionary
-    & environmental sciences未勾选。Data列表各来源按原页换行分隔。
+  pdf_observation: 原PDF观察：Field-specific reporting勾选Life sciences；Behavioural & social sciences和Ecological,
+    evolutionary & environmental sciences未勾选。Data列表各来源按原页换行分隔。
   interpretation: 论文被作者归入生命科学报告范畴；不采用黏连URL或把未勾选状态解释为其他领域验证失败。
   limitation: 博客不逐条复现URL，不据这组复选框得出科学质量结论。
   verified_by: Codex primary; original PDF visual inspection, 2026-09-24

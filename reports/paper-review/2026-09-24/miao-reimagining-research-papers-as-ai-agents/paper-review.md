@@ -1,6 +1,6 @@
 # Paper identity
 
-Jiacheng Miao, Joe R. Davis, Yaohui Zhang, Jonathan K. Pritchard and James Zou. *Reimagining research papers as interactive and reliable AI agents*. Nature (2026), DOI: 10.1038/s41586-026-11044-y. 原PDF共18物理页。p1可见出版日期2026年9月16日，提取占位日期以A04显式裁定；不改原始Markdown。许可CC BY-NC-ND 4.0；本review及博客不转载原图，不近似复刻。
+Jiacheng Miao, Joe R. Davis, Yaohui Zhang, Jonathan K. Pritchard and James Zou. *Reimagining research papers as interactive and reliable AI agents*. Nature (2026), DOI: 10.1038/s41586-026-11044-y. 原PDF共18物理页。p1可见出版日期2026年9月16日，提取占位日期以A04显式裁定；不改原始Markdown。许可CC BY-NC-ND 4.0；Task04博客按逐对象权利检查未改编转载六张出版社原图；不添加标注、不重组面板、不近似复刻。科学结论及源PDF裁决保持不变。
 
 本次完整阅读范围：主文与参考文献p1–9、Methods/数据代码可用性p10–13、扩展图p14–15、报告摘要p16–18。外置Supplementary Note、补充图和补充表未包含在所给PDF中，不声称已阅读。主文没有编号表格。“Reporting Table 1/2”为本review分配给无编号报告表的内部定位，不是原论文表号。manifest保留10个主张、8个对象、5条源PDF核验记录。
 
