@@ -4,6 +4,10 @@ permissions:
   contents: read
 
 on:
+  push:
+    branches:
+      - main
+      - preview/apple-liquid-glass
   pull_request:
     types:
       - opened
