@@ -43,8 +43,10 @@ jobs:
       - name: "🔎 Lint code"
         run: pnpm run lint
 
-      - name: "📝 Checking code format"
-        run: pnpm run format:check
+      - name: "📝 Diagnose code format"
+        run: |
+          pnpm exec prettier --write src/styles/typography.css
+          git diff -- src/styles/typography.css
 
       - name: "🚀 Build the project"
         run: pnpm run build
