@@ -102,15 +102,29 @@ const rssHref = getRelativeLocaleUrl(
     <script>
       import "@/scripts/theme";
 
-      function initEditorialReveals() {
+      function initEditorialMotion() {
         const root = document.documentElement;
+        const selectors = [
+          "[data-reveal]",
+          ".app-prose > h2",
+          ".app-prose > h3",
+          ".app-prose > .academic-callout",
+          ".app-prose > .academic-table",
+          ".app-prose > figure",
+          ".app-prose > blockquote",
+        ];
         const items = Array.from(
-          document.querySelectorAll<HTMLElement>("[data-reveal]")
+          new Set(
+            selectors.flatMap(selector =>
+              Array.from(document.querySelectorAll<HTMLElement>(selector))
+            )
+          )
         );
 
         if (items.length === 0) return;
 
-        root.classList.add("has-reveal-motion");
+        root.classList.add("has-editorial-motion");
+        items.forEach(item => item.classList.add("editorial-reveal-item"));
 
         const reduceMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)"
@@ -130,8 +144,8 @@ const rssHref = getRelativeLocaleUrl(
             });
           },
           {
-            threshold: 0.12,
-            rootMargin: "0px 0px -7% 0px",
+            threshold: 0.1,
+            rootMargin: "0px 0px -6% 0px",
           }
         );
 
@@ -141,8 +155,8 @@ const rssHref = getRelativeLocaleUrl(
         });
       }
 
-      initEditorialReveals();
-      document.addEventListener("astro:page-load", initEditorialReveals);
+      initEditorialMotion();
+      document.addEventListener("astro:page-load", initEditorialMotion);
     </script>
   </body>
 </html>
