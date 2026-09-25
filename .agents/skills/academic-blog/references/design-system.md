@@ -39,6 +39,20 @@ Canonical relationships:
 
 Secondary semantic colours are project-owned adaptations chosen to preserve contrast and role consistency.
 
+## Claude Code composition reference
+
+Use the current Claude Code product experience at https://claude.com/product/claude-code as the main structural reference for layout and interaction. Borrow patterns, not brand assets or copy:
+
+- large but restrained display headings with short supporting text;
+- solid rounded panels that group one clear information task;
+- compact product-card grids with consistent internal padding;
+- terminal-like use of monospace for metadata, identifiers, labels, and code-adjacent UI;
+- paired primary/secondary actions with immediate press feedback;
+- subtle one-shot viewport reveals and small hover lifts;
+- clear alternation between broad feature surfaces and compact supporting cards.
+
+The project font system is fixed and must not be replaced by Anthropic or system brand fonts: Latin Modern Sans for Latin reading/UI, LXGW WenKai Screen for Chinese, Maple Mono for code/identifiers, and KaTeX for mathematics.
+
 ## No-gradient rule
 
 Published UI uses solid backgrounds only.

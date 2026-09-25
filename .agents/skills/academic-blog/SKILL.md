@@ -73,6 +73,7 @@ The site has two solid themes.
 - Gradients are prohibited: no linear, radial, conic, mesh, aurora, gradient text, gradient borders, or SVG gradients in published UI.
 - Do not reintroduce Liquid Glass, backdrop blur, transparent glass layers, lensing, or specular gradient effects.
 - Use borders, spacing, typography, restrained shadows, and solid surface hierarchy for depth.
+- Follow the Claude Code product page for composition rhythm: broad feature cards, compact supporting cards, terse display copy, monospace metadata, paired actions, subtle reveal motion, and immediate hover/press feedback. Do not copy Anthropic brand assets or text.
 - Chinese glyphs use LXGW WenKai Screen.
 - Latin reading/UI text uses Latin Modern Sans.
 - Code uses Maple Mono; Chinese fallback remains LXGW WenKai Screen.
@@ -105,7 +106,7 @@ Do not add catch-all override stylesheets or article-local shared UI patches.
 
 ## Interaction and accessibility
 
-- Motion is sparse and functional.
+- Motion is sparse and functional, following Claude Code-like short reveal/hover/press timing rather than decorative continuous animation.
 - Use transform/opacity for transitions.
 - Respect prefers-reduced-motion.
 - Touch targets are at least 44 px.
