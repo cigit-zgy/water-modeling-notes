@@ -34,9 +34,9 @@ for (const file of files) {
 }
 
 if (violations.length > 0) {
-  console.error("Design contract violations:");
-  violations.forEach(violation => console.error(`- ${violation}`));
+  process.stderr.write("Design contract violations:\n");
+  violations.forEach(violation => process.stderr.write(`- ${violation}\n`));
   process.exit(1);
 }
 
-console.log("Design contract OK: published style backgrounds remain solid.");
+process.stdout.write("Design contract OK: published style backgrounds remain solid.\n");
