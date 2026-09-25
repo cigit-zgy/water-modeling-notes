@@ -56,9 +56,9 @@ Callouts belong to this project's theme. Do not copy Quarto's default appearance
 - No gradients.
 - Solid background only.
 - One semantic accent per card.
-- Dark cards derive from the Claude Code-inspired warm dark palette.
+- Dark cards derive from Dracula At Night.
 - Light cards derive from the Claude-inspired warm palette.
-- code uses a Dracula code surface with restrained Snazzy cyan/pink/yellow/green accents.
+- Code uses a Dracula code surface with restrained Snazzy cyan/pink/yellow/green accents.
 - Callout body remains regular weight; the label is stronger and smaller.
 - Avoid nesting callouts.
 - Callout colours must come from `theme.css` semantic tokens; article content must not hardcode per-card colours.
@@ -67,13 +67,13 @@ Callouts belong to this project's theme. Do not copy Quarto's default appearance
 
 The site has two solid themes.
 
-- Dark: Claude Code-inspired warm dark palette.
+- Dark: Dracula At Night.
 - Light: Claude-inspired warm editorial palette.
 - Backgrounds must be solid colours.
 - Gradients are prohibited: no linear, radial, conic, mesh, aurora, gradient text, gradient borders, or SVG gradients in published UI.
 - Do not reintroduce Liquid Glass, backdrop blur, transparent glass layers, lensing, or specular gradient effects.
 - Use borders, spacing, typography, restrained shadows, and solid surface hierarchy for depth.
-- Follow the Claude Code product page for composition rhythm: broad feature cards, compact supporting cards, terse display copy, monospace metadata, paired actions, subtle reveal motion, and immediate hover/press feedback. Do not copy Anthropic brand assets or text.
+- Use the Claude Code product experience as a composition reference where useful: broad feature cards, compact supporting cards, terse display copy, monospace metadata, paired actions, subtle reveal motion, and immediate hover/press feedback. Do not copy Anthropic brand assets or text, and do not let that reference replace the dark Dracula palette.
 - Chinese glyphs use LXGW WenKai Screen.
 - Latin reading/UI text uses Latin Modern Sans.
 - Code uses Maple Mono; Chinese fallback remains LXGW WenKai Screen.
@@ -106,7 +106,7 @@ Do not add catch-all override stylesheets or article-local shared UI patches.
 
 ## Interaction and accessibility
 
-- Motion is sparse and functional, following Claude Code-like short reveal/hover/press timing rather than decorative continuous animation.
+- Motion is sparse and functional.
 - Use transform/opacity for transitions.
 - Respect prefers-reduced-motion.
 - Touch targets are at least 44 px.
@@ -123,7 +123,7 @@ For non-trivial changes, validate lint, formatting, Astro check/build, affected 
 Before presenting a result, verify:
 
 - no linear-gradient, radial-gradient, conic-gradient, or SVG gradient is used by published UI;
-- dark mode uses the Claude Code-inspired warm dark tokens;
+- dark mode uses Dracula At Night tokens;
 - light mode uses the Claude-inspired warm palette;
 - callouts use project-owned solid semantic cards;
 - body and callout typography match the site font contract;

@@ -6,23 +6,23 @@ The site is a technical publication with high information density, clear hierarc
 
 ## Theme pair
 
-### Dark — Claude Code-inspired warm dark
+### Dark — Dracula At Night
 
 Canonical relationships:
 
-- page: #141413
-- secondary surface: #1B1A18
-- elevated surface: #24221E
-- border: #3B3832
-- text: #FAF9F5
-- muted text: #B0AEA5
-- primary terracotta: #D97757
-- blue/info/link: #6A9BCC
-- green/success: #788C5D
-- amber/warning: #C58A4A
-- red/danger: #C9675A
-
-The dark and light themes now share one Claude-derived colour family. The dark variant is a project-owned adaptation for long-form reading; code remains an independent Dracula editor surface.
+- page: #191A21
+- secondary surface: #21222C
+- elevated/code surface: #282A36
+- border: #44475A
+- text: #F8F8F2
+- secondary text: #D7D7E0
+- muted text: #A7AAC1
+- purple: #BD93F9
+- pink: #FF79C6
+- cyan: #8BE9FD
+- green: #50FA7B
+- orange: #FFB86C
+- red: #FF5555
 
 ### Light — Claude-inspired editorial
 
@@ -41,17 +41,19 @@ Secondary semantic colours are project-owned adaptations chosen to preserve cont
 
 ## Claude Code composition reference
 
-Use the current Claude Code product experience at https://claude.com/product/claude-code as the main structural reference for layout and interaction. Borrow patterns, not brand assets or copy:
+Claude Code may be used as a structural reference for layout and interaction, especially in light mode. Borrow patterns, not brand assets or copy:
 
 - large but restrained display headings with short supporting text;
 - solid rounded panels that group one clear information task;
-- compact product-card grids with consistent internal padding;
-- terminal-like use of monospace for metadata, identifiers, labels, and code-adjacent UI;
+- compact card grids with consistent internal padding;
+- monospace for metadata, identifiers, labels, and code-adjacent UI;
 - paired primary/secondary actions with immediate press feedback;
 - subtle one-shot viewport reveals and small hover lifts;
 - clear alternation between broad feature surfaces and compact supporting cards.
 
-The project font system is fixed and must not be replaced by Anthropic or system brand fonts: Latin Modern Sans for Latin reading/UI, LXGW WenKai Screen for Chinese, Maple Mono for code/identifiers, and KaTeX for mathematics.
+This composition reference never overrides the theme pair. Dark mode remains Dracula At Night.
+
+The project font system is fixed: Latin Modern Sans for Latin reading/UI, LXGW WenKai Screen for Chinese, Maple Mono for code/identifiers, and KaTeX for mathematics.
 
 ## No-gradient rule
 
@@ -95,15 +97,15 @@ Callouts are project-owned cards. Quarto supplies semantic inspiration only.
 
 | Kind | Dark accent | Light role | Purpose |
 | --- | --- | --- | --- |
-| Note | Claude blue | blue | contextual note |
-| Tip | Claude green | green | practical guidance |
-| Description | mid gray | neutral | object/system description |
-| Definition | muted plum | purple | strict definition |
-| Method | Claude green | green | method/procedure |
-| Important | terracotta | terracotta/pink | core constraint/conclusion |
-| Caution | warm amber | warm orange | scope/risk |
-| Warning | muted red | red | failure or strong warning |
-| Example | ochre | ochre | worked illustration |
+| Note | Dracula cyan | Claude blue | contextual note |
+| Tip | Dracula green | green | practical guidance |
+| Description | muted Dracula blue | neutral | object/system description |
+| Definition | Dracula purple | purple | strict definition |
+| Method | Dracula green | green | method/procedure |
+| Important | Dracula pink | terracotta/pink | core constraint/conclusion |
+| Caution | Dracula orange | warm orange | scope/risk |
+| Warning | Dracula red | red | failure or strong warning |
+| Example | Dracula yellow/ochre | ochre | worked illustration |
 | Code | Snazzy cyan on Dracula surface | same dark code surface | command/config emphasis |
 
 Every callout uses one accent, a solid background, a visible border, and regular-weight body text. No gradients and no nested callouts.
