@@ -7,7 +7,7 @@
   .app-prose h3,
   .app-prose h4 {
     color: var(--text-primary);
-    font-weight: 650;
+  font-weight: 650;
     font-optical-sizing: auto;
   }
 
@@ -33,7 +33,7 @@
     padding: 1rem 1.1rem;
     border: 1px solid var(--border-subtle);
     border-radius: 1rem;
-    background: var(--surface-muted);
+  background: var(--surface-muted);
     color: var(--text-secondary);
     font-weight: 400;
   }
@@ -56,7 +56,7 @@
     strong,
     th {
       color: var(--text-primary);
-      font-weight: 650;
+    font-weight: 650;
     }
 
     h2 {
@@ -137,7 +137,7 @@
       margin-inline: auto;
       border: 1px solid var(--border-subtle);
       border-radius: 1.15rem;
-      box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-card);
     }
 
     figcaption {
@@ -145,13 +145,13 @@
       color: var(--text-muted);
       font-family: var(--font-ui);
       font-size: 0.96rem;
-      line-height: 1.55;
+    line-height: 1.55;
       text-align: center;
     }
 
     figcaption strong:first-child {
       color: var(--text-secondary);
-      font-weight: 650;
+    font-weight: 650;
     }
 
     blockquote {
@@ -159,8 +159,8 @@
       border: 1px solid var(--border-subtle);
       border-inline-start: 4px solid var(--accent-info);
       border-radius: 1rem;
-      background: var(--surface-muted);
-      box-shadow: var(--shadow-card);
+    background: var(--surface-muted);
+    box-shadow: var(--shadow-card);
       color: var(--text-secondary);
       font-style: normal;
       opacity: 1;
@@ -171,8 +171,8 @@
       border: 1px solid var(--border-subtle);
       border-radius: 1.15rem;
       background: var(--background-secondary);
-      box-shadow: var(--shadow-card);
-      font-variant-numeric: tabular-nums;
+    box-shadow: var(--shadow-card);
+    font-variant-numeric: tabular-nums;
       border-collapse: separate;
       border-spacing: 0;
       overflow: hidden;
@@ -181,7 +181,7 @@
     th,
     td {
       padding: 0.72rem 0.88rem;
-      border: 0;
+    border: 0;
       border-bottom: 1px solid var(--border-subtle);
       text-align: start;
       transition: background-color 150ms ease;
@@ -191,7 +191,7 @@
       background: var(--table-header-background);
       color: var(--text-primary);
       font-size: 0.9rem;
-      font-weight: 650;
+    font-weight: 650;
     }
 
     tbody tr:nth-child(odd) > td {
@@ -243,8 +243,8 @@
       display: flex;
       flex: 1 0 100%;
       flex-direction: column;
-      padding: 0;
-      border: 0;
+    padding: 0;
+    border: 0;
       background: inherit;
       color: inherit;
       overflow-wrap: normal;
@@ -276,7 +276,7 @@
 
     .academic-table {
       margin-block: 2rem;
-      padding: 0;
+    padding: 0;
       overflow: visible;
     }
 
@@ -301,7 +301,7 @@
       border-radius: 1rem;
       background: var(--callout-background);
       color: var(--callout-body-color);
-      box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-card);
     }
 
     .academic-callout[data-kind="note"] {
@@ -430,35 +430,35 @@
 }
 
 .reading-layout > header {
-    padding: clamp(1.35rem, 3vw, 2.15rem) !important;
-    border: 1px solid var(--border-subtle) !important;
-    border-radius: 1.35rem;
-    background: var(--surface-muted);
-    box-shadow: var(--shadow-card);
-  }
+  padding: clamp(1.35rem, 3vw, 2.15rem) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 1.35rem;
+  background: var(--surface-muted);
+  box-shadow: var(--shadow-card);
+}
 
 .reading-layout > header h1 {
-    font-size: clamp(2.45rem, 5.5vw, 4.35rem) !important;
-    font-weight: 650;
-    line-height: 0.98 !important;
-    letter-spacing: -0.05em !important;
-  }
+  font-size: clamp(2.45rem, 5.5vw, 4.35rem) !important;
+  font-weight: 650;
+  line-height: 0.98 !important;
+  letter-spacing: -0.05em !important;
+}
 
 .reading-layout > header > p.font-reading {
-    max-width: 42rem;
-    margin-top: 1.2rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
-    line-height: 1.55;
-  }
+  max-width: 42rem;
+  margin-top: 1.2rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.55;
+}
 
 .reading-layout > header time,
 .reading-layout > header .text-muted-foreground {
-    font-variant-numeric: tabular-nums;
-  }
+  font-variant-numeric: tabular-nums;
+}
 
 @media (max-width: 639px) {
   .app-prose {
