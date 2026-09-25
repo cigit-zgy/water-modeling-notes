@@ -16,10 +16,10 @@ The site uses pnpm only. Node.js 22.12 or newer is required.
 
 The public site uses two opaque, solid themes:
 
-- Dark: Claude Code-inspired warm dark palette
+- Dark: Dracula At Night
 - Light: Claude-inspired warm editorial palette
 
-Gradients, aurora backgrounds, backdrop blur, and Liquid Glass are excluded from published UI. Depth comes from solid surfaces, borders, spacing, typography, and restrained shadows.
+Gradients, aurora backgrounds, backdrop blur, and Liquid Glass are excluded from published UI. Depth comes from solid surfaces, borders, spacing, typography, and restrained shadows. Claude Code is used as a composition/interaction reference for the light editorial direction; it does not replace the dark Dracula palette.
 
 Typography is shared across prose and diagrams:
 
