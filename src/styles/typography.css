@@ -429,8 +429,7 @@
   }
 }
 
-
-  .reading-layout > header {
+.reading-layout > header {
     padding: clamp(1.35rem, 3vw, 2.15rem) !important;
     border: 1px solid var(--border-subtle) !important;
     border-radius: 1.35rem;
@@ -438,14 +437,14 @@
     box-shadow: var(--shadow-card);
   }
 
-  .reading-layout > header h1 {
+.reading-layout > header h1 {
     font-size: clamp(2.45rem, 5.5vw, 4.35rem) !important;
     font-weight: 650;
     line-height: 0.98 !important;
     letter-spacing: -0.05em !important;
   }
 
-  .reading-layout > header > p.font-reading {
+.reading-layout > header > p.font-reading {
     max-width: 42rem;
     margin-top: 1.2rem;
     padding: 0;
@@ -456,8 +455,8 @@
     line-height: 1.55;
   }
 
-  .reading-layout > header time,
-  .reading-layout > header .text-muted-foreground {
+.reading-layout > header time,
+.reading-layout > header .text-muted-foreground {
     font-variant-numeric: tabular-nums;
   }
 
