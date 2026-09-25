@@ -453,6 +453,24 @@
   transform: scale(0.992);
 }
 
+.writing-card > a {
+  display: block;
+  width: fit-content;
+}
+
+.writing-card time,
+.writing-card .text-muted-foreground:not(p) {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.015em;
+}
+
+.writing-card > p {
+  margin-top: 0.55rem !important;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
 .topic-tag {
   border-color: var(--border-subtle) !important;
   border-radius: 0.7rem !important;
