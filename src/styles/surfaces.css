@@ -4,6 +4,7 @@
   .surface-panel-strong {
     position: relative;
     border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
     background-image: none;
     background-clip: padding-box;
   }
