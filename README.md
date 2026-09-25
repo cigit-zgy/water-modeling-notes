@@ -19,7 +19,7 @@ The public site uses two opaque, solid themes:
 - Dark: Dracula At Night
 - Light: Claude-inspired warm editorial palette
 
-Gradients, aurora backgrounds, backdrop blur, and Liquid Glass are excluded from published UI. Depth comes from solid surfaces, borders, spacing, typography, and restrained shadows. Claude Code is used as a composition/interaction reference for the light editorial direction; it does not replace the dark Dracula palette.
+Gradients, aurora backgrounds, backdrop blur, Liquid Glass, and transparent UI backgrounds are excluded from published surfaces. Depth comes from solid surfaces, borders, spacing, typography, and restrained shadows. Claude Code is used as a composition/interaction reference for the light editorial direction; it does not replace the dark Dracula palette.
 
 Typography is shared across prose and diagrams:
 
@@ -62,6 +62,7 @@ Open `http://localhost:4321`. The first visit defaults to dark mode; the header 
 ## Validation
 
 ```bash
+pnpm design:check
 pnpm astro check
 pnpm lint
 pnpm format:check
@@ -69,7 +70,7 @@ pnpm build
 pnpm preview
 ```
 
-`pnpm build` runs Astro checks, generates the static site in `dist/`, builds the Pagefind index, and copies its assets to `public/pagefind/` for local development.
+`pnpm design:check` enforces the solid-surface contract in shared CSS and rejects gradients, backdrop-filter effects, and transparent UI background declarations. `pnpm build` runs Astro checks, generates the static site in `dist/`, builds the Pagefind index, and copies its assets to `public/pagefind/` for local development.
 
 ## GitHub and Vercel
 

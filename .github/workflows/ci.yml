@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - preview/apple-liquid-glass
   pull_request:
     types:
       - opened
@@ -39,6 +38,9 @@ jobs:
 
       - name: "📦 Install dependencies"
         run: pnpm install --frozen-lockfile
+
+      - name: "🎨 Check design contract"
+        run: pnpm run design:check
 
       - name: "🔎 Lint code"
         run: pnpm run lint

@@ -55,9 +55,9 @@ This composition reference never overrides the theme pair. Dark mode remains Dra
 
 The project font system is fixed: Latin Modern Sans for Latin reading/UI, LXGW WenKai Screen for Chinese, Maple Mono for code/identifiers, and KaTeX for mathematics.
 
-## No-gradient rule
+## Solid-background contract
 
-Published UI uses solid backgrounds only.
+Published UI uses opaque solid backgrounds only.
 
 Prohibited:
 
@@ -69,8 +69,13 @@ Prohibited:
 - gradient borders
 - decorative SVG gradients
 - glass/specular gradients
+- backdrop-filter / backdrop blur
+- transparent surface backgrounds
+- background color-mix expressions that resolve through transparency
 
-Use a solid surface, border, or shadow when hierarchy is needed.
+Use a solid semantic surface, border, or shadow when hierarchy is needed. Transparency may still be used for shadows, antialiasing, subtle borders, or text decoration when it is not the element background.
+
+The executable check is `pnpm design:check`; CI runs it before linting and build. A change that violates this contract must fail before deployment.
 
 ## Typography
 
